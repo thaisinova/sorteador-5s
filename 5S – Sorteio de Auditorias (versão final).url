@@ -1,2 +1,851 @@
-[InternetShortcut]
-URL=file:///C:/Users/thais.castilhos/Inova%20Sistemas%20Eletronicos/Equipe%20Metodos%20e%20Processos%F0%9F%93%8B%20-%20Tha%C3%ADs%20Castilhos/1-%205S/2026/1-%20Auditorias/Sorteador%20Auditorias%205S%20-%20Vers%C3%A3o%20Final.html
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5S – Sorteio de Auditorias (escala protegida)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+/* ===== ESTILOS (mesmo do original) ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#eff7f9;color:#1a3e4c;padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center}
+.container{max-width:1450px;width:100%}
+h1{font-size:1.9rem;font-weight:600;color:#06685b;margin-bottom:.3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.sub{background:#cde7ed;padding:.5rem 1.6rem;border-radius:60px;font-size:.88rem;color:#0b4e5a;display:inline-block;margin-bottom:1.6rem;border-left:6px solid #1f8a7c;font-weight:600}
+.card{background:white;border-radius:28px;box-shadow:0 10px 28px rgba(0,45,55,.05);padding:1.6rem 1.8rem;margin-bottom:1.8rem;border:1px solid #daedf2}
+h2{font-size:1.2rem;font-weight:600;color:#0f606b;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem;border-bottom:2px solid #cde3e9;padding-bottom:.5rem}
+.flex-row{display:flex;flex-wrap:wrap;gap:1.8rem}
+.col{flex:1 1 300px}
+.painel{background:#f6fcfe;border-radius:20px;padding:1.1rem;border:1.5px solid #bee0e8;margin-top:.6rem}
+.tag{background:white;border-radius:40px;padding:.35rem .9rem;font-size:.78rem;font-weight:500;border:1.5px solid #b9d4dd;color:#154b59;display:inline-flex;align-items:center;gap:5px;margin:.2rem}
+.tag-exp{background:#dbf1f0;border-color:#219f94}
+.tag-inexp{background:#ffefe2;border-color:#dc8b6b}
+.tag-curto{background:#fff2cf;border-color:#eab948}
+.tag-longo{background:#d3eaf0;border-color:#5899ab}
+.btn-x{background:none;border:none;color:#b04545;margin-left:3px;padding:0 3px;font-size:.82rem;cursor:pointer}
+.btn{background:white;border:1px solid #aac9d2;padding:.5rem 1.2rem;border-radius:60px;font-weight:500;font-size:.83rem;display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:#105f68;transition:background .15s}
+.btn-primary{background:#1e7a70;border-color:#13635a;color:white}
+.btn-primary:hover{background:#0e635b}
+.btn-outline{border-color:#378e84;color:#1f6c64}
+.btn-outline:hover{background:#e1f3f0}
+.btn-warn{background:#e6a020;border-color:#c4851a;color:white}
+.btn-sm{padding:.28rem .9rem;font-size:.73rem}
+.input-row{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.input-row input{padding:.45rem .9rem;border-radius:60px;border:1.5px solid #cbdde3;font-family:'Inter',sans-serif;flex:1 1 160px;font-size:.78rem}
+.dias-info{background:#e3f2f5;border-radius:40px;padding:.45rem 1.3rem;font-size:.88rem}
+.dia-badge{background:#478b9a;color:white;padding:.2rem .75rem;border-radius:30px;font-size:.73rem;display:inline-flex;align-items:center;gap:3px;margin:.2rem}
+.dia-badge button{background:none;border:none;color:rgba(255,255,255,.75);cursor:pointer;font-size:.95rem;padding:0 2px;line-height:1}
+.dia-badge button:hover{color:white}
+table.t{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:1rem}
+table.t th{text-align:left;padding:.75rem .55rem;background:#dcf0f4;color:#0f5663}
+table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:middle}
+.fixado{background:#fbefcf;border-left:7px solid #cf9f2e}
+.manter-btn{background:none;border:1.5px dashed #619caa;border-radius:30px;padding:.18rem .75rem;font-size:.68rem;color:#0e5b66;cursor:pointer}
+.manter-btn.on{background:#1f7468;border-color:#165e54;color:white}
+.regra{background:#1e7a70;color:white;padding:.7rem 1.3rem;border-radius:60px;text-align:center;font-weight:700;margin-bottom:.9rem;font-size:.82rem}
+.painel-part{background:#e8f4f8;padding:.75rem 1.1rem;border-radius:18px;margin-bottom:.9rem;font-size:.83rem}
+.alerta{background:#ffd9d9;border-left:6px solid #d14545;padding:.75rem 1.1rem;border-radius:18px;margin-top:.7rem;font-size:.83rem;font-weight:600;display:none}
+.aviso{background:#fff3cd;border-left:6px solid #e6a020;padding:.75rem 1.1rem;border-radius:18px;margin-top:.7rem;font-size:.83rem;display:none}
+.stats{display:flex;flex-wrap:wrap;gap:1.3rem;background:#f0f9fc;padding:.9rem 1.2rem;border-radius:36px;margin-top:.9rem;font-size:.83rem}
+.sl{background:#d3eaf0;border-radius:18px;padding:2px 8px;display:inline-block;font-size:.77rem}
+.sc{background:#fff2cf;border-radius:18px;padding:2px 8px;display:inline-block;font-size:.77rem}
+.badge2{font-size:.63rem;background:#ede0ff;color:#6a35a0;border-radius:8px;padding:1px 6px;margin-left:5px;vertical-align:middle}
+.textarea-copy{background:#f7fdfe;border-radius:18px;padding:.7rem 1.1rem;width:100%;border:1.5px solid #b7d4de;font-size:.76rem;margin-top:.8rem;resize:vertical}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.48);z-index:1000;justify-content:center;align-items:center}
+.modal-box{background:white;max-width:90%;width:820px;max-height:83%;overflow-y:auto;border-radius:28px;padding:1.4rem}
+.modal-hd{display:flex;justify-content:space-between;margin-bottom:1rem;font-weight:700;font-size:1.05rem;align-items:center}
+.rest-item{border-bottom:1px solid #e0ecef;padding:.75rem 0;display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-start}
+.rest-nome{width:185px;font-weight:600;font-size:.82rem;padding-top:3px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.rest-sets{flex:1;display:flex;flex-wrap:wrap;gap:5px}
+.rest-sets label{font-size:.73rem;background:#ecf3f5;padding:.18rem .55rem;border-radius:18px;cursor:pointer;display:flex;align-items:center;gap:3px}
+.btn-fechar{background:#c2673a;color:white;border:none;padding:.28rem .9rem;border-radius:28px;cursor:pointer;font-size:.82rem}
+.hist-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0ecef;padding:.7rem 0;gap:.8rem;flex-wrap:wrap}
+.force-check{display:inline-flex;align-items:center;gap:8px;margin-left:1rem;font-size:.8rem;background:#eef3f5;padding:4px 12px;border-radius:30px}
+.reveal-btn{background:#e6a020;border:none;padding:8px 20px;border-radius:40px;font-weight:bold;color:white;cursor:pointer;margin-bottom:15px;font-size:0.9rem}
+.reveal-btn:hover{background:#c4851a}
+.password-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:2000}
+.password-box{background:white;border-radius:32px;padding:2rem;width:320px;text-align:center;box-shadow:0 20px 35px rgba(0,0,0,0.3)}
+.password-box i{font-size:2.5rem;color:#1e7a70;margin-bottom:1rem}
+.password-box input{width:100%;padding:0.8rem;margin:1rem 0;border:1.5px solid #cbdde3;border-radius:60px}
+.password-box button{background:#1e7a70;color:white;border:none;padding:0.7rem;width:100%;border-radius:60px;font-weight:bold;cursor:pointer}
+.erro-senha{color:#d14545;font-size:0.8rem;margin-top:0.5rem}
+.protected-placeholder{text-align:center;padding:3rem;background:#f5f9fa;border-radius:24px;color:#4a6a75;font-style:italic}
+.maxone-label{ font-size:0.7rem; background:#f0e6d2; padding:2px 6px; border-radius:20px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>
+  <span><i class="fas fa-clipboard-check"></i> 5S &mdash; Sorteio de Auditorias</span>
+  <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+    <button id="btnRest"  class="btn btn-outline"><i class="fas fa-sliders-h"></i> Restrições</button>
+    <button id="btnSalv"  class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    <button id="btnHist"  class="btn btn-outline"><i class="fas fa-history"></i> Histórico</button>
+  </div>
+</h1>
+
+<div class="sub">
+  Regras: 1L+1C por auditoria | MTA máx 1x/mês | Sem par obrigatório de P&D
+  <label class="force-check"><input type="checkbox" id="forceTwo"> <i class="fas fa-sun"></i> Forçar 2 auditorias por dia</label>
+</div>
+
+<!-- Modal Restrições -->
+<div id="modalRest" class="modal"><div class="modal-box"><div class="modal-hd"><span><i class="fas fa-ban"></i> Restrições por auditor</span><button id="btnFRest" class="btn-fechar">Fechar</button></div><div id="listaRest"></div><div style="margin-top:1rem;text-align:right"><button id="btnSRest" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button></div></div></div>
+
+<!-- Modal Histórico -->
+<div id="modalHist" class="modal"><div class="modal-box"><div class="modal-hd"><span><i class="fas fa-history"></i> Histórico</span><button id="btnFHist" class="btn-fechar">Fechar</button></div><div id="listaHist"></div></div></div>
+
+<!-- Auditores -->
+<div class="card">
+  <h2><i class="fas fa-user-tag"></i> Auditores</h2>
+  <div class="flex-row">
+    <div class="col"><div class="painel"><div style="font-weight:700;margin-bottom:.4rem">⭐ Experientes</div><div id="expList"></div><div class="input-row"><input id="inpExp" placeholder="Novo experiente"><button id="btnAExp" class="btn btn-sm">Adicionar</button></div></div></div>
+    <div class="col"><div class="painel"><div style="font-weight:700;margin-bottom:.4rem">🌱 Inexperientes</div><div id="inexpList"></div><div class="input-row"><input id="inpInexp" placeholder="Novo inexperiente"><button id="btnAInexp" class="btn btn-sm">Adicionar</button></div></div></div>
+  </div>
+</div>
+
+<!-- Setores -->
+<div class="card">
+  <h2><i class="fas fa-industry"></i> Setores <span style="font-weight:400;font-size:.82rem;color:#5a8a95">(clique no nome para alternar curto/longo)</span></h2>
+  <div class="painel"><div id="setList"></div><div class="input-row"><input id="inpSet" placeholder="Novo setor"><button id="btnACurto" class="btn btn-sm">+ Curto</button><button id="btnALongo" class="btn btn-sm">+ Longo</button></div></div>
+</div>
+
+<!-- Período -->
+<div class="card">
+  <h2><i class="fas fa-calendar-week"></i> Período</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end">
+    <div><label style="font-size:.82rem">Início</label><br><input type="date" id="dtIni" value="2026-04-01"></div>
+    <div><label style="font-size:.82rem">Fim</label><br><input type="date" id="dtFim" value="2026-04-30"></div>
+    <button id="btnGerar" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Gerar dias</button>
+    <span class="dias-info"><i class="far fa-calendar"></i> <strong id="diasCt">0</strong> dias úteis</span>
+  </div>
+  <div id="diasList" style="margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.25rem"></div>
+</div>
+
+<!-- Escala (protegida) -->
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.7rem;margin-bottom:1rem">
+    <h2 style="border-bottom:none;margin-bottom:0">Escala gerada</h2>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+      <button id="btnSort"  class="btn btn-primary"><i class="fas fa-dice"></i> Sortear</button>
+      <button id="btnExp"   class="btn btn-outline"><i class="fas fa-file-excel"></i> Exportar CSV</button>
+      <button id="btnLFix"  class="btn btn-outline"><i class="fas fa-lock-open"></i> Limpar fixos</button>
+      <button id="btnLEsc"  class="btn btn-warn"><i class="fas fa-trash-alt"></i> Limpar escala</button>
+    </div>
+  </div>
+  <div class="regra">Todos os setores auditados | 1L+1C | MTA máx 1x/mês | Sem par obrigatório de P&D</div>
+  <div class="painel-part" id="pPart"><strong>Participação: <span id="pCt">0</span>/<span id="pTot">0</span></strong><span id="pSt"></span><div id="pFalt" style="margin-top:.25rem"></div></div>
+  <div id="aviso" class="aviso"></div><div id="alerta" class="alerta"></div>
+  
+  <!-- Botão para alternar entre mostrar/ocultar escala -->
+  <div style="text-align: center; margin-bottom: 1rem;">
+    <button id="btnToggleEscala" class="reveal-btn"><i class="fas fa-lock"></i> Mostrar Escala (requer senha)</button>
+  </div>
+  
+  <!-- Área que conterá a escala ou o placeholder -->
+  <div id="protectedArea">
+    <div class="protected-placeholder">
+      <i class="fas fa-eye-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+      Escala protegida por senha.<br>Clique no botão acima para visualizar.
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// ========== CONFIGURAÇÃO DE SENHA ==========
+const SENHA_CORRETA = "5s2026";
+let autenticado = false;
+let escalaVisivel = false;
+
+// ========== DADOS ==========
+var aExp   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto','Aloísio Vargas Arrial'];
+var aInexp = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
+var setores = [
+  {n:'Usinagem',r:0},{n:'P&D - RAID',r:1},{n:'P&D - Areas Comuns',r:1},
+  {n:'MTA - Resfriar',r:0},{n:'ORH',r:0},{n:'Assistência Técnica',r:0},
+  {n:'P&D - Software',r:1},{n:'Montagem de Placas',r:0},{n:'Qualidade e Meio Ambiente',r:0},
+  {n:'Tecnologia da Informação',r:0},{n:'Métodos e Processos',r:0},{n:'Comercial',r:0},
+  {n:'P&D - Documentação',r:1},{n:'MTA - Automotivo',r:0},{n:'MTA - Industrial',r:0},
+  {n:'Logística',r:0},{n:'P&D - Industrial',r:1},{n:'Chicote',r:0},
+  {n:'PPCPM',r:0},{n:'P&D Flex',r:1},{n:'Manutenção',r:0},
+  {n:'Copa',r:1},{n:'Café Subsolo',r:1},{n:'Controladoria',r:0},
+  {n:'P&D - HIT',r:1},{n:'Café Produção',r:1},
+  {n:'Gestão Industrial',r:1},{n:'Gestão PID',r:1},{n:'Direção',r:1}
+];
+
+// ---------- NOVA CONFIGURAÇÃO: LIMITE DE 1 AUDITORIA POR MÊS (maxOne) ----------
+let maxOne = {};   // auditor -> true (limita a 1 vez no mês)
+
+var restrPadrao = {
+  'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Alexandre Vivan':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Suélen Correa':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
+  'Ana Carolina Adamatti':['Chicote','Café Subsolo'],
+  'Márcio Perotti Barros':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Jeferson Kessler':['PPCPM','Copa'],
+  'Vanessa Benedita Silveira':['Montagem de Placas','Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
+  'Alexandre Silva de Avila':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Maiara da Veiga Saretto':['Qualidade e Meio Ambiente','Copa'],
+  'Laiza da Silva Gonçalves':['Métodos e Processos','Café Subsolo','Usinagem'],
+  'Tamara Rech Kuchnir':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
+  'Aloísio Vargas Arrial':['Assistência Técnica','Café Subsolo'],
+  'Cristiano dos Santos Gubert':['Usinagem','Café Subsolo','Métodos e Processos'],
+  'cristhian albuquerque pedroni':['Logística','Café Produção'],
+  'Marcelo Henrique Sgarbi':['Manutenção','Café Subsolo'],
+  'Renata dos Santos':['Logística','Café Produção'],
+  'Nathan Mossói padilha':['Métodos e Processos','Café Subsolo','Usinagem'],
+  'Gabriel Dedea':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
+  'Henrique Adamatti':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
+  'Gustavo Pauletti':['Tecnologia da Informação','Copa']
+};
+
+var restr = {};
+function carregarRestricoes(){
+  try{var s=localStorage.getItem('r5s_v5');if(s)restr=JSON.parse(s);else{restr=JSON.parse(JSON.stringify(restrPadrao));localStorage.setItem('r5s_v5',JSON.stringify(restr));}}
+  catch(e){restr=JSON.parse(JSON.stringify(restrPadrao));}
+  // Carregar limite "Max One"
+  try{var mo=localStorage.getItem('maxOne_v5');if(mo) maxOne=JSON.parse(mo);}
+  catch(e){maxOne={};}
+}
+function salvarRestr(){localStorage.setItem('r5s_v5',JSON.stringify(restr)); localStorage.setItem('maxOne_v5',JSON.stringify(maxOne));}
+
+carregarRestricoes();
+
+var diasUteis=[], escala=[], usosDupla=new Map();
+
+// Função que define quantas vezes um auditor pode atuar no mês (1 ou 2)
+function limiteAuditor(a){
+  if(maxOne[a]) return 1;      // NOVA REGRA: limitado a 1 auditoria no mês
+  else return temMTA(a)?1:2;
+}
+function temMTA(a){ var p=restr[a]; return p && p.some(function(s){ return s.indexOf('MTA')===0; }); }
+function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
+function ck(a,b){ return a<b?a+'|'+b:b+'|'+a; }
+function isPD(n){ return n.indexOf('P&D')===0; }
+
+// ========== ALGORITMO DE SORTEIO (adaptado para usar limiteAuditor) ==========
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=0|Math.random()*(i+1);var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function tentarSortear(diasFixados, escalaFixada){
+  var jaFixos=new Set(escalaFixada.map(function(l){return l.e;}).concat(escalaFixada.map(function(l){return l.i;})));
+  var eL=shuffle(aExp.filter(function(a){return!jaFixos.has(a);}));
+  var iL=shuffle(aInexp.filter(function(a){return!jaFixos.has(a);}));
+  var duplas=[];
+  var n=Math.min(eL.length,iL.length);
+  for(var k=0;k<n;k++) duplas.push({e:eL[k],i:iL[k]});
+  var sob=eL.slice(n);
+  for(var k=0;k+1<sob.length;k+=2) duplas.push({e:sob[k],i:sob[k+1]});
+  escalaFixada.forEach(function(l){duplas.push({e:l.e,i:l.i});});
+  var dmap=new Map();
+  duplas.forEach(function(d){var k2=ck(d.e,d.i);if(!dmap.has(k2))dmap.set(k2,d);});
+  duplas=[...dmap.values()];
+
+  var cap=new Map();
+  duplas.forEach(function(d){
+    cap.set(ck(d.e,d.i), Math.min(limiteAuditor(d.e), limiteAuditor(d.i), 2));
+  });
+  var usosKey=new Map();
+  var usosAud=new Map();
+  escalaFixada.forEach(function(l){
+    var k2=ck(l.e,l.i);
+    usosKey.set(k2,(usosKey.get(k2)||0)+1);
+    usosAud.set(l.e,(usosAud.get(l.e)||0)+1);
+    usosAud.set(l.i,(usosAud.get(l.i)||0)+1);
+  });
+
+  var jaUsados=new Set();
+  escalaFixada.forEach(function(l){l.setores.forEach(function(s){jaUsados.add(s);});});
+
+  var longoPool=setores.filter(function(s){ return !s.r && !jaUsados.has(s.n);});
+  var curtoPool=setores.filter(function(s){ return s.r && !jaUsados.has(s.n);});
+
+  function elegDupla(d,s){ return pode(d.e,s) && pode(d.i,s); }
+  function nEleg(s){ return duplas.filter(function(d){ return elegDupla(d,s.n); }).length; }
+
+  longoPool.sort(function(a,b){ return nEleg(a)-nEleg(b); });
+  curtoPool.sort(function(a,b){ return nEleg(a)-nEleg(b); });
+
+  var LP=longoPool.slice(), CP=curtoPool.slice();
+  var slotsUsados=new Map();
+  duplas.forEach(function(d){slotsUsados.set(ck(d.e,d.i), usosKey.get(ck(d.e,d.i))||0);});
+
+  var resultado=[];
+
+  function auDisp(d){
+    var k2=ck(d.e,d.i);
+    return slotsUsados.get(k2) < cap.get(k2)
+        && (usosAud.get(d.e)||0) < limiteAuditor(d.e)
+        && (usosAud.get(d.i)||0) < limiteAuditor(d.i);
+  }
+
+  function registrar(d,lista){
+    var vistos=new Set(), listaFinal=[];
+    lista.forEach(function(s){if(!vistos.has(s)&&!jaUsados.has(s)){vistos.add(s);listaFinal.push(s);}});
+    if(!listaFinal.length) return;
+    var k2=ck(d.e,d.i);
+    slotsUsados.set(k2,slotsUsados.get(k2)+1);
+    usosAud.set(d.e,(usosAud.get(d.e)||0)+1);
+    usosAud.set(d.i,(usosAud.get(d.i)||0)+1);
+    listaFinal.forEach(function(s){jaUsados.add(s);});
+    resultado.push({e:d.e,i:d.i,setores:listaFinal});
+  }
+
+  function escolherDupla(listaNomes){
+    var cands=duplas.filter(function(d){
+      if(!auDisp(d)) return false;
+      return listaNomes.every(function(s){return elegDupla(d,s);});
+    });
+    if(!cands.length) return null;
+    cands.sort(function(a,b){
+      var sa=slotsUsados.get(ck(a.e,a.i)), sb=slotsUsados.get(ck(b.e,b.i));
+      if(sa!==sb) return sa-sb;
+      return ((usosAud.get(a.e)||0)+(usosAud.get(a.i)||0))-((usosAud.get(b.e)||0)+(usosAud.get(b.i)||0));
+    });
+    return cands[0];
+  }
+
+  var maxIter=300, iter=0;
+  while((LP.length||CP.length)&&iter<maxIter){
+    iter++;
+    var dispNow=duplas.filter(function(d){return auDisp(d);});
+    if(!dispNow.length) break;
+
+    var todos=LP.concat(CP);
+    todos.sort(function(a,b){
+      var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
+      var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+      return ea-eb;
+    });
+    var hard=todos[0];
+    if(!hard) break;
+    var ehLongo=LP.indexOf(hard)>=0;
+
+    var candsHard=dispNow.filter(function(d){return elegDupla(d,hard.n);});
+    if(!candsHard.length){
+      if(ehLongo) LP.unshift(hard); else CP.unshift(hard);
+      iter++; continue;
+    }
+    candsHard.sort(function(a,b){
+      var sa=slotsUsados.get(ck(a.e,a.i)), sb=slotsUsados.get(ck(b.e,b.i));
+      return sa-sb;
+    });
+    var dupEsc=candsHard[0];
+
+    var slot=[hard.n];
+    if(ehLongo) LP=LP.filter(function(s){return s.n!==hard.n;});
+    else CP=CP.filter(function(s){return s.n!==hard.n;});
+
+    if(ehLongo){
+      var cposs=CP.filter(function(s){return elegDupla(dupEsc,s.n);});
+      cposs.sort(function(a,b){
+        var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
+        var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+        return ea-eb;
+      });
+      if(cposs.length){
+        var c1=cposs[0]; slot.push(c1.n); CP=CP.filter(function(s){return s.n!==c1.n;});
+        if(CP.length>LP.length && cposs.length>1){
+          var c2=cposs[1]; slot.push(c2.n); CP=CP.filter(function(s){return s.n!==c2.n;});
+        }
+      } else {
+        var lposs2=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
+        lposs2.sort(function(a,b){return nEleg(a)-nEleg(b);});
+        if(lposs2.length){var l2=lposs2[0];slot.push(l2.n);LP=LP.filter(function(s){return s.n!==l2.n;});}
+      }
+    } else {
+      var lposs=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
+      lposs.sort(function(a,b){return nEleg(a)-nEleg(b);});
+      if(!lposs.length){
+        CP.unshift(hard); iter++; continue;
+      }
+      var lEsc=lposs[0]; slot=[lEsc.n,hard.n]; LP=LP.filter(function(s){return s.n!==lEsc.n;});
+    }
+    registrar(dupEsc,slot);
+  }
+
+  var cobertos=new Set(resultado.reduce(function(a,r){return a.concat(r.setores);},[]).concat([...jaUsados]));
+  var naoAloc=setores.filter(function(s){return!cobertos.has(s.n);});
+  if(naoAloc.length) return null;
+  return {resultado:resultado, duplas:duplas};
+}
+
+// ========== SORTEAR ==========
+function sortear(respFixed){
+  if(!setores.length||!diasUteis.length) return;
+  usosDupla.clear();
+  var novaEsc=[], diasFixados=new Set();
+  if(respFixed){
+    escala.filter(function(l){return l.fixado;}).forEach(function(l){
+      novaEsc.push(Object.assign({},l));
+      var k=ck(l.e,l.i); usosDupla.set(k,(usosDupla.get(k)||0)+1);
+      diasFixados.add(l.data);
+    });
+  }
+  var MAX_TENT=30, tent=0, res=null;
+  while(tent<MAX_TENT&&!res){
+    tent++;
+    res=tentarSortear(diasFixados, novaEsc.filter(function(l){return l.fixado;}));
+  }
+  var avisoEl=document.getElementById('aviso'), alertaEl=document.getElementById('alerta');
+  if(!res){
+    avisoEl.style.display='none';
+    alertaEl.style.display='block';
+    alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar todos os setores em '+MAX_TENT+' tentativas.';
+    return;
+  }
+  alertaEl.style.display='none';
+  avisoEl.style.display='block';
+  avisoEl.innerHTML='<i class="fas fa-info-circle"></i> Sorteio concluído na tentativa '+tent+'.';
+
+  var diasDisp = diasUteis.filter(function(d){ return !diasFixados.has(d); }).sort();
+  var slots = res.resultado;
+  var MAX_POR_DIA = 2;
+  var forceTwo = document.getElementById('forceTwo').checked;
+  if (forceTwo && diasDisp.length > 0) {
+    var neededDays = Math.ceil(slots.length / 2);
+    if (neededDays < diasDisp.length) diasDisp = diasDisp.slice(0, neededDays);
+  }
+  var capacidadeTotal = diasDisp.length * MAX_POR_DIA;
+  if (slots.length > capacidadeTotal) {
+    alertaEl.style.display='block';
+    alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Número de auditorias ('+slots.length+') excede capacidade máxima. Aumente os dias ou desmarque "Forçar 2ª dupla".';
+    return;
+  }
+  var duplasNoDia = new Map();
+  novaEsc.forEach(function(l){ duplasNoDia.set(l.data, (duplasNoDia.get(l.data)||0)+1); });
+  var alocacoes = [], slotsRestantes = slots.slice();
+  for (var i = 0; i < diasDisp.length && slotsRestantes.length > 0; i++) {
+    var dia = diasDisp[i];
+    if ((duplasNoDia.get(dia)||0) < MAX_POR_DIA) {
+      alocacoes.push({dia: dia, slot: slotsRestantes.shift(), segunda: false});
+      duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
+    }
+  }
+  var idxDia = 0;
+  while (slotsRestantes.length > 0) {
+    var diaCandidato = null;
+    for (var tries = 0; tries < diasDisp.length; tries++) {
+      var d = diasDisp[idxDia % diasDisp.length];
+      if ((duplasNoDia.get(d)||0) < MAX_POR_DIA) { diaCandidato = d; break; }
+      idxDia++;
+    }
+    if (!diaCandidato) { alertaEl.style.display='block'; alertaEl.innerHTML='Erro interno: não foi possível alocar segunda auditoria.'; return; }
+    alocacoes.push({dia: diaCandidato, slot: slotsRestantes.shift(), segunda: true});
+    duplasNoDia.set(diaCandidato, (duplasNoDia.get(diaCandidato)||0)+1);
+    idxDia++;
+  }
+  alocacoes.sort(function(a,b){
+    if (a.dia !== b.dia) return new Date(a.dia) - new Date(b.dia);
+    return (a.segunda ? 1 : 0) - (b.segunda ? 1 : 0);
+  });
+  var novaEscalaFinal = novaEsc.slice();
+  alocacoes.forEach(function(aloc){
+    var k = ck(aloc.slot.e, aloc.slot.i);
+    usosDupla.set(k, (usosDupla.get(k)||0)+1);
+    novaEscalaFinal.push({data: aloc.dia, e: aloc.slot.e, i: aloc.slot.i, setores: aloc.slot.setores, fixado: false, seg: aloc.segunda});
+  });
+  escala = novaEscalaFinal.sort(function(a,b){ return new Date(a.data) - new Date(b.data); });
+  
+  atualizarParticipacao();
+  var diasComDuas = 0, contagem = new Map();
+  escala.forEach(function(l){ contagem.set(l.data, (contagem.get(l.data)||0)+1); });
+  for (var q of contagem.values()) if (q===2) diasComDuas++;
+  if (diasComDuas > 0) avisoEl.innerHTML = '<i class="fas fa-calendar-week"></i> Foram usadas ' + diasComDuas + ' segunda(s) auditoria(s). ' + (forceTwo ? '(Forçado)' : '');
+  else avisoEl.innerHTML = '<i class="fas fa-check-circle"></i> Apenas auditorias de manhã.';
+  
+  if (escalaVisivel) renderizarEscala();
+  else mostrarPlaceholder();
+}
+
+function atualizarParticipacao(){
+  var p=new Set(); escala.forEach(function(l){p.add(l.e);p.add(l.i);});
+  var tot=aExp.length+aInexp.length;
+  var pt=tot-p.size;
+  document.getElementById('pCt').innerText=pt;
+  document.getElementById('pTot').innerText=tot;
+  document.getElementById('pSt').innerHTML=pt===tot?' ✅ Todos participaram!':'';
+  var fd=document.getElementById('pFalt'); fd.innerHTML='';
+  var faltExp = aExp.filter(function(a){return !p.has(a);});
+  var faltInexp = aInexp.filter(function(a){return !p.has(a);});
+  if(faltExp.length) fd.innerHTML+='<div>⭐ Sem auditoria: '+faltExp.join(', ')+'</div>';
+  if(faltInexp.length) fd.innerHTML+='<div>🌱 Sem auditoria: '+faltInexp.join(', ')+'</div>';
+}
+
+function renderizarEscala(){
+  var protectedDiv = document.getElementById('protectedArea');
+  if(!protectedDiv) return;
+  var html = `
+    <div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dupla</th><th>Setores</th><th>Manter?</th></tr></thead><tbody id="tbody"></tbody></table></div>
+    <div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span><span>Tentativas: <strong id="sTent">-</strong></span></div>
+    <div style="margin-top:.9rem"><button id="btnCsv" class="btn btn-outline btn-sm"><i class="fas fa-copy"></i> Copiar CSV</button><textarea id="csvArea" class="textarea-copy" rows="4" readonly placeholder="CSV aparece aqui..."></textarea></div>
+  `;
+  protectedDiv.innerHTML = html;
+  var tb = document.getElementById('tbody');
+  if(!tb) return;
+  tb.innerHTML = '';
+  escala.forEach(function(l,idx){
+    var tr=document.createElement('tr');
+    if(l.fixado) tr.classList.add('fixado');
+    var dBR=l.data.split('-').reverse().join('/');
+    var sh=l.setores.map(function(s){
+      var st=setores.find(function(x){return x.n===s;});
+      return '<span class="'+(st&&st.r?'sc':'sl')+'">'+s+'</span>';
+    }).join(' ');
+    var b2=l.seg?'<span class="badge2">2ª dupla (tarde)</span>':'<span class="badge2">1ª dupla (manhã)</span>';
+    tr.innerHTML='<td><strong>'+dBR+'</strong></td>'
+      +'<td><i class="fas fa-user-friends"></i> '+l.e+' + '+l.i+' '+b2+'</td>'
+      +'<td><div style="display:flex;flex-direction:column;gap:3px">'+sh+'</div></td>'
+      +'<td><button class="manter-btn'+(l.fixado?' on':'')+'" data-i="'+idx+'">'
+      +'<i class="fas fa-'+(l.fixado?'lock':'lock-open')+'"></i> '+(l.fixado?'Manter':'Manter?')+'</button></td>';
+    tb.appendChild(tr);
+  });
+  var du = [...new Set(escala.map(function(l){return l.data;}))].length;
+  var ts = escala.reduce(function(a,l){return a+l.setores.length;},0);
+  var diasCom2 = 0, mapDias = new Map();
+  escala.forEach(function(l){ mapDias.set(l.data, (mapDias.get(l.data)||0)+1); });
+  for (var v of mapDias.values()) if (v===2) diasCom2++;
+  var duplasRepetidas = 0, mapDupla = new Map();
+  escala.forEach(function(l){ var k=ck(l.e,l.i); mapDupla.set(k, (mapDupla.get(k)||0)+1); });
+  for (var q of mapDupla.values()) if (q>=2) duplasRepetidas++;
+  document.getElementById('sDias').innerText = du;
+  document.getElementById('sDiasT').innerText = diasUteis.length;
+  document.getElementById('sSet').innerText = ts;
+  document.getElementById('sSetT').innerText = setores.length;
+  document.getElementById('sMed').innerText = (ts/(du||1)).toFixed(1);
+  document.getElementById('sDupRep').innerText = duplasRepetidas;
+  document.getElementById('sDias2').innerText = diasCom2;
+  document.querySelectorAll('.manter-btn').forEach(function(b){
+    b.addEventListener('click',function(){
+      escala[+b.dataset.i].fixado = !escala[+b.dataset.i].fixado;
+      renderizarEscala();
+      atualizarParticipacao();
+    });
+  });
+  function gerarCsv(){
+    var linhas=['Data;Dupla;Setores;Período'];
+    escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); });
+    return linhas.join('\n');
+  }
+  var btnCsv = document.getElementById('btnCsv');
+  if(btnCsv) btnCsv.onclick = function(){
+    document.getElementById('csvArea').value = gerarCsv();
+  };
+}
+
+function mostrarPlaceholder(){
+  var protectedDiv = document.getElementById('protectedArea');
+  if(protectedDiv) protectedDiv.innerHTML = `
+    <div class="protected-placeholder">
+      <i class="fas fa-eye-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+      Escala protegida por senha.<br>Clique no botão acima para visualizar.
+    </div>
+  `;
+}
+
+// ========== AUTENTICAÇÃO ==========
+function pedirSenha(callback) {
+  const modal = document.createElement('div');
+  modal.className = 'password-modal';
+  modal.innerHTML = `
+    <div class="password-box">
+      <i class="fas fa-clipboard-list"></i>
+      <h3>Acesso à Escala</h3>
+      <p>Digite a senha para visualizar as auditorias:</p>
+      <input type="password" id="senhaEscala" placeholder="Senha" autocomplete="off">
+      <button id="btnConfirmarSenha">Confirmar</button>
+      <div id="erroSenha" class="erro-senha"></div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  const input = modal.querySelector('#senhaEscala');
+  const btn = modal.querySelector('#btnConfirmarSenha');
+  const erroDiv = modal.querySelector('#erroSenha');
+  function verificar() {
+    if (input.value.trim() === SENHA_CORRETA) {
+      modal.remove();
+      callback(true);
+    } else {
+      erroDiv.innerText = 'Senha incorreta.';
+      input.value = '';
+      input.focus();
+    }
+  }
+  btn.onclick = verificar;
+  input.onkeypress = function(e){ if(e.key === 'Enter') verificar(); };
+  input.focus();
+}
+
+function toggleEscala() {
+  if (escalaVisivel) {
+    escalaVisivel = false;
+    autenticado = false;
+    sessionStorage.removeItem('escalaRevelada_5s');
+    mostrarPlaceholder();
+    document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-lock"></i> Mostrar Escala (requer senha)';
+    document.getElementById('btnToggleEscala').style.background = '#e6a020';
+  } else {
+    if (!autenticado) {
+      pedirSenha(function(sucesso){
+        if(sucesso){
+          autenticado = true;
+          sessionStorage.setItem('escalaRevelada_5s', 'true');
+          escalaVisivel = true;
+          if(escala && escala.length > 0) renderizarEscala();
+          else mostrarPlaceholder();
+          document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+          document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
+        }
+      });
+    } else {
+      escalaVisivel = true;
+      if(escala && escala.length > 0) renderizarEscala();
+      else mostrarPlaceholder();
+      document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+      document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
+    }
+  }
+}
+
+// ========== DIAS ÚTEIS ==========
+function calcDias(ini,fim){
+  var dias=[];
+  for(var d=new Date(ini);d<=new Date(fim);d.setDate(d.getDate()+1)){
+    var dw=d.getDay(); if(dw&&dw!==6) dias.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'));
+  }
+  return dias;
+}
+function renderDias(){
+  document.getElementById('diasCt').innerText=diasUteis.length;
+  var c=document.getElementById('diasList'); c.innerHTML='';
+  diasUteis.forEach(function(d){
+    var sp=document.createElement('span'); sp.className='dia-badge';
+    sp.appendChild(document.createTextNode(d.split('-').reverse().join('/')));
+    var b=document.createElement('button'); b.innerHTML='\u00d7'; b.title='Remover';
+    b.onclick=function(){diasUteis=diasUteis.filter(function(x){return x!==d;});renderDias();sortear(true);};
+    sp.appendChild(b); c.appendChild(sp);
+  });
+}
+function atuDias(){
+  diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value);
+  renderDias(); sortear(false);
+}
+
+// ========== AUDITORES E SETORES ==========
+function renderAuds(){
+  [{id:'expList',arr:aExp,cls:'tag-exp',ico:'fa-star'},{id:'inexpList',arr:aInexp,cls:'tag-inexp',ico:'fa-seedling'}].forEach(function(tp){
+    var div=document.getElementById(tp.id); if(!div) return;
+    div.innerHTML='';
+    tp.arr.forEach(function(nome){
+      var sp=document.createElement('span'); sp.className='tag '+tp.cls;
+      var ns=nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      sp.innerHTML='<span onclick="window._tA(\''+ns+'\')" style="cursor:pointer"><i class="fas '+tp.ico+'"></i> '+nome+'</span><button class="btn-x" onclick="window._dA(\''+ns+'\')" ><i class="fas fa-times-circle"></i></button>';
+      div.appendChild(sp);
+    });
+  });
+}
+window._tA=function(n){
+  var ie=aExp.indexOf(n);
+  if(ie>=0){aExp.splice(ie,1);aInexp.push(n);}
+  else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}}
+  renderAuds(); sortear(true);
+};
+window._dA=function(n){
+  if(!confirm('Remover '+n+'?'))return;
+  aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;});
+  delete maxOne[n]; salvarRestr();
+  renderAuds(); sortear(true);
+};
+function addA(isE){
+  var id=isE?'inpExp':'inpInexp';
+  var v=document.getElementById(id).value.trim();
+  if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return;
+  if(isE)aExp.push(v); else aInexp.push(v);
+  document.getElementById(id).value='';
+  renderAuds(); sortear(true);
+}
+function renderSets(){
+  var c=document.getElementById('setList'); if(!c) return;
+  c.innerHTML='';
+  setores.forEach(function(s,i){
+    var sp=document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo');
+    sp.innerHTML='<span onclick="window._tS('+i+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span><button class="btn-x" onclick="window._dS('+i+')"><i class="fas fa-times-circle"></i></button>';
+    c.appendChild(sp);
+  });
+}
+window._tS=function(i){setores[i].r=setores[i].r?0:1;renderSets();sortear(true);};
+window._dS=function(i){
+  if(!confirm('Remover '+setores[i].n+'?'))return;
+  setores.splice(i,1); renderSets(); sortear(true);
+};
+function addS(r){
+  var v=document.getElementById('inpSet').value.trim();
+  if(!v||setores.some(function(s){return s.n===v;}))return;
+  setores.push({n:v,r:r}); document.getElementById('inpSet').value='';
+  renderSets(); sortear(true);
+}
+
+// ========== RESTRIÇÕES (com opção "Máx 1 auditoria/mês") ==========
+function abrirRest(){
+  var c=document.getElementById('listaRest'); c.innerHTML='';
+  var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;});
+  todos.forEach(function(aud){
+    var pr=restr[aud]||[];
+    var div=document.createElement('div'); div.className='rest-item';
+    var idSanit = aud.replace(/[^a-z0-9]/gi, '_');
+    div.innerHTML='<div class="rest-nome">'+aud+' <label class="maxone-label"><input type="checkbox" id="maxone_'+idSanit+'" '+(maxOne[aud]?'checked':'')+'> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label></div><div class="rest-sets" id="rs-'+idSanit+'"></div>';
+    c.appendChild(div);
+    var sd=div.querySelector('.rest-sets');
+    nomes.forEach(function(s){
+      var lb=document.createElement('label');
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.value=s; cb.checked=pr.indexOf(s)>=0;
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+s)); sd.appendChild(lb);
+    });
+  });
+  document.getElementById('modalRest').style.display='flex';
+}
+function salvarRest(){
+  var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;}), novo={};
+  var novoMaxOne = {};
+  todos.forEach(function(aud){
+    var idSanit = aud.replace(/[^a-z0-9]/gi, '_');
+    var d = document.getElementById('rs-'+idSanit);
+    var cbMax = document.getElementById('maxone_'+idSanit);
+    if(cbMax) novoMaxOne[aud] = cbMax.checked;
+    if(!d) return;
+    var pr=[];
+    d.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+      if(cb.checked) pr.push(nomes[i]);
+    });
+    novo[aud]=pr;
+  });
+  restr=novo; maxOne=novoMaxOne;
+  salvarRestr();
+  document.getElementById('modalRest').style.display='none';
+  sortear(true);
+  alert('Restrições salvas! (Limite de 1 auditoria/mês aplicado quando marcado)');
+}
+
+// ========== HISTÓRICO (inclui maxOne) ==========
+function salvarH(){
+  var nome=prompt('Nome (ex: Abril 2026):'); if(!nome)return;
+  var h=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+  h.push({nome:nome,data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
+  localStorage.setItem('h5s_v5',JSON.stringify(h));
+  alert('"'+nome+'" salvo!');
+}
+function abrirH(){
+  var h=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+  var c=document.getElementById('listaHist'); c.innerHTML='';
+  if(!h.length){c.innerHTML='<p style="padding:1rem;color:#888">Nenhum sorteio salvo.</p>';}
+  else h.forEach(function(it,idx){
+    var d=document.createElement('div'); d.className='hist-item';
+    d.innerHTML='<span><strong>'+it.nome+'</strong> &mdash; '+it.data+'</span><div style="display:flex;gap:.4rem"><button class="btn btn-sm btn-outline" data-idx="'+idx+'" data-a="load">Carregar</button><button class="btn btn-sm" style="background:#c2673a;color:white;border-color:#c2673a" data-idx="'+idx+'" data-a="del">Excluir</button></div>';
+    c.appendChild(d);
+  });
+  c.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var idx=+b.dataset.idx, h2=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+      if(b.dataset.a==='load'){
+        function carregar() {
+          var it=h2[idx];
+          escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores; restr=it.restr; maxOne=it.maxOne || {}; diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
+          renderDias(); renderAuds(); renderSets(); atualizarParticipacao();
+          salvarRestr(); // persiste maxOne e restr
+          if(escalaVisivel && escala.length>0) renderizarEscala();
+          else mostrarPlaceholder();
+          document.getElementById('modalHist').style.display='none';
+          alert('Histórico carregado.');
+        }
+        if(!autenticado && !escalaVisivel){
+          pedirSenha(function(ok){
+            if(ok){
+              autenticado=true;
+              escalaVisivel=true;
+              sessionStorage.setItem('escalaRevelada_5s','true');
+              document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+              document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+              carregar();
+            }
+          });
+        } else { carregar(); }
+      } else {
+        if(!confirm('Excluir?'))return;
+        h2.splice(idx,1); localStorage.setItem('h5s_v5',JSON.stringify(h2)); abrirH();
+      }
+    });
+  });
+  document.getElementById('modalHist').style.display='flex';
+}
+
+// ========== EXPORTAR CSV ==========
+function expCsv(){
+  if (!escalaVisivel) {
+    pedirSenha(function(ok){
+      if(ok){
+        autenticado=true;
+        escalaVisivel=true;
+        sessionStorage.setItem('escalaRevelada_5s','true');
+        document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+        document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+        if(escala.length) renderizarEscala();
+        else mostrarPlaceholder();
+        expCsv();
+      }
+    });
+    return;
+  }
+  function gerarCsv(){
+    var linhas=['Data;Dupla;Setores;Período'];
+    escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); });
+    return linhas.join('\n');
+  }
+  var b=new Blob(['\uFEFF'+gerarCsv()],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio_5s_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ========== INICIALIZAÇÃO ==========
+window.onload=function(){
+  renderAuds(); renderSets(); atuDias();
+  document.getElementById('btnGerar').onclick=atuDias;
+  document.getElementById('btnSort').onclick=function(){sortear(true);};
+  document.getElementById('btnLFix').onclick=function(){escala.forEach(function(l){l.fixado=false;});if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder();};
+  document.getElementById('btnLEsc').onclick=function(){if(confirm('Limpar toda a escala?')){escala=[];if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder();}};
+  document.getElementById('btnExp').onclick=expCsv;
+  document.getElementById('btnAExp').onclick=function(){addA(true);};
+  document.getElementById('btnAInexp').onclick=function(){addA(false);};
+  document.getElementById('btnACurto').onclick=function(){addS(1);};
+  document.getElementById('btnALongo').onclick=function(){addS(0);};
+  document.getElementById('btnRest').onclick=abrirRest;
+  document.getElementById('btnFRest').onclick=function(){document.getElementById('modalRest').style.display='none';};
+  document.getElementById('btnSRest').onclick=salvarRest;
+  document.getElementById('btnSalv').onclick=salvarH;
+  document.getElementById('btnHist').onclick=abrirH;
+  document.getElementById('btnFHist').onclick=function(){document.getElementById('modalHist').style.display='none';};
+  document.getElementById('btnToggleEscala').onclick=toggleEscala;
+  document.getElementById('inpExp').onkeydown=function(e){if(e.key==='Enter')addA(true);};
+  document.getElementById('inpInexp').onkeydown=function(e){if(e.key==='Enter')addA(false);};
+  document.getElementById('inpSet').onkeydown=function(e){if(e.key==='Enter')addS(1);};
+  
+  if(sessionStorage.getItem('escalaRevelada_5s') === 'true'){
+    autenticado = true;
+    escalaVisivel = true;
+    document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+    document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
+    if(escala && escala.length > 0) renderizarEscala();
+  } else {
+    mostrarPlaceholder();
+  }
+};
+})();
+</script>
+</body>
+</html>
