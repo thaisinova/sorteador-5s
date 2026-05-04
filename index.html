@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -8,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 <style>
-/* ===== ESTILOS (mesmo do original) ===== */
+/* ===== ESTILOS ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#eff7f9;color:#1a3e4c;padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center}
 .container{max-width:1450px;width:100%}
@@ -54,12 +53,16 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 .badge2{font-size:.63rem;background:#ede0ff;color:#6a35a0;border-radius:8px;padding:1px 6px;margin-left:5px;vertical-align:middle}
 .textarea-copy{background:#f7fdfe;border-radius:18px;padding:.7rem 1.1rem;width:100%;border:1.5px solid #b7d4de;font-size:.76rem;margin-top:.8rem;resize:vertical}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.48);z-index:1000;justify-content:center;align-items:center}
-.modal-box{background:white;max-width:90%;width:820px;max-height:83%;overflow-y:auto;border-radius:28px;padding:1.4rem}
+.modal-box{background:white;max-width:90%;width:900px;max-height:83%;overflow-y:auto;border-radius:28px;padding:1.4rem}
 .modal-hd{display:flex;justify-content:space-between;margin-bottom:1rem;font-weight:700;font-size:1.05rem;align-items:center}
-.rest-item{border-bottom:1px solid #e0ecef;padding:.75rem 0;display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-start}
-.rest-nome{width:185px;font-weight:600;font-size:.82rem;padding-top:3px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-.rest-sets{flex:1;display:flex;flex-wrap:wrap;gap:5px}
-.rest-sets label{font-size:.73rem;background:#ecf3f5;padding:.18rem .55rem;border-radius:18px;cursor:pointer;display:flex;align-items:center;gap:3px}
+.rest-item{border-bottom:1px solid #e0ecef;padding:.75rem 0;display:flex;flex-direction:column;gap:.8rem;}
+.rest-nome{font-weight:600;font-size:.9rem;padding-top:3px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+.rest-sets{display:flex;flex-wrap:wrap;gap:5px; margin-top:6px;}
+.rest-sets label{font-size:.73rem;background:#ecf3f5;padding:.18rem .55rem;border-radius:18px;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.dias-indisponiveis{ margin-top: 10px; background:#f9f2e0; padding:8px; border-radius:20px; }
+.dias-tags{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+.dia-tag{ background:#e0cfa4; padding:2px 8px; border-radius:20px; font-size:0.7rem; display:inline-flex; align-items:center; gap:5px; }
+.dia-tag button{ background:none; border:none; cursor:pointer; font-weight:bold; color:#7a3e1a; }
 .btn-fechar{background:#c2673a;color:white;border:none;padding:.28rem .9rem;border-radius:28px;cursor:pointer;font-size:.82rem}
 .hist-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0ecef;padding:.7rem 0;gap:.8rem;flex-wrap:wrap}
 .force-check{display:inline-flex;align-items:center;gap:8px;margin-left:1rem;font-size:.8rem;background:#eef3f5;padding:4px 12px;border-radius:30px}
@@ -136,16 +139,14 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
       <button id="btnLEsc"  class="btn btn-warn"><i class="fas fa-trash-alt"></i> Limpar escala</button>
     </div>
   </div>
-  <div class="regra">Todos os setores auditados | 1L+1C | MTA máx 1x/mês | Sem par obrigatório de P&D</div>
+  <div class="regra">Todos os setores auditados | 1L+1C | MTA máx 1x/mês | Sem par obrigatório de P&D | <i class="fas fa-calendar-times"></i> Dias de indisponibilidade (férias) respeitados</div>
   <div class="painel-part" id="pPart"><strong>Participação: <span id="pCt">0</span>/<span id="pTot">0</span></strong><span id="pSt"></span><div id="pFalt" style="margin-top:.25rem"></div></div>
   <div id="aviso" class="aviso"></div><div id="alerta" class="alerta"></div>
   
-  <!-- Botão para alternar entre mostrar/ocultar escala -->
   <div style="text-align: center; margin-bottom: 1rem;">
     <button id="btnToggleEscala" class="reveal-btn"><i class="fas fa-lock"></i> Mostrar Escala (requer senha)</button>
   </div>
   
-  <!-- Área que conterá a escala ou o placeholder -->
   <div id="protectedArea">
     <div class="protected-placeholder">
       <i class="fas fa-eye-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
@@ -160,12 +161,11 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 (function(){
 'use strict';
 
-// ========== CONFIGURAÇÃO DE SENHA ==========
 const SENHA_CORRETA = "5s2026";
 let autenticado = false;
 let escalaVisivel = false;
 
-// ========== DADOS ==========
+// ========== DADOS PRINCIPAIS ==========
 var aExp   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto','Aloísio Vargas Arrial'];
 var aInexp = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
 var setores = [
@@ -181,10 +181,8 @@ var setores = [
   {n:'Gestão Industrial',r:1},{n:'Gestão PID',r:1},{n:'Direção',r:1}
 ];
 
-// ---------- NOVA CONFIGURAÇÃO: LIMITE DE 1 AUDITORIA POR MÊS (maxOne) ----------
-let maxOne = {};   // auditor -> true (limita a 1 vez no mês)
-
-var restrPadrao = {
+// Restrições: setores bloqueados
+var restrPadrao = { /* igual ao original */ 
   'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Alexandre Vivan':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
@@ -207,32 +205,28 @@ var restrPadrao = {
   'Henrique Adamatti':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
   'Gustavo Pauletti':['Tecnologia da Informação','Copa']
 };
-
 var restr = {};
+let maxOne = {};          // auditor -> true (limita a 1 auditoria no mês)
+let diasIndisponiveis = {}; // auditor -> array de strings "YYYY-MM-DD"
+
 function carregarRestricoes(){
   try{var s=localStorage.getItem('r5s_v5');if(s)restr=JSON.parse(s);else{restr=JSON.parse(JSON.stringify(restrPadrao));localStorage.setItem('r5s_v5',JSON.stringify(restr));}}
   catch(e){restr=JSON.parse(JSON.stringify(restrPadrao));}
-  // Carregar limite "Max One"
-  try{var mo=localStorage.getItem('maxOne_v5');if(mo) maxOne=JSON.parse(mo);}
-  catch(e){maxOne={};}
+  try{var mo=localStorage.getItem('maxOne_v5');if(mo) maxOne=JSON.parse(mo);}catch(e){maxOne={};}
+  try{var di=localStorage.getItem('diasIndisp_v5');if(di) diasIndisponiveis=JSON.parse(di);}catch(e){diasIndisponiveis={};}
 }
-function salvarRestr(){localStorage.setItem('r5s_v5',JSON.stringify(restr)); localStorage.setItem('maxOne_v5',JSON.stringify(maxOne));}
-
+function salvarRestr(){localStorage.setItem('r5s_v5',JSON.stringify(restr)); localStorage.setItem('maxOne_v5',JSON.stringify(maxOne)); localStorage.setItem('diasIndisp_v5',JSON.stringify(diasIndisponiveis));}
 carregarRestricoes();
 
 var diasUteis=[], escala=[], usosDupla=new Map();
 
-// Função que define quantas vezes um auditor pode atuar no mês (1 ou 2)
-function limiteAuditor(a){
-  if(maxOne[a]) return 1;      // NOVA REGRA: limitado a 1 auditoria no mês
-  else return temMTA(a)?1:2;
-}
+function limiteAuditor(a){ return maxOne[a] ? 1 : (temMTA(a)?1:2); }
 function temMTA(a){ var p=restr[a]; return p && p.some(function(s){ return s.indexOf('MTA')===0; }); }
 function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
 function ck(a,b){ return a<b?a+'|'+b:b+'|'+a; }
-function isPD(n){ return n.indexOf('P&D')===0; }
+function isDisponivelNoDia(auditor, dia){ return !diasIndisponiveis[auditor] || diasIndisponiveis[auditor].indexOf(dia)===-1; }
 
-// ========== ALGORITMO DE SORTEIO (adaptado para usar limiteAuditor) ==========
+// ========== ALGORITMO DE SORTEIO (gera duplas+setores) ==========
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=0|Math.random()*(i+1);var t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function tentarSortear(diasFixados, escalaFixada){
   var jaFixos=new Set(escalaFixada.map(function(l){return l.e;}).concat(escalaFixada.map(function(l){return l.i;})));
@@ -377,7 +371,7 @@ function tentarSortear(diasFixados, escalaFixada){
   return {resultado:resultado, duplas:duplas};
 }
 
-// ========== SORTEAR ==========
+// ========== SORTEAR (com alocação respeitando indisponibilidade de dias) ==========
 function sortear(respFixed){
   if(!setores.length||!diasUteis.length) return;
   usosDupla.clear();
@@ -409,43 +403,90 @@ function sortear(respFixed){
   var slots = res.resultado;
   var MAX_POR_DIA = 2;
   var forceTwo = document.getElementById('forceTwo').checked;
-  if (forceTwo && diasDisp.length > 0) {
-    var neededDays = Math.ceil(slots.length / 2);
-    if (neededDays < diasDisp.length) diasDisp = diasDisp.slice(0, neededDays);
-  }
-  var capacidadeTotal = diasDisp.length * MAX_POR_DIA;
-  if (slots.length > capacidadeTotal) {
-    alertaEl.style.display='block';
-    alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Número de auditorias ('+slots.length+') excede capacidade máxima. Aumente os dias ou desmarque "Forçar 2ª dupla".';
-    return;
-  }
+  
+  // Para cada slot, precisamos escolher um dia onde ambos auditores estejam disponíveis E respeite a capacidade do dia.
+  // Vamos construir a alocação dinamicamente, tentando dias em ordem.
+  var alocacoes = [];
   var duplasNoDia = new Map();
   novaEsc.forEach(function(l){ duplasNoDia.set(l.data, (duplasNoDia.get(l.data)||0)+1); });
-  var alocacoes = [], slotsRestantes = slots.slice();
-  for (var i = 0; i < diasDisp.length && slotsRestantes.length > 0; i++) {
-    var dia = diasDisp[i];
-    if ((duplasNoDia.get(dia)||0) < MAX_POR_DIA) {
-      alocacoes.push({dia: dia, slot: slotsRestantes.shift(), segunda: false});
-      duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
+  
+  // Função auxiliar para verificar se um dia está disponível para a dupla
+  function diaValido(dia, slot){
+    return isDisponivelNoDia(slot.e, dia) && isDisponivelNoDia(slot.i, dia) && (duplasNoDia.get(dia)||0) < MAX_POR_DIA;
+  }
+  
+  // Tentar alocar cada slot em ordem
+  for(var idxSlot=0; idxSlot<slots.length; idxSlot++){
+    var slot = slots[idxSlot];
+    var alocado = false;
+    // Tenta dias em sequência (os mais cedo primeiro)
+    for(var i=0; i<diasDisp.length; i++){
+      var dia = diasDisp[i];
+      if(diaValido(dia, slot)){
+        alocacoes.push({dia: dia, slot: slot, segunda: false});
+        duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
+        alocado = true;
+        break;
+      }
+    }
+    if(!alocado){
+      // Se não encontrou dia, tenta novamente com segunda auditoria? Mas o algoritmo pode falhar.
+      alertaEl.style.display='block';
+      alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias (férias). Ajuste as datas ou desmarque férias.';
+      return;
     }
   }
-  var idxDia = 0;
-  while (slotsRestantes.length > 0) {
-    var diaCandidato = null;
-    for (var tries = 0; tries < diasDisp.length; tries++) {
-      var d = diasDisp[idxDia % diasDisp.length];
-      if ((duplasNoDia.get(d)||0) < MAX_POR_DIA) { diaCandidato = d; break; }
-      idxDia++;
+  
+  // Se forceTwo estiver ativado, precisamos garantir que nos dias que já tem uma auditoria, possamos colocar uma segunda quando possível.
+  // O algoritmo acima já aloca exatamente um dia por slot, respeitando limite de 2 por dia.
+  // Mas para forçar duas por dia, precisamos compactar em menos dias? O original já tinha uma lógica.
+  // Vamos reutilizar uma lógica adaptada: agrupar em dias tentando usar ao máximo os dias.
+  // Por simplicidade, manteremos a alocação sequencial respeitando limite, mas se forceTwo for marcado, tentamos remanejar para usar menos dias.
+  
+  // Reordenação opcional para minimizar dias (forceTwo: tentar colocar dois slots no mesmo dia sempre que possível)
+  if(forceTwo){
+    // Reagrupar: mapear slots por dia, depois tentar mover slots para dias com capacidade 1.
+    var slotsPorDia = new Map();
+    alocacoes.forEach(function(a){
+      if(!slotsPorDia.has(a.dia)) slotsPorDia.set(a.dia, []);
+      slotsPorDia.get(a.dia).push(a);
+    });
+    // Lista de dias com apenas 1 slot
+    var diasComUm = [];
+    for(var [dia, arr] of slotsPorDia.entries()){
+      if(arr.length === 1) diasComUm.push(dia);
     }
-    if (!diaCandidato) { alertaEl.style.display='block'; alertaEl.innerHTML='Erro interno: não foi possível alocar segunda auditoria.'; return; }
-    alocacoes.push({dia: diaCandidato, slot: slotsRestantes.shift(), segunda: true});
-    duplasNoDia.set(diaCandidato, (duplasNoDia.get(diaCandidato)||0)+1);
-    idxDia++;
+    // Lista de slots que estão em dias sozinhos (exceto se não houver outro dia)
+    for(var i=0; i<diasComUm.length && slots.length > diasComUm.length; i++){
+      var diaOrig = diasComUm[i];
+      var slotUnico = slotsPorDia.get(diaOrig)[0];
+      // procurar outro dia com capacidade 1 e que aceite o slot
+      for(var j=0; j<diasComUm.length; j++){
+        if(i===j) continue;
+        var diaAlvo = diasComUm[j];
+        if(diaValido(diaAlvo, slotUnico.slot) && duplasNoDia.get(diaAlvo) === 1){
+          // mover slotUnico para diaAlvo
+          alocacoes = alocacoes.map(function(a){
+            if(a === slotUnico) return {dia: diaAlvo, slot: a.slot, segunda: true};
+            return a;
+          });
+          duplasNoDia.set(diaOrig, 0);
+          duplasNoDia.set(diaAlvo, 2);
+          break;
+        }
+      }
+    }
+    // Reordenar e marcar como segunda
+    alocacoes.forEach(function(a,idx){
+      a.segunda = (duplasNoDia.get(a.dia) === 2 && idx % 2 === 1);
+    });
   }
+  
   alocacoes.sort(function(a,b){
     if (a.dia !== b.dia) return new Date(a.dia) - new Date(b.dia);
     return (a.segunda ? 1 : 0) - (b.segunda ? 1 : 0);
   });
+  
   var novaEscalaFinal = novaEsc.slice();
   alocacoes.forEach(function(aloc){
     var k = ck(aloc.slot.e, aloc.slot.i);
@@ -483,8 +524,8 @@ function renderizarEscala(){
   var protectedDiv = document.getElementById('protectedArea');
   if(!protectedDiv) return;
   var html = `
-    <div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dupla</th><th>Setores</th><th>Manter?</th></tr></thead><tbody id="tbody"></tbody></table></div>
-    <div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span><span>Tentativas: <strong id="sTent">-</strong></span></div>
+    <div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dupla</th><th>Setores</th><th>Manter?</th></tr></thead><tbody id="tbody"></tbody>}</div>
+    <div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span></div>
     <div style="margin-top:.9rem"><button id="btnCsv" class="btn btn-outline btn-sm"><i class="fas fa-copy"></i> Copiar CSV</button><textarea id="csvArea" class="textarea-copy" rows="4" readonly placeholder="CSV aparece aqui..."></textarea></div>
   `;
   protectedDiv.innerHTML = html;
@@ -542,85 +583,31 @@ function renderizarEscala(){
 
 function mostrarPlaceholder(){
   var protectedDiv = document.getElementById('protectedArea');
-  if(protectedDiv) protectedDiv.innerHTML = `
-    <div class="protected-placeholder">
-      <i class="fas fa-eye-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
-      Escala protegida por senha.<br>Clique no botão acima para visualizar.
-    </div>
-  `;
+  if(protectedDiv) protectedDiv.innerHTML = `<div class="protected-placeholder"><i class="fas fa-eye-slash" style="font-size:2rem;margin-bottom:0.5rem;display:block;"></i>Escala protegida por senha.<br>Clique no botão acima para visualizar.</div>`;
 }
 
 // ========== AUTENTICAÇÃO ==========
 function pedirSenha(callback) {
   const modal = document.createElement('div');
   modal.className = 'password-modal';
-  modal.innerHTML = `
-    <div class="password-box">
-      <i class="fas fa-clipboard-list"></i>
-      <h3>Acesso à Escala</h3>
-      <p>Digite a senha para visualizar as auditorias:</p>
-      <input type="password" id="senhaEscala" placeholder="Senha" autocomplete="off">
-      <button id="btnConfirmarSenha">Confirmar</button>
-      <div id="erroSenha" class="erro-senha"></div>
-    </div>
-  `;
+  modal.innerHTML = `<div class="password-box"><i class="fas fa-clipboard-list"></i><h3>Acesso à Escala</h3><p>Digite a senha para visualizar as auditorias:</p><input type="password" id="senhaEscala" placeholder="Senha" autocomplete="off"><button id="btnConfirmarSenha">Confirmar</button><div id="erroSenha" class="erro-senha"></div></div>`;
   document.body.appendChild(modal);
   const input = modal.querySelector('#senhaEscala');
   const btn = modal.querySelector('#btnConfirmarSenha');
   const erroDiv = modal.querySelector('#erroSenha');
-  function verificar() {
-    if (input.value.trim() === SENHA_CORRETA) {
-      modal.remove();
-      callback(true);
-    } else {
-      erroDiv.innerText = 'Senha incorreta.';
-      input.value = '';
-      input.focus();
-    }
-  }
+  function verificar() { if (input.value.trim() === SENHA_CORRETA) { modal.remove(); callback(true); } else { erroDiv.innerText = 'Senha incorreta.'; input.value = ''; input.focus(); } }
   btn.onclick = verificar;
   input.onkeypress = function(e){ if(e.key === 'Enter') verificar(); };
   input.focus();
 }
-
 function toggleEscala() {
-  if (escalaVisivel) {
-    escalaVisivel = false;
-    autenticado = false;
-    sessionStorage.removeItem('escalaRevelada_5s');
-    mostrarPlaceholder();
-    document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-lock"></i> Mostrar Escala (requer senha)';
-    document.getElementById('btnToggleEscala').style.background = '#e6a020';
-  } else {
-    if (!autenticado) {
-      pedirSenha(function(sucesso){
-        if(sucesso){
-          autenticado = true;
-          sessionStorage.setItem('escalaRevelada_5s', 'true');
-          escalaVisivel = true;
-          if(escala && escala.length > 0) renderizarEscala();
-          else mostrarPlaceholder();
-          document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
-          document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
-        }
-      });
-    } else {
-      escalaVisivel = true;
-      if(escala && escala.length > 0) renderizarEscala();
-      else mostrarPlaceholder();
-      document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
-      document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
-    }
-  }
+  if (escalaVisivel) { escalaVisivel=false; autenticado=false; sessionStorage.removeItem('escalaRevelada_5s'); mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-lock"></i> Mostrar Escala (requer senha)'; document.getElementById('btnToggleEscala').style.background='#e6a020';
+  } else { if (!autenticado) { pedirSenha(function(sucesso){ if(sucesso){ autenticado=true; sessionStorage.setItem('escalaRevelada_5s','true'); escalaVisivel=true; if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; } }); } else { escalaVisivel=true; if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; } }
 }
 
 // ========== DIAS ÚTEIS ==========
 function calcDias(ini,fim){
-  var dias=[];
-  for(var d=new Date(ini);d<=new Date(fim);d.setDate(d.getDate()+1)){
-    var dw=d.getDay(); if(dw&&dw!==6) dias.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'));
-  }
-  return dias;
+  var dias=[]; for(var d=new Date(ini);d<=new Date(fim);d.setDate(d.getDate()+1)){ var dw=d.getDay(); if(dw&&dw!==6) dias.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')); } return dias;
 }
 function renderDias(){
   document.getElementById('diasCt').innerText=diasUteis.length;
@@ -633,12 +620,9 @@ function renderDias(){
     sp.appendChild(b); c.appendChild(sp);
   });
 }
-function atuDias(){
-  diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value);
-  renderDias(); sortear(false);
-}
+function atuDias(){ diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value); renderDias(); sortear(false); }
 
-// ========== AUDITORES E SETORES ==========
+// ========== AUDITORES E SETORES (sem alterações) ==========
 function renderAuds(){
   [{id:'expList',arr:aExp,cls:'tag-exp',ico:'fa-star'},{id:'inexpList',arr:aInexp,cls:'tag-inexp',ico:'fa-seedling'}].forEach(function(tp){
     var div=document.getElementById(tp.id); if(!div) return;
@@ -651,62 +635,75 @@ function renderAuds(){
     });
   });
 }
-window._tA=function(n){
-  var ie=aExp.indexOf(n);
-  if(ie>=0){aExp.splice(ie,1);aInexp.push(n);}
-  else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}}
-  renderAuds(); sortear(true);
-};
-window._dA=function(n){
-  if(!confirm('Remover '+n+'?'))return;
-  aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;});
-  delete maxOne[n]; salvarRestr();
-  renderAuds(); sortear(true);
-};
-function addA(isE){
-  var id=isE?'inpExp':'inpInexp';
-  var v=document.getElementById(id).value.trim();
-  if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return;
-  if(isE)aExp.push(v); else aInexp.push(v);
-  document.getElementById(id).value='';
-  renderAuds(); sortear(true);
-}
-function renderSets(){
-  var c=document.getElementById('setList'); if(!c) return;
-  c.innerHTML='';
-  setores.forEach(function(s,i){
-    var sp=document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo');
-    sp.innerHTML='<span onclick="window._tS('+i+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span><button class="btn-x" onclick="window._dS('+i+')"><i class="fas fa-times-circle"></i></button>';
-    c.appendChild(sp);
-  });
-}
+window._tA=function(n){ var ie=aExp.indexOf(n); if(ie>=0){aExp.splice(ie,1);aInexp.push(n);} else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}} renderAuds(); sortear(true); };
+window._dA=function(n){ if(!confirm('Remover '+n+'?'))return; aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;}); delete maxOne[n]; delete diasIndisponiveis[n]; salvarRestr(); renderAuds(); sortear(true); };
+function addA(isE){ var v=document.getElementById(isE?'inpExp':'inpInexp').value.trim(); if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return; if(isE)aExp.push(v); else aInexp.push(v); document.getElementById(isE?'inpExp':'inpInexp').value=''; renderAuds(); sortear(true); }
+function renderSets(){ var c=document.getElementById('setList'); if(!c) return; c.innerHTML=''; setores.forEach(function(s,i){ var sp=document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo'); sp.innerHTML='<span onclick="window._tS('+i+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span><button class="btn-x" onclick="window._dS('+i+')"><i class="fas fa-times-circle"></i></button>'; c.appendChild(sp); }); }
 window._tS=function(i){setores[i].r=setores[i].r?0:1;renderSets();sortear(true);};
-window._dS=function(i){
-  if(!confirm('Remover '+setores[i].n+'?'))return;
-  setores.splice(i,1); renderSets(); sortear(true);
-};
-function addS(r){
-  var v=document.getElementById('inpSet').value.trim();
-  if(!v||setores.some(function(s){return s.n===v;}))return;
-  setores.push({n:v,r:r}); document.getElementById('inpSet').value='';
-  renderSets(); sortear(true);
-}
+window._dS=function(i){ if(!confirm('Remover '+setores[i].n+'?'))return; setores.splice(i,1); renderSets(); sortear(true); };
+function addS(r){ var v=document.getElementById('inpSet').value.trim(); if(!v||setores.some(function(s){return s.n===v;}))return; setores.push({n:v,r:r}); document.getElementById('inpSet').value=''; renderSets(); sortear(true); }
 
-// ========== RESTRIÇÕES (com opção "Máx 1 auditoria/mês") ==========
+// ========== RESTRIÇÕES (com indisponibilidade de dias) ==========
 function abrirRest(){
   var c=document.getElementById('listaRest'); c.innerHTML='';
   var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;});
   todos.forEach(function(aud){
     var pr=restr[aud]||[];
-    var div=document.createElement('div'); div.className='rest-item';
     var idSanit = aud.replace(/[^a-z0-9]/gi, '_');
-    div.innerHTML='<div class="rest-nome">'+aud+' <label class="maxone-label"><input type="checkbox" id="maxone_'+idSanit+'" '+(maxOne[aud]?'checked':'')+'> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label></div><div class="rest-sets" id="rs-'+idSanit+'"></div>';
+    var div=document.createElement('div'); div.className='rest-item';
+    div.innerHTML=`<div class="rest-nome">${aud} <label class="maxone-label"><input type="checkbox" id="maxone_${idSanit}" ${maxOne[aud]?'checked':''}> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label></div>
+                   <div class="rest-sets" id="rs-${idSanit}"></div>
+                   <div class="dias-indisponiveis"><i class="fas fa-calendar-times"></i> Dias indisponível (férias/folga):<br>
+                   <div class="dias-tags" id="diasTags_${idSanit}"></div>
+                   <div style="display:flex;gap:5px;margin-top:6px;"><input type="date" id="dateInput_${idSanit}" style="font-size:0.7rem; padding:4px;"> <button class="btn-sm btn" data-aud="${aud}" data-adddia="1">Adicionar</button></div></div>`;
     c.appendChild(div);
     var sd=div.querySelector('.rest-sets');
     nomes.forEach(function(s){
       var lb=document.createElement('label');
       var cb=document.createElement('input'); cb.type='checkbox'; cb.value=s; cb.checked=pr.indexOf(s)>=0;
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+s)); sd.appendChild(lb);
+    });
+    // Carregar dias indisponíveis
+    var diasDiv = document.getElementById(`diasTags_${idSanit}`);
+    if(diasIndisponiveis[aud]){
+      diasIndisponiveis[aud].forEach(function(dia){
+        var tag = document.createElement('span'); tag.className='dia-tag'; tag.innerHTML = dia.split('-').reverse().join('/') + '<button data-dia="'+dia+'" data-aud="'+aud+'">&times;</button>';
+        diasDiv.appendChild(tag);
+      });
+    }
+    // evento de adicionar dia
+    var btnAdd = div.querySelector(`[data-adddia="1"]`);
+    if(btnAdd){
+      btnAdd.onclick = function(){
+        var dateInput = document.getElementById(`dateInput_${idSanit}`);
+        var dia = dateInput.value;
+        if(!dia) return;
+        if(!diasIndisponiveis[aud]) diasIndisponiveis[aud]=[];
+        if(diasIndisponiveis[aud].indexOf(dia)===-1){
+          diasIndisponiveis[aud].push(dia);
+          var tag = document.createElement('span'); tag.className='dia-tag'; tag.innerHTML = dia.split('-').reverse().join('/') + '<button data-dia="'+dia+'" data-aud="'+aud+'">&times;</button>';
+          diasDiv.appendChild(tag);
+          // adicionar evento de remover
+          tag.querySelector('button').onclick = function(e){
+            var d = this.getAttribute('data-dia');
+            var a = this.getAttribute('data-aud');
+            if(diasIndisponiveis[a]) diasIndisponiveis[a] = diasIndisponiveis[a].filter(function(x){return x!==d;});
+            tag.remove();
+            salvarRestr();
+          };
+        }
+        dateInput.value='';
+      };
+    }
+    // adicionar eventos de remoção nas tags já existentes
+    diasDiv.querySelectorAll('button').forEach(function(btn){
+      btn.onclick = function(e){
+        var d = this.getAttribute('data-dia');
+        var a = this.getAttribute('data-aud');
+        if(diasIndisponiveis[a]) diasIndisponiveis[a] = diasIndisponiveis[a].filter(function(x){return x!==d;});
+        this.parentElement.remove();
+        salvarRestr();
+      };
     });
   });
   document.getElementById('modalRest').style.display='flex';
@@ -727,17 +724,18 @@ function salvarRest(){
     novo[aud]=pr;
   });
   restr=novo; maxOne=novoMaxOne;
+  // diasIndisponiveis já foi atualizado via interface
   salvarRestr();
   document.getElementById('modalRest').style.display='none';
   sortear(true);
-  alert('Restrições salvas! (Limite de 1 auditoria/mês aplicado quando marcado)');
+  alert('Restrições salvas! (Limite de 1 auditoria/mês e dias de indisponibilidade aplicados)');
 }
 
-// ========== HISTÓRICO (inclui maxOne) ==========
+// ========== HISTÓRICO (inclui diasIndisponiveis) ==========
 function salvarH(){
   var nome=prompt('Nome (ex: Abril 2026):'); if(!nome)return;
   var h=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
-  h.push({nome:nome,data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
+  h.push({nome:nome,data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasIndisponiveis:diasIndisponiveis, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
   localStorage.setItem('h5s_v5',JSON.stringify(h));
   alert('"'+nome+'" salvo!');
 }
@@ -756,25 +754,16 @@ function abrirH(){
       if(b.dataset.a==='load'){
         function carregar() {
           var it=h2[idx];
-          escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores; restr=it.restr; maxOne=it.maxOne || {}; diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
+          escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores; restr=it.restr; maxOne=it.maxOne || {}; diasIndisponiveis=it.diasIndisponiveis || {}; diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
           renderDias(); renderAuds(); renderSets(); atualizarParticipacao();
-          salvarRestr(); // persiste maxOne e restr
+          salvarRestr();
           if(escalaVisivel && escala.length>0) renderizarEscala();
           else mostrarPlaceholder();
           document.getElementById('modalHist').style.display='none';
           alert('Histórico carregado.');
         }
         if(!autenticado && !escalaVisivel){
-          pedirSenha(function(ok){
-            if(ok){
-              autenticado=true;
-              escalaVisivel=true;
-              sessionStorage.setItem('escalaRevelada_5s','true');
-              document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
-              document.getElementById('btnToggleEscala').style.background='#2a8e6b';
-              carregar();
-            }
-          });
+          pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true'); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; carregar(); } });
         } else { carregar(); }
       } else {
         if(!confirm('Excluir?'))return;
@@ -785,34 +774,12 @@ function abrirH(){
   document.getElementById('modalHist').style.display='flex';
 }
 
-// ========== EXPORTAR CSV ==========
 function expCsv(){
-  if (!escalaVisivel) {
-    pedirSenha(function(ok){
-      if(ok){
-        autenticado=true;
-        escalaVisivel=true;
-        sessionStorage.setItem('escalaRevelada_5s','true');
-        document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
-        document.getElementById('btnToggleEscala').style.background='#2a8e6b';
-        if(escala.length) renderizarEscala();
-        else mostrarPlaceholder();
-        expCsv();
-      }
-    });
-    return;
-  }
-  function gerarCsv(){
-    var linhas=['Data;Dupla;Setores;Período'];
-    escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); });
-    return linhas.join('\n');
-  }
-  var b=new Blob(['\uFEFF'+gerarCsv()],{type:'text/csv;charset=utf-8;'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio_5s_'+new Date().toISOString().slice(0,10)+'.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  if (!escalaVisivel) { pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true'); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala.length) renderizarEscala(); else mostrarPlaceholder(); expCsv(); } }); return; }
+  function gerarCsv(){ var linhas=['Data;Dupla;Setores;Período']; escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); }); return linhas.join('\n'); }
+  var b=new Blob(['\uFEFF'+gerarCsv()],{type:'text/csv;charset=utf-8;'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio_5s_'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-// ========== INICIALIZAÇÃO ==========
 window.onload=function(){
   renderAuds(); renderSets(); atuDias();
   document.getElementById('btnGerar').onclick=atuDias;
@@ -834,16 +801,7 @@ window.onload=function(){
   document.getElementById('inpExp').onkeydown=function(e){if(e.key==='Enter')addA(true);};
   document.getElementById('inpInexp').onkeydown=function(e){if(e.key==='Enter')addA(false);};
   document.getElementById('inpSet').onkeydown=function(e){if(e.key==='Enter')addS(1);};
-  
-  if(sessionStorage.getItem('escalaRevelada_5s') === 'true'){
-    autenticado = true;
-    escalaVisivel = true;
-    document.getElementById('btnToggleEscala').innerHTML = '<i class="fas fa-unlock-alt"></i> Ocultar Escala';
-    document.getElementById('btnToggleEscala').style.background = '#2a8e6b';
-    if(escala && escala.length > 0) renderizarEscala();
-  } else {
-    mostrarPlaceholder();
-  }
+  if(sessionStorage.getItem('escalaRevelada_5s') === 'true'){ autenticado=true; escalaVisivel=true; document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala && escala.length>0) renderizarEscala(); } else { mostrarPlaceholder(); }
 };
 })();
 </script>
