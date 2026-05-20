@@ -1,13 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5S – Sorteio de Auditorias (escala protegida)</title>
+<title>5S – Sorteio de Auditorias (escala protegida + regras flexíveis)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 <style>
-/* ===== ESTILOS ===== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#eff7f9;color:#1a3e4c;padding:2rem 1.5rem;display:flex;flex-direction:column;align-items:center}
 .container{max-width:1450px;width:100%}
@@ -76,6 +76,8 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 .erro-senha{color:#d14545;font-size:0.8rem;margin-top:0.5rem}
 .protected-placeholder{text-align:center;padding:3rem;background:#f5f9fa;border-radius:24px;color:#4a6a75;font-style:italic}
 .maxone-label{ font-size:0.7rem; background:#f0e6d2; padding:2px 6px; border-radius:20px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;}
+.regras-panel{ background:#eef3f2; border-radius:24px; padding:1rem; margin-bottom:1rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center;}
+.regra-opcao{ display:flex; align-items:center; gap:8px; background:white; padding:5px 14px; border-radius:60px; font-size:0.8rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);}
 </style>
 </head>
 <body>
@@ -91,8 +93,19 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </h1>
 
 <div class="sub">
-  Regras: 1L+1C por auditoria | MTA máx 1x/mês | Sem par obrigatório de P&D
   <label class="force-check"><input type="checkbox" id="forceTwo"> <i class="fas fa-sun"></i> Forçar 2 auditorias por dia</label>
+</div>
+
+<!-- PAINEL DE REGRAS SELECIONÁVEIS -->
+<div class="card" style="padding:1rem 1.5rem;">
+  <h2><i class="fas fa-cog"></i> Regras de Sorteio</h2>
+  <div class="regras-panel">
+    <label class="regra-opcao"><input type="checkbox" id="regra1L1C" checked> <i class="fas fa-balance-scale"></i> 1 setor longo + 1 curto por auditoria</label>
+    <label class="regra-opcao"><input type="checkbox" id="regraFallbackLongo"> <i class="fas fa-exchange-alt"></i> Se não houver curtos, permitir só longo</label>
+    <label class="regra-opcao"><input type="checkbox" id="regraEvitar2LongosDia" checked> <i class="fas fa-ban"></i> Evitar dois setores longos no mesmo dia</label>
+    <label class="regra-opcao"><input type="checkbox" id="regraEvitarDuplasRepetidas" checked> <i class="fas fa-random"></i> Evitar duplas repetidas ao máximo</label>
+    <label class="regra-opcao"><input type="checkbox" id="regraDistribuirEquitativamente" checked> <i class="fas fa-calendar-week"></i> Distribuir auditorias uniformemente nos dias</label>
+  </div>
 </div>
 
 <!-- Modal Restrições -->
@@ -139,7 +152,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
       <button id="btnLEsc"  class="btn btn-warn"><i class="fas fa-trash-alt"></i> Limpar escala</button>
     </div>
   </div>
-  <div class="regra">Todos os setores auditados | 1L+1C | MTA máx 1x/mês | Sem par obrigatório de P&D | <i class="fas fa-calendar-times"></i> Dias de indisponibilidade (férias) respeitados</div>
+  <div class="regra">Regras ativas: 1L+1C | MTA máx 1x | Sem par P&D | <span id="regrasResumo"></span></div>
   <div class="painel-part" id="pPart"><strong>Participação: <span id="pCt">0</span>/<span id="pTot">0</span></strong><span id="pSt"></span><div id="pFalt" style="margin-top:.25rem"></div></div>
   <div id="aviso" class="aviso"></div><div id="alerta" class="alerta"></div>
   
@@ -182,7 +195,7 @@ var setores = [
 ];
 
 // Restrições: setores bloqueados
-var restrPadrao = { /* igual ao original */ 
+var restrPadrao = {
   'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Alexandre Vivan':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
@@ -206,16 +219,42 @@ var restrPadrao = { /* igual ao original */
   'Gustavo Pauletti':['Tecnologia da Informação','Copa']
 };
 var restr = {};
-let maxOne = {};          // auditor -> true (limita a 1 auditoria no mês)
-let diasIndisponiveis = {}; // auditor -> array de strings "YYYY-MM-DD"
+let maxOne = {};
+let diasIndisponiveis = {};
+
+function sincronizarRestricoes() {
+  let todosAuditores = new Set([...aExp, ...aInexp]);
+  let todosSetores = new Set(setores.map(s => s.n));
+  // Remove auditores inexistentes
+  for (let aud in restr) {
+    if (!todosAuditores.has(aud)) delete restr[aud];
+  }
+  for (let aud in maxOne) {
+    if (!todosAuditores.has(aud)) delete maxOne[aud];
+  }
+  for (let aud in diasIndisponiveis) {
+    if (!todosAuditores.has(aud)) delete diasIndisponiveis[aud];
+  }
+  // Remove setores inexistentes das listas de bloqueio
+  for (let aud in restr) {
+    let lista = restr[aud];
+    if (Array.isArray(lista)) {
+      restr[aud] = lista.filter(s => todosSetores.has(s));
+    } else {
+      restr[aud] = [];
+    }
+  }
+  salvarRestr();
+}
 
 function carregarRestricoes(){
-  try{var s=localStorage.getItem('r5s_v5');if(s)restr=JSON.parse(s);else{restr=JSON.parse(JSON.stringify(restrPadrao));localStorage.setItem('r5s_v5',JSON.stringify(restr));}}
+  try{var s=localStorage.getItem('r5s_v6');if(s)restr=JSON.parse(s);else{restr=JSON.parse(JSON.stringify(restrPadrao));localStorage.setItem('r5s_v6',JSON.stringify(restr));}}
   catch(e){restr=JSON.parse(JSON.stringify(restrPadrao));}
-  try{var mo=localStorage.getItem('maxOne_v5');if(mo) maxOne=JSON.parse(mo);}catch(e){maxOne={};}
-  try{var di=localStorage.getItem('diasIndisp_v5');if(di) diasIndisponiveis=JSON.parse(di);}catch(e){diasIndisponiveis={};}
+  try{var mo=localStorage.getItem('maxOne_v6');if(mo) maxOne=JSON.parse(mo);}catch(e){maxOne={};}
+  try{var di=localStorage.getItem('diasIndisp_v6');if(di) diasIndisponiveis=JSON.parse(di);}catch(e){diasIndisponiveis={};}
+  sincronizarRestricoes();
 }
-function salvarRestr(){localStorage.setItem('r5s_v5',JSON.stringify(restr)); localStorage.setItem('maxOne_v5',JSON.stringify(maxOne)); localStorage.setItem('diasIndisp_v5',JSON.stringify(diasIndisponiveis));}
+function salvarRestr(){localStorage.setItem('r5s_v6',JSON.stringify(restr)); localStorage.setItem('maxOne_v6',JSON.stringify(maxOne)); localStorage.setItem('diasIndisp_v6',JSON.stringify(diasIndisponiveis));}
 carregarRestricoes();
 
 var diasUteis=[], escala=[], usosDupla=new Map();
@@ -226,9 +265,21 @@ function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
 function ck(a,b){ return a<b?a+'|'+b:b+'|'+a; }
 function isDisponivelNoDia(auditor, dia){ return !diasIndisponiveis[auditor] || diasIndisponiveis[auditor].indexOf(dia)===-1; }
 
-// ========== ALGORITMO DE SORTEIO (gera duplas+setores) ==========
+// ========== REGRAS CONFIGURÁVEIS ==========
+function getRegras() {
+  return {
+    forcar1L1C: document.getElementById('regra1L1C').checked,
+    fallbackLongo: document.getElementById('regraFallbackLongo').checked,
+    evitar2LongosDia: document.getElementById('regraEvitar2LongosDia').checked,
+    evitarDuplasRepetidas: document.getElementById('regraEvitarDuplasRepetidas').checked,
+    distribuirEquitativamente: document.getElementById('regraDistribuirEquitativamente').checked
+  };
+}
+
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=0|Math.random()*(i+1);var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+
 function tentarSortear(diasFixados, escalaFixada){
+  var regras = getRegras();
   var jaFixos=new Set(escalaFixada.map(function(l){return l.e;}).concat(escalaFixada.map(function(l){return l.i;})));
   var eL=shuffle(aExp.filter(function(a){return!jaFixos.has(a);}));
   var iL=shuffle(aInexp.filter(function(a){return!jaFixos.has(a);}));
@@ -241,7 +292,9 @@ function tentarSortear(diasFixados, escalaFixada){
   var dmap=new Map();
   duplas.forEach(function(d){var k2=ck(d.e,d.i);if(!dmap.has(k2))dmap.set(k2,d);});
   duplas=[...dmap.values()];
-
+  if(regras.evitarDuplasRepetidas && escalaFixada.length===0) {
+    duplas = shuffle(duplas);
+  }
   var cap=new Map();
   duplas.forEach(function(d){
     cap.set(ck(d.e,d.i), Math.min(limiteAuditor(d.e), limiteAuditor(d.i), 2));
@@ -306,7 +359,7 @@ function tentarSortear(diasFixados, escalaFixada){
     return cands[0];
   }
 
-  var maxIter=300, iter=0;
+  var maxIter=400, iter=0;
   while((LP.length||CP.length)&&iter<maxIter){
     iter++;
     var dispNow=duplas.filter(function(d){return auDisp(d);});
@@ -337,30 +390,38 @@ function tentarSortear(diasFixados, escalaFixada){
     if(ehLongo) LP=LP.filter(function(s){return s.n!==hard.n;});
     else CP=CP.filter(function(s){return s.n!==hard.n;});
 
-    if(ehLongo){
-      var cposs=CP.filter(function(s){return elegDupla(dupEsc,s.n);});
-      cposs.sort(function(a,b){
-        var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
-        var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
-        return ea-eb;
-      });
-      if(cposs.length){
-        var c1=cposs[0]; slot.push(c1.n); CP=CP.filter(function(s){return s.n!==c1.n;});
-        if(CP.length>LP.length && cposs.length>1){
-          var c2=cposs[1]; slot.push(c2.n); CP=CP.filter(function(s){return s.n!==c2.n;});
+    if(regras.forcar1L1C){
+      if(ehLongo){
+        var cposs=CP.filter(function(s){return elegDupla(dupEsc,s.n);});
+        cposs.sort(function(a,b){
+          var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
+          var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+          return ea-eb;
+        });
+        if(cposs.length){
+          var c1=cposs[0]; slot.push(c1.n); CP=CP.filter(function(s){return s.n!==c1.n;});
+          if(CP.length>LP.length && cposs.length>1){
+            var c2=cposs[1]; slot.push(c2.n); CP=CP.filter(function(s){return s.n!==c2.n;});
+          }
+        } else if(regras.fallbackLongo){
+          var lposs2=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
+          if(lposs2.length){var l2=lposs2[0];slot.push(l2.n);LP=LP.filter(function(s){return s.n!==l2.n;});}
         }
       } else {
-        var lposs2=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
-        lposs2.sort(function(a,b){return nEleg(a)-nEleg(b);});
-        if(lposs2.length){var l2=lposs2[0];slot.push(l2.n);LP=LP.filter(function(s){return s.n!==l2.n;});}
+        var lposs=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
+        if(!lposs.length){
+          if(regras.fallbackLongo){
+            CP.unshift(hard); iter++; continue;
+          } else { CP.unshift(hard); iter++; continue; }
+        }
+        var lEsc=lposs[0]; slot=[lEsc.n,hard.n]; LP=LP.filter(function(s){return s.n!==lEsc.n;});
       }
     } else {
-      var lposs=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
-      lposs.sort(function(a,b){return nEleg(a)-nEleg(b);});
-      if(!lposs.length){
-        CP.unshift(hard); iter++; continue;
-      }
-      var lEsc=lposs[0]; slot=[lEsc.n,hard.n]; LP=LP.filter(function(s){return s.n!==lEsc.n;});
+      // modo livre: pega mais um longo ou curto qualquer
+      var extra=LP.length?LP[0]:CP[0];
+      if(extra) slot.push(extra.n);
+      if(extra && !extra.r) LP=LP.filter(s=>s.n!==extra.n);
+      else if(extra) CP=CP.filter(s=>s.n!==extra.n);
     }
     registrar(dupEsc,slot);
   }
@@ -371,7 +432,7 @@ function tentarSortear(diasFixados, escalaFixada){
   return {resultado:resultado, duplas:duplas};
 }
 
-// ========== SORTEAR (com alocação respeitando indisponibilidade de dias) ==========
+// ========== SORTEAR ==========
 function sortear(respFixed){
   if(!setores.length||!diasUteis.length) return;
   usosDupla.clear();
@@ -383,7 +444,7 @@ function sortear(respFixed){
       diasFixados.add(l.data);
     });
   }
-  var MAX_TENT=30, tent=0, res=null;
+  var MAX_TENT=40, tent=0, res=null;
   while(tent<MAX_TENT&&!res){
     tent++;
     res=tentarSortear(diasFixados, novaEsc.filter(function(l){return l.fixado;}));
@@ -403,25 +464,24 @@ function sortear(respFixed){
   var slots = res.resultado;
   var MAX_POR_DIA = 2;
   var forceTwo = document.getElementById('forceTwo').checked;
-  
-  // Para cada slot, precisamos escolher um dia onde ambos auditores estejam disponíveis E respeite a capacidade do dia.
-  // Vamos construir a alocação dinamicamente, tentando dias em ordem.
+  var regras = getRegras();
+
   var alocacoes = [];
   var duplasNoDia = new Map();
   novaEsc.forEach(function(l){ duplasNoDia.set(l.data, (duplasNoDia.get(l.data)||0)+1); });
-  
-  // Função auxiliar para verificar se um dia está disponível para a dupla
+
   function diaValido(dia, slot){
     return isDisponivelNoDia(slot.e, dia) && isDisponivelNoDia(slot.i, dia) && (duplasNoDia.get(dia)||0) < MAX_POR_DIA;
   }
-  
-  // Tentar alocar cada slot em ordem
+
+  // Alocar cada slot em ordem, tentando espalhar
+  var diasOrdenados = regras.distribuirEquitativamente ? [...diasDisp] : [...diasDisp];
+  if(regras.distribuirEquitativamente) diasOrdenados.sort(); // já ordenado
   for(var idxSlot=0; idxSlot<slots.length; idxSlot++){
     var slot = slots[idxSlot];
     var alocado = false;
-    // Tenta dias em sequência (os mais cedo primeiro)
-    for(var i=0; i<diasDisp.length; i++){
-      var dia = diasDisp[i];
+    for(var i=0; i<diasOrdenados.length; i++){
+      var dia = diasOrdenados[i];
       if(diaValido(dia, slot)){
         alocacoes.push({dia: dia, slot: slot, segunda: false});
         duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
@@ -430,42 +490,30 @@ function sortear(respFixed){
       }
     }
     if(!alocado){
-      // Se não encontrou dia, tenta novamente com segunda auditoria? Mas o algoritmo pode falhar.
       alertaEl.style.display='block';
-      alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias (férias). Ajuste as datas ou desmarque férias.';
+      alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias. Ajuste férias ou datas.';
       return;
     }
   }
-  
-  // Se forceTwo estiver ativado, precisamos garantir que nos dias que já tem uma auditoria, possamos colocar uma segunda quando possível.
-  // O algoritmo acima já aloca exatamente um dia por slot, respeitando limite de 2 por dia.
-  // Mas para forçar duas por dia, precisamos compactar em menos dias? O original já tinha uma lógica.
-  // Vamos reutilizar uma lógica adaptada: agrupar em dias tentando usar ao máximo os dias.
-  // Por simplicidade, manteremos a alocação sequencial respeitando limite, mas se forceTwo for marcado, tentamos remanejar para usar menos dias.
-  
-  // Reordenação opcional para minimizar dias (forceTwo: tentar colocar dois slots no mesmo dia sempre que possível)
+
+  // Forçar 2 por dia se solicitado, tentando juntar duplas
   if(forceTwo){
-    // Reagrupar: mapear slots por dia, depois tentar mover slots para dias com capacidade 1.
     var slotsPorDia = new Map();
     alocacoes.forEach(function(a){
       if(!slotsPorDia.has(a.dia)) slotsPorDia.set(a.dia, []);
       slotsPorDia.get(a.dia).push(a);
     });
-    // Lista de dias com apenas 1 slot
     var diasComUm = [];
     for(var [dia, arr] of slotsPorDia.entries()){
       if(arr.length === 1) diasComUm.push(dia);
     }
-    // Lista de slots que estão em dias sozinhos (exceto se não houver outro dia)
     for(var i=0; i<diasComUm.length && slots.length > diasComUm.length; i++){
       var diaOrig = diasComUm[i];
       var slotUnico = slotsPorDia.get(diaOrig)[0];
-      // procurar outro dia com capacidade 1 e que aceite o slot
       for(var j=0; j<diasComUm.length; j++){
         if(i===j) continue;
         var diaAlvo = diasComUm[j];
         if(diaValido(diaAlvo, slotUnico.slot) && duplasNoDia.get(diaAlvo) === 1){
-          // mover slotUnico para diaAlvo
           alocacoes = alocacoes.map(function(a){
             if(a === slotUnico) return {dia: diaAlvo, slot: a.slot, segunda: true};
             return a;
@@ -476,17 +524,69 @@ function sortear(respFixed){
         }
       }
     }
-    // Reordenar e marcar como segunda
     alocacoes.forEach(function(a,idx){
       a.segunda = (duplasNoDia.get(a.dia) === 2 && idx % 2 === 1);
     });
   }
-  
+
+  // Evitar dois setores longos no mesmo dia (se regra ativa)
+  if(regras.evitar2LongosDia){
+    var diasMap = new Map();
+    alocacoes.forEach(a => {
+      if(!diasMap.has(a.dia)) diasMap.set(a.dia, []);
+      diasMap.get(a.dia).push(a);
+    });
+    var conflitos = true;
+    var maxSwap = 100;
+    while(conflitos && maxSwap-- > 0){
+      conflitos = false;
+      for(var [dia, lista] of diasMap.entries()){
+        if(lista.length===2){
+          var longos = lista.filter(a => a.slot.setores.some(s => setores.find(x=>x.n===s)?.r===0));
+          if(longos.length>=2){
+            conflitos = true;
+            // tentar trocar uma das duplas com outro dia que tenha apenas 1 dupla e que aceite a troca sem gerar dois longos
+            var candidatoSwap = null;
+            for(var [outroDia, outraLista] of diasMap.entries()){
+              if(outroDia !== dia && outraLista.length===1){
+                var duplaTroca = outraLista[0];
+                var duplaProblema = longos[0];
+                if(diaValido(outroDia, duplaProblema.slot) && diaValido(dia, duplaTroca.slot)){
+                  var novoOutroLongos = [duplaProblema, ...outraLista].some(a => a.slot.setores.some(s=>setores.find(x=>x.n===s)?.r===0));
+                  var novoDiaLongos = [duplaTroca, ...lista.filter(x=>x!==duplaProblema)].some(a=>a.slot.setores.some(s=>setores.find(x=>x.n===s)?.r===0));
+                  if(!novoOutroLongos && !novoDiaLongos){
+                    candidatoSwap = {diaOrig: dia, diaDest: outroDia, duplaProblema, duplaTroca};
+                    break;
+                  }
+                }
+              }
+            }
+            if(candidatoSwap){
+              // executar swap
+              alocacoes = alocacoes.map(a => {
+                if(a === candidatoSwap.duplaProblema) return {dia: candidatoSwap.diaDest, slot: a.slot, segunda: a.segunda};
+                if(a === candidatoSwap.duplaTroca) return {dia: candidatoSwap.diaOrig, slot: a.slot, segunda: a.segunda};
+                return a;
+              });
+              // reconstruir map
+              diasMap.clear();
+              alocacoes.forEach(a => {
+                if(!diasMap.has(a.dia)) diasMap.set(a.dia, []);
+                diasMap.get(a.dia).push(a);
+              });
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
   alocacoes.sort(function(a,b){
     if (a.dia !== b.dia) return new Date(a.dia) - new Date(b.dia);
     return (a.segunda ? 1 : 0) - (b.segunda ? 1 : 0);
   });
-  
+
   var novaEscalaFinal = novaEsc.slice();
   alocacoes.forEach(function(aloc){
     var k = ck(aloc.slot.e, aloc.slot.i);
@@ -494,14 +594,22 @@ function sortear(respFixed){
     novaEscalaFinal.push({data: aloc.dia, e: aloc.slot.e, i: aloc.slot.i, setores: aloc.slot.setores, fixado: false, seg: aloc.segunda});
   });
   escala = novaEscalaFinal.sort(function(a,b){ return new Date(a.data) - new Date(b.data); });
-  
+
   atualizarParticipacao();
   var diasComDuas = 0, contagem = new Map();
   escala.forEach(function(l){ contagem.set(l.data, (contagem.get(l.data)||0)+1); });
   for (var q of contagem.values()) if (q===2) diasComDuas++;
-  if (diasComDuas > 0) avisoEl.innerHTML = '<i class="fas fa-calendar-week"></i> Foram usadas ' + diasComDuas + ' segunda(s) auditoria(s). ' + (forceTwo ? '(Forçado)' : '');
+  if (diasComDuas > 0) avisoEl.innerHTML = '<i class="fas fa-calendar-week"></i> Foram usadas ' + diasComDuas + ' segunda(s) auditoria(s).';
   else avisoEl.innerHTML = '<i class="fas fa-check-circle"></i> Apenas auditorias de manhã.';
-  
+
+  var resumo = [];
+  if(regras.forcar1L1C) resumo.push('1L+1C');
+  if(regras.fallbackLongo) resumo.push('Fallback longo');
+  if(regras.evitar2LongosDia) resumo.push('Sem 2 longos/dia');
+  if(regras.evitarDuplasRepetidas) resumo.push('Duplas únicas');
+  if(regras.distribuirEquitativamente) resumo.push('Distribuição uniforme');
+  document.getElementById('regrasResumo').innerHTML = resumo.join(' | ') || 'padrão';
+
   if (escalaVisivel) renderizarEscala();
   else mostrarPlaceholder();
 }
@@ -524,7 +632,7 @@ function renderizarEscala(){
   var protectedDiv = document.getElementById('protectedArea');
   if(!protectedDiv) return;
   var html = `
-    <div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dupla</th><th>Setores</th><th>Manter?</th></tr></thead><tbody id="tbody"></tbody>}</div>
+    <div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dupla</th><th>Setores</th><th>Manter?</th></tr></thead><tbody id="tbody"></tbody></table></div>
     <div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span></div>
     <div style="margin-top:.9rem"><button id="btnCsv" class="btn btn-outline btn-sm"><i class="fas fa-copy"></i> Copiar CSV</button><textarea id="csvArea" class="textarea-copy" rows="4" readonly placeholder="CSV aparece aqui..."></textarea></div>
   `;
@@ -541,7 +649,7 @@ function renderizarEscala(){
       return '<span class="'+(st&&st.r?'sc':'sl')+'">'+s+'</span>';
     }).join(' ');
     var b2=l.seg?'<span class="badge2">2ª dupla (tarde)</span>':'<span class="badge2">1ª dupla (manhã)</span>';
-    tr.innerHTML='<td><strong>'+dBR+'</strong></td>'
+    tr.innerHTML='<tr><strong>'+dBR+'</strong></td>'
       +'<td><i class="fas fa-user-friends"></i> '+l.e+' + '+l.i+' '+b2+'</td>'
       +'<td><div style="display:flex;flex-direction:column;gap:3px">'+sh+'</div></td>'
       +'<td><button class="manter-btn'+(l.fixado?' on':'')+'" data-i="'+idx+'">'
@@ -622,7 +730,7 @@ function renderDias(){
 }
 function atuDias(){ diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value); renderDias(); sortear(false); }
 
-// ========== AUDITORES E SETORES (sem alterações) ==========
+// ========== AUDITORES E SETORES ==========
 function renderAuds(){
   [{id:'expList',arr:aExp,cls:'tag-exp',ico:'fa-star'},{id:'inexpList',arr:aInexp,cls:'tag-inexp',ico:'fa-seedling'}].forEach(function(tp){
     var div=document.getElementById(tp.id); if(!div) return;
@@ -635,16 +743,17 @@ function renderAuds(){
     });
   });
 }
-window._tA=function(n){ var ie=aExp.indexOf(n); if(ie>=0){aExp.splice(ie,1);aInexp.push(n);} else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}} renderAuds(); sortear(true); };
-window._dA=function(n){ if(!confirm('Remover '+n+'?'))return; aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;}); delete maxOne[n]; delete diasIndisponiveis[n]; salvarRestr(); renderAuds(); sortear(true); };
-function addA(isE){ var v=document.getElementById(isE?'inpExp':'inpInexp').value.trim(); if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return; if(isE)aExp.push(v); else aInexp.push(v); document.getElementById(isE?'inpExp':'inpInexp').value=''; renderAuds(); sortear(true); }
+window._tA=function(n){ var ie=aExp.indexOf(n); if(ie>=0){aExp.splice(ie,1);aInexp.push(n);} else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}} renderAuds(); sincronizarRestricoes(); sortear(true); };
+window._dA=function(n){ if(!confirm('Remover '+n+'?'))return; aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;}); delete maxOne[n]; delete diasIndisponiveis[n]; sincronizarRestricoes(); renderAuds(); sortear(true); };
+function addA(isE){ var v=document.getElementById(isE?'inpExp':'inpInexp').value.trim(); if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return; if(isE)aExp.push(v); else aInexp.push(v); document.getElementById(isE?'inpExp':'inpInexp').value=''; sincronizarRestricoes(); renderAuds(); sortear(true); }
 function renderSets(){ var c=document.getElementById('setList'); if(!c) return; c.innerHTML=''; setores.forEach(function(s,i){ var sp=document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo'); sp.innerHTML='<span onclick="window._tS('+i+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span><button class="btn-x" onclick="window._dS('+i+')"><i class="fas fa-times-circle"></i></button>'; c.appendChild(sp); }); }
-window._tS=function(i){setores[i].r=setores[i].r?0:1;renderSets();sortear(true);};
-window._dS=function(i){ if(!confirm('Remover '+setores[i].n+'?'))return; setores.splice(i,1); renderSets(); sortear(true); };
-function addS(r){ var v=document.getElementById('inpSet').value.trim(); if(!v||setores.some(function(s){return s.n===v;}))return; setores.push({n:v,r:r}); document.getElementById('inpSet').value=''; renderSets(); sortear(true); }
+window._tS=function(i){setores[i].r=setores[i].r?0:1;renderSets();sincronizarRestricoes();sortear(true);};
+window._dS=function(i){ if(!confirm('Remover '+setores[i].n+'?'))return; setores.splice(i,1); sincronizarRestricoes(); renderSets(); sortear(true); };
+function addS(r){ var v=document.getElementById('inpSet').value.trim(); if(!v||setores.some(function(s){return s.n===v;}))return; setores.push({n:v,r:r}); document.getElementById('inpSet').value=''; sincronizarRestricoes(); renderSets(); sortear(true); }
 
-// ========== RESTRIÇÕES (com indisponibilidade de dias) ==========
+// ========== RESTRIÇÕES ==========
 function abrirRest(){
+  sincronizarRestricoes();
   var c=document.getElementById('listaRest'); c.innerHTML='';
   var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;});
   todos.forEach(function(aud){
@@ -663,7 +772,6 @@ function abrirRest(){
       var cb=document.createElement('input'); cb.type='checkbox'; cb.value=s; cb.checked=pr.indexOf(s)>=0;
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+s)); sd.appendChild(lb);
     });
-    // Carregar dias indisponíveis
     var diasDiv = document.getElementById(`diasTags_${idSanit}`);
     if(diasIndisponiveis[aud]){
       diasIndisponiveis[aud].forEach(function(dia){
@@ -671,7 +779,6 @@ function abrirRest(){
         diasDiv.appendChild(tag);
       });
     }
-    // evento de adicionar dia
     var btnAdd = div.querySelector(`[data-adddia="1"]`);
     if(btnAdd){
       btnAdd.onclick = function(){
@@ -683,7 +790,6 @@ function abrirRest(){
           diasIndisponiveis[aud].push(dia);
           var tag = document.createElement('span'); tag.className='dia-tag'; tag.innerHTML = dia.split('-').reverse().join('/') + '<button data-dia="'+dia+'" data-aud="'+aud+'">&times;</button>';
           diasDiv.appendChild(tag);
-          // adicionar evento de remover
           tag.querySelector('button').onclick = function(e){
             var d = this.getAttribute('data-dia');
             var a = this.getAttribute('data-aud');
@@ -695,7 +801,6 @@ function abrirRest(){
         dateInput.value='';
       };
     }
-    // adicionar eventos de remoção nas tags já existentes
     diasDiv.querySelectorAll('button').forEach(function(btn){
       btn.onclick = function(e){
         var d = this.getAttribute('data-dia');
@@ -724,23 +829,22 @@ function salvarRest(){
     novo[aud]=pr;
   });
   restr=novo; maxOne=novoMaxOne;
-  // diasIndisponiveis já foi atualizado via interface
   salvarRestr();
   document.getElementById('modalRest').style.display='none';
   sortear(true);
-  alert('Restrições salvas! (Limite de 1 auditoria/mês e dias de indisponibilidade aplicados)');
+  alert('Restrições salvas!');
 }
 
-// ========== HISTÓRICO (inclui diasIndisponiveis) ==========
+// ========== HISTÓRICO ==========
 function salvarH(){
   var nome=prompt('Nome (ex: Abril 2026):'); if(!nome)return;
-  var h=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+  var h=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
   h.push({nome:nome,data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasIndisponiveis:diasIndisponiveis, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
-  localStorage.setItem('h5s_v5',JSON.stringify(h));
+  localStorage.setItem('h5s_v6',JSON.stringify(h));
   alert('"'+nome+'" salvo!');
 }
 function abrirH(){
-  var h=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+  var h=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
   var c=document.getElementById('listaHist'); c.innerHTML='';
   if(!h.length){c.innerHTML='<p style="padding:1rem;color:#888">Nenhum sorteio salvo.</p>';}
   else h.forEach(function(it,idx){
@@ -750,13 +854,13 @@ function abrirH(){
   });
   c.querySelectorAll('button').forEach(function(b){
     b.addEventListener('click',function(){
-      var idx=+b.dataset.idx, h2=JSON.parse(localStorage.getItem('h5s_v5')||'[]');
+      var idx=+b.dataset.idx, h2=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
       if(b.dataset.a==='load'){
         function carregar() {
           var it=h2[idx];
           escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores; restr=it.restr; maxOne=it.maxOne || {}; diasIndisponiveis=it.diasIndisponiveis || {}; diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
+          sincronizarRestricoes();
           renderDias(); renderAuds(); renderSets(); atualizarParticipacao();
-          salvarRestr();
           if(escalaVisivel && escala.length>0) renderizarEscala();
           else mostrarPlaceholder();
           document.getElementById('modalHist').style.display='none';
@@ -767,7 +871,7 @@ function abrirH(){
         } else { carregar(); }
       } else {
         if(!confirm('Excluir?'))return;
-        h2.splice(idx,1); localStorage.setItem('h5s_v5',JSON.stringify(h2)); abrirH();
+        h2.splice(idx,1); localStorage.setItem('h5s_v6',JSON.stringify(h2)); abrirH();
       }
     });
   });
@@ -802,6 +906,11 @@ window.onload=function(){
   document.getElementById('inpInexp').onkeydown=function(e){if(e.key==='Enter')addA(false);};
   document.getElementById('inpSet').onkeydown=function(e){if(e.key==='Enter')addS(1);};
   if(sessionStorage.getItem('escalaRevelada_5s') === 'true'){ autenticado=true; escalaVisivel=true; document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala && escala.length>0) renderizarEscala(); } else { mostrarPlaceholder(); }
+  document.getElementById('regra1L1C').addEventListener('change',()=>sortear(true));
+  document.getElementById('regraFallbackLongo').addEventListener('change',()=>sortear(true));
+  document.getElementById('regraEvitar2LongosDia').addEventListener('change',()=>sortear(true));
+  document.getElementById('regraEvitarDuplasRepetidas').addEventListener('change',()=>sortear(true));
+  document.getElementById('regraDistribuirEquitativamente').addEventListener('change',()=>sortear(true));
 };
 })();
 </script>
