@@ -30,6 +30,7 @@ h2{font-size:1.2rem;font-weight:600;color:#0f606b;margin-bottom:1.2rem;display:f
 .btn-outline{border-color:#378e84;color:#1f6c64}
 .btn-outline:hover{background:#e1f3f0}
 .btn-warn{background:#e6a020;border-color:#c4851a;color:white}
+.btn-danger{background:#c2673a;border-color:#a0502b;color:white}
 .btn-sm{padding:.28rem .9rem;font-size:.73rem}
 .input-row{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
 .input-row input{padding:.45rem .9rem;border-radius:60px;border:1.5px solid #cbdde3;font-family:'Inter',sans-serif;flex:1 1 160px;font-size:.78rem}
@@ -53,31 +54,39 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 .badge2{font-size:.63rem;background:#ede0ff;color:#6a35a0;border-radius:8px;padding:1px 6px;margin-left:5px;vertical-align:middle}
 .textarea-copy{background:#f7fdfe;border-radius:18px;padding:.7rem 1.1rem;width:100%;border:1.5px solid #b7d4de;font-size:.76rem;margin-top:.8rem;resize:vertical}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.48);z-index:1000;justify-content:center;align-items:center}
-.modal-box{background:white;max-width:90%;width:900px;max-height:83%;overflow-y:auto;border-radius:28px;padding:1.4rem}
+.modal-box{background:white;max-width:92%;width:960px;max-height:88%;overflow-y:auto;border-radius:28px;padding:1.4rem}
 .modal-hd{display:flex;justify-content:space-between;margin-bottom:1rem;font-weight:700;font-size:1.05rem;align-items:center}
-.rest-item{border-bottom:1px solid #e0ecef;padding:.75rem 0;display:flex;flex-direction:column;gap:.8rem;}
-.rest-nome{font-weight:600;font-size:.9rem;padding-top:3px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
-.rest-sets{display:flex;flex-wrap:wrap;gap:5px; margin-top:6px;}
+.rest-item{border-bottom:1px solid #e0ecef;padding:.9rem 0;display:flex;flex-direction:column;gap:.6rem}
+.rest-nome{font-weight:600;font-size:.9rem;padding-top:3px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rest-section-label{font-size:.72rem;color:#557a82;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:4px}
+.rest-sets{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
 .rest-sets label{font-size:.73rem;background:#ecf3f5;padding:.18rem .55rem;border-radius:18px;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
-.dias-indisponiveis{ margin-top: 10px; background:#f9f2e0; padding:8px; border-radius:20px; }
-.dias-tags{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
-.dia-tag{ background:#e0cfa4; padding:2px 8px; border-radius:20px; font-size:0.7rem; display:inline-flex; align-items:center; gap:5px; }
-.dia-tag button{ background:none; border:none; cursor:pointer; font-weight:bold; color:#7a3e1a; }
+.parc-sets{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.parc-sets label{font-size:.73rem;background:#fde8e8;padding:.18rem .55rem;border-radius:18px;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.dias-indisponiveis{margin-top:6px;background:#f9f2e0;padding:8px 10px;border-radius:16px}
+.dias-tags{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.dia-tag{background:#e0cfa4;padding:2px 8px;border-radius:20px;font-size:.7rem;display:inline-flex;align-items:center;gap:5px}
+.dia-tag button{background:none;border:none;cursor:pointer;font-weight:bold;color:#7a3e1a}
+.intervalo-row{display:flex;gap:5px;margin-top:6px;align-items:center;flex-wrap:wrap}
+.intervalo-row input[type=date]{font-size:.7rem;padding:4px 6px;border:1px solid #c8b990;border-radius:8px;background:white}
+.intervalo-row span{font-size:.7rem;color:#6a5a3a;white-space:nowrap}
 .btn-fechar{background:#c2673a;color:white;border:none;padding:.28rem .9rem;border-radius:28px;cursor:pointer;font-size:.82rem}
+.btn-del-aud{background:#fde8e8;border:1px solid #e8b4b4;color:#b04545;padding:.2rem .7rem;border-radius:20px;font-size:.7rem;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.btn-del-aud:hover{background:#f8c8c8}
 .hist-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0ecef;padding:.7rem 0;gap:.8rem;flex-wrap:wrap}
 .force-check{display:inline-flex;align-items:center;gap:8px;margin-left:1rem;font-size:.8rem;background:#eef3f5;padding:4px 12px;border-radius:30px}
-.reveal-btn{background:#e6a020;border:none;padding:8px 20px;border-radius:40px;font-weight:bold;color:white;cursor:pointer;margin-bottom:15px;font-size:0.9rem}
+.reveal-btn{background:#e6a020;border:none;padding:8px 20px;border-radius:40px;font-weight:bold;color:white;cursor:pointer;margin-bottom:15px;font-size:.9rem}
 .reveal-btn:hover{background:#c4851a}
-.password-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:2000}
-.password-box{background:white;border-radius:32px;padding:2rem;width:320px;text-align:center;box-shadow:0 20px 35px rgba(0,0,0,0.3)}
+.password-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:2000}
+.password-box{background:white;border-radius:32px;padding:2rem;width:320px;text-align:center;box-shadow:0 20px 35px rgba(0,0,0,.3)}
 .password-box i{font-size:2.5rem;color:#1e7a70;margin-bottom:1rem}
-.password-box input{width:100%;padding:0.8rem;margin:1rem 0;border:1.5px solid #cbdde3;border-radius:60px}
-.password-box button{background:#1e7a70;color:white;border:none;padding:0.7rem;width:100%;border-radius:60px;font-weight:bold;cursor:pointer}
-.erro-senha{color:#d14545;font-size:0.8rem;margin-top:0.5rem}
+.password-box input{width:100%;padding:.8rem;margin:1rem 0;border:1.5px solid #cbdde3;border-radius:60px}
+.password-box button{background:#1e7a70;color:white;border:none;padding:.7rem;width:100%;border-radius:60px;font-weight:bold;cursor:pointer}
+.erro-senha{color:#d14545;font-size:.8rem;margin-top:.5rem}
 .protected-placeholder{text-align:center;padding:3rem;background:#f5f9fa;border-radius:24px;color:#4a6a75;font-style:italic}
-.maxone-label{ font-size:0.7rem; background:#f0e6d2; padding:2px 6px; border-radius:20px; display:inline-flex; align-items:center; gap:5px; cursor:pointer;}
-.regras-panel{ background:#eef3f2; border-radius:24px; padding:1rem; margin-bottom:1rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center;}
-.regra-opcao{ display:flex; align-items:center; gap:8px; background:white; padding:5px 14px; border-radius:60px; font-size:0.8rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.maxone-label{font-size:.7rem;background:#f0e6d2;padding:2px 6px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+.regras-panel{background:#eef3f2;border-radius:24px;padding:1rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center}
+.regra-opcao{display:flex;align-items:center;gap:8px;background:white;padding:5px 14px;border-radius:60px;font-size:.8rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 </style>
 </head>
 <body>
@@ -96,7 +105,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
   <label class="force-check"><input type="checkbox" id="forceTwo"> <i class="fas fa-sun"></i> Forçar 2 auditorias por dia</label>
 </div>
 
-<!-- PAINEL DE REGRAS SELECIONÁVEIS -->
+<!-- PAINEL DE REGRAS -->
 <div class="card" style="padding:1rem 1.5rem;">
   <h2><i class="fas fa-cog"></i> Regras de Sorteio</h2>
   <div class="regras-panel">
@@ -109,24 +118,68 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 
 <!-- Modal Restrições -->
-<div id="modalRest" class="modal"><div class="modal-box"><div class="modal-hd"><span><i class="fas fa-ban"></i> Restrições por auditor</span><button id="btnFRest" class="btn-fechar">Fechar</button></div><div id="listaRest"></div><div style="margin-top:1rem;text-align:right"><button id="btnSRest" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button></div></div></div>
+<div id="modalRest" class="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span><i class="fas fa-ban"></i> Restrições por auditor</span>
+      <button id="btnFRest" class="btn-fechar">Fechar</button>
+    </div>
+    <div id="listaRest"></div>
+    <div style="margin-top:1rem;text-align:right">
+      <button id="btnSRest" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    </div>
+  </div>
+</div>
 
 <!-- Modal Histórico -->
-<div id="modalHist" class="modal"><div class="modal-box"><div class="modal-hd"><span><i class="fas fa-history"></i> Histórico</span><button id="btnFHist" class="btn-fechar">Fechar</button></div><div id="listaHist"></div></div></div>
+<div id="modalHist" class="modal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span><i class="fas fa-history"></i> Histórico</span>
+      <button id="btnFHist" class="btn-fechar">Fechar</button>
+    </div>
+    <div id="listaHist"></div>
+  </div>
+</div>
 
 <!-- Auditores -->
 <div class="card">
   <h2><i class="fas fa-user-tag"></i> Auditores</h2>
   <div class="flex-row">
-    <div class="col"><div class="painel"><div style="font-weight:700;margin-bottom:.4rem">⭐ Experientes</div><div id="expList"></div><div class="input-row"><input id="inpExp" placeholder="Novo experiente"><button id="btnAExp" class="btn btn-sm">Adicionar</button></div></div></div>
-    <div class="col"><div class="painel"><div style="font-weight:700;margin-bottom:.4rem">🌱 Inexperientes</div><div id="inexpList"></div><div class="input-row"><input id="inpInexp" placeholder="Novo inexperiente"><button id="btnAInexp" class="btn btn-sm">Adicionar</button></div></div></div>
+    <div class="col">
+      <div class="painel">
+        <div style="font-weight:700;margin-bottom:.4rem">⭐ Experientes</div>
+        <div id="expList"></div>
+        <div class="input-row">
+          <input id="inpExp" placeholder="Novo experiente">
+          <button id="btnAExp" class="btn btn-sm">Adicionar</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="painel">
+        <div style="font-weight:700;margin-bottom:.4rem">🌱 Inexperientes</div>
+        <div id="inexpList"></div>
+        <div class="input-row">
+          <input id="inpInexp" placeholder="Novo inexperiente">
+          <button id="btnAInexp" class="btn btn-sm">Adicionar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Setores -->
 <div class="card">
   <h2><i class="fas fa-industry"></i> Setores <span style="font-weight:400;font-size:.82rem;color:#5a8a95">(clique no nome para alternar curto/longo)</span></h2>
-  <div class="painel"><div id="setList"></div><div class="input-row"><input id="inpSet" placeholder="Novo setor"><button id="btnACurto" class="btn btn-sm">+ Curto</button><button id="btnALongo" class="btn btn-sm">+ Longo</button></div></div>
+  <div class="painel">
+    <div id="setList"></div>
+    <div class="input-row">
+      <input id="inpSet" placeholder="Novo setor">
+      <button id="btnACurto" class="btn btn-sm">+ Curto</button>
+      <button id="btnALongo" class="btn btn-sm">+ Longo</button>
+    </div>
+  </div>
 </div>
 
 <!-- Período -->
@@ -154,21 +207,20 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
   </div>
   <div class="regra">Regras ativas: 1L+1C | MTA máx 1x | Sem par P&D | <span id="regrasResumo"></span></div>
   <div class="painel-part" id="pPart"><strong>Participação: <span id="pCt">0</span>/<span id="pTot">0</span></strong><span id="pSt"></span><div id="pFalt" style="margin-top:.25rem"></div></div>
-  <div id="aviso" class="aviso"></div><div id="alerta" class="alerta"></div>
-  
-  <div style="text-align: center; margin-bottom: 1rem;">
+  <div id="aviso" class="aviso"></div>
+  <div id="alerta" class="alerta"></div>
+  <div style="text-align:center;margin-bottom:1rem">
     <button id="btnToggleEscala" class="reveal-btn"><i class="fas fa-lock"></i> Mostrar Escala (requer senha)</button>
   </div>
-  
   <div id="protectedArea">
     <div class="protected-placeholder">
-      <i class="fas fa-eye-slash" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+      <i class="fas fa-eye-slash" style="font-size:2rem;margin-bottom:.5rem;display:block"></i>
       Escala protegida por senha.<br>Clique no botão acima para visualizar.
     </div>
   </div>
 </div>
 
-</div>
+</div><!-- /container -->
 
 <script>
 (function(){
@@ -179,7 +231,7 @@ let autenticado = false;
 let escalaVisivel = false;
 
 // ========== DADOS PRINCIPAIS ==========
-var aExp   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto','Aloísio Vargas Arrial'];
+var aExp   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto'];
 var aInexp = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
 var setores = [
   {n:'Usinagem',r:0},{n:'P&D - RAID',r:1},{n:'P&D - Areas Comuns',r:1},
@@ -194,7 +246,7 @@ var setores = [
   {n:'Gestão Industrial',r:1},{n:'Gestão PID',r:1},{n:'Direção',r:1}
 ];
 
-// Restrições: setores bloqueados
+// Restrições: setores bloqueados por auditor
 var restrPadrao = {
   'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
@@ -208,7 +260,6 @@ var restrPadrao = {
   'Maiara da Veiga Saretto':['Qualidade e Meio Ambiente','Copa'],
   'Laiza da Silva Gonçalves':['Métodos e Processos','Café Subsolo','Usinagem'],
   'Tamara Rech Kuchnir':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
-  'Aloísio Vargas Arrial':['Assistência Técnica','Café Subsolo'],
   'Cristiano dos Santos Gubert':['Usinagem','Café Subsolo','Métodos e Processos'],
   'cristhian albuquerque pedroni':['Logística','Café Produção'],
   'Marcelo Henrique Sgarbi':['Manutenção','Café Subsolo'],
@@ -219,42 +270,47 @@ var restrPadrao = {
   'Gustavo Pauletti':['Tecnologia da Informação','Copa']
 };
 var restr = {};
-let maxOne = {};
-let diasIndisponiveis = {};
+var maxOne = {};
+var diasIndisponiveis = {};
+var parceirosProibidos = {};
+
+// Verifica se dois auditores têm restrição de parceria
+function parBloqueado(a, b) {
+  return (parceirosProibidos[a] && parceirosProibidos[a].indexOf(b) >= 0) ||
+         (parceirosProibidos[b] && parceirosProibidos[b].indexOf(a) >= 0);
+}
 
 function sincronizarRestricoes() {
-  let todosAuditores = new Set([...aExp, ...aInexp]);
-  let todosSetores = new Set(setores.map(s => s.n));
-  // Remove auditores inexistentes
-  for (let aud in restr) {
-    if (!todosAuditores.has(aud)) delete restr[aud];
+  var todosAuditores = new Set([...aExp, ...aInexp]);
+  var todosSetores = new Set(setores.map(function(s){ return s.n; }));
+  for (var aud in restr) { if (!todosAuditores.has(aud)) delete restr[aud]; }
+  for (var aud in maxOne) { if (!todosAuditores.has(aud)) delete maxOne[aud]; }
+  for (var aud in diasIndisponiveis) { if (!todosAuditores.has(aud)) delete diasIndisponiveis[aud]; }
+  for (var aud in parceirosProibidos) {
+    if (!todosAuditores.has(aud)) { delete parceirosProibidos[aud]; continue; }
+    parceirosProibidos[aud] = (parceirosProibidos[aud] || []).filter(function(a){ return todosAuditores.has(a); });
+    if (!parceirosProibidos[aud].length) delete parceirosProibidos[aud];
   }
-  for (let aud in maxOne) {
-    if (!todosAuditores.has(aud)) delete maxOne[aud];
-  }
-  for (let aud in diasIndisponiveis) {
-    if (!todosAuditores.has(aud)) delete diasIndisponiveis[aud];
-  }
-  // Remove setores inexistentes das listas de bloqueio
-  for (let aud in restr) {
-    let lista = restr[aud];
-    if (Array.isArray(lista)) {
-      restr[aud] = lista.filter(s => todosSetores.has(s));
-    } else {
-      restr[aud] = [];
-    }
+  for (var aud in restr) {
+    var lista = restr[aud];
+    restr[aud] = Array.isArray(lista) ? lista.filter(function(s){ return todosSetores.has(s); }) : [];
   }
   salvarRestr();
 }
 
 function carregarRestricoes(){
-  try{var s=localStorage.getItem('r5s_v6');if(s)restr=JSON.parse(s);else{restr=JSON.parse(JSON.stringify(restrPadrao));localStorage.setItem('r5s_v6',JSON.stringify(restr));}}
-  catch(e){restr=JSON.parse(JSON.stringify(restrPadrao));}
-  try{var mo=localStorage.getItem('maxOne_v6');if(mo) maxOne=JSON.parse(mo);}catch(e){maxOne={};}
-  try{var di=localStorage.getItem('diasIndisp_v6');if(di) diasIndisponiveis=JSON.parse(di);}catch(e){diasIndisponiveis={};}
+  try{ var s=localStorage.getItem('r5s_v6'); if(s) restr=JSON.parse(s); else{ restr=JSON.parse(JSON.stringify(restrPadrao)); localStorage.setItem('r5s_v6',JSON.stringify(restr)); } }catch(e){ restr=JSON.parse(JSON.stringify(restrPadrao)); }
+  try{ var mo=localStorage.getItem('maxOne_v6'); if(mo) maxOne=JSON.parse(mo); }catch(e){ maxOne={}; }
+  try{ var di=localStorage.getItem('diasIndisp_v6'); if(di) diasIndisponiveis=JSON.parse(di); }catch(e){ diasIndisponiveis={}; }
+  try{ var pp=localStorage.getItem('parceiros_v6'); if(pp) parceirosProibidos=JSON.parse(pp); }catch(e){ parceirosProibidos={}; }
   sincronizarRestricoes();
 }
-function salvarRestr(){localStorage.setItem('r5s_v6',JSON.stringify(restr)); localStorage.setItem('maxOne_v6',JSON.stringify(maxOne)); localStorage.setItem('diasIndisp_v6',JSON.stringify(diasIndisponiveis));}
+function salvarRestr(){
+  localStorage.setItem('r5s_v6', JSON.stringify(restr));
+  localStorage.setItem('maxOne_v6', JSON.stringify(maxOne));
+  localStorage.setItem('diasIndisp_v6', JSON.stringify(diasIndisponiveis));
+  localStorage.setItem('parceiros_v6', JSON.stringify(parceirosProibidos));
+}
 carregarRestricoes();
 
 var diasUteis=[], escala=[], usosDupla=new Map();
@@ -262,7 +318,7 @@ var diasUteis=[], escala=[], usosDupla=new Map();
 function limiteAuditor(a){ return maxOne[a] ? 1 : (temMTA(a)?1:2); }
 function temMTA(a){ var p=restr[a]; return p && p.some(function(s){ return s.indexOf('MTA')===0; }); }
 function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
-function ck(a,b){ return a<b?a+'|'+b:b+'|'+a; }
+function ck(a,b){ return a<b ? a+'|'+b : b+'|'+a; }
 function isDisponivelNoDia(auditor, dia){ return !diasIndisponiveis[auditor] || diasIndisponiveis[auditor].indexOf(dia)===-1; }
 
 // ========== REGRAS CONFIGURÁVEIS ==========
@@ -276,43 +332,48 @@ function getRegras() {
   };
 }
 
-function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=0|Math.random()*(i+1);var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function shuffle(a){ var b=a.slice(); for(var i=b.length-1;i>0;i--){ var j=0|Math.random()*(i+1); var t=b[i]; b[i]=b[j]; b[j]=t; } return b; }
 
 function tentarSortear(diasFixados, escalaFixada){
   var regras = getRegras();
-  var jaFixos=new Set(escalaFixada.map(function(l){return l.e;}).concat(escalaFixada.map(function(l){return l.i;})));
-  var eL=shuffle(aExp.filter(function(a){return!jaFixos.has(a);}));
-  var iL=shuffle(aInexp.filter(function(a){return!jaFixos.has(a);}));
-  var duplas=[];
-  var n=Math.min(eL.length,iL.length);
-  for(var k=0;k<n;k++) duplas.push({e:eL[k],i:iL[k]});
-  var sob=eL.slice(n);
-  for(var k=0;k+1<sob.length;k+=2) duplas.push({e:sob[k],i:sob[k+1]});
-  escalaFixada.forEach(function(l){duplas.push({e:l.e,i:l.i});});
-  var dmap=new Map();
-  duplas.forEach(function(d){var k2=ck(d.e,d.i);if(!dmap.has(k2))dmap.set(k2,d);});
-  duplas=[...dmap.values()];
+  var jaFixos = new Set(escalaFixada.map(function(l){ return l.e; }).concat(escalaFixada.map(function(l){ return l.i; })));
+  var eL = shuffle(aExp.filter(function(a){ return !jaFixos.has(a); }));
+  var iL = shuffle(aInexp.filter(function(a){ return !jaFixos.has(a); }));
+  var duplas = [];
+  var n = Math.min(eL.length, iL.length);
+  for(var k=0; k<n; k++) duplas.push({e:eL[k], i:iL[k]});
+  var sob = eL.slice(n);
+  for(var k=0; k+1<sob.length; k+=2) duplas.push({e:sob[k], i:sob[k+1]});
+  escalaFixada.forEach(function(l){ duplas.push({e:l.e, i:l.i}); });
+  var dmap = new Map();
+  duplas.forEach(function(d){ var k2=ck(d.e,d.i); if(!dmap.has(k2)) dmap.set(k2,d); });
+  duplas = [...dmap.values()];
+
+  // Filtrar pares bloqueados (mantém os fixados)
+  var fixadosSet = new Set(escalaFixada.map(function(l){ return ck(l.e,l.i); }));
+  duplas = duplas.filter(function(d){ return fixadosSet.has(ck(d.e,d.i)) || !parBloqueado(d.e, d.i); });
+
   if(regras.evitarDuplasRepetidas && escalaFixada.length===0) {
     duplas = shuffle(duplas);
   }
-  var cap=new Map();
+  var cap = new Map();
   duplas.forEach(function(d){
     cap.set(ck(d.e,d.i), Math.min(limiteAuditor(d.e), limiteAuditor(d.i), 2));
   });
-  var usosKey=new Map();
-  var usosAud=new Map();
+  var usosKey = new Map();
+  var usosAud = new Map();
   escalaFixada.forEach(function(l){
-    var k2=ck(l.e,l.i);
-    usosKey.set(k2,(usosKey.get(k2)||0)+1);
-    usosAud.set(l.e,(usosAud.get(l.e)||0)+1);
-    usosAud.set(l.i,(usosAud.get(l.i)||0)+1);
+    var k2 = ck(l.e,l.i);
+    usosKey.set(k2, (usosKey.get(k2)||0)+1);
+    usosAud.set(l.e, (usosAud.get(l.e)||0)+1);
+    usosAud.set(l.i, (usosAud.get(l.i)||0)+1);
   });
 
-  var jaUsados=new Set();
-  escalaFixada.forEach(function(l){l.setores.forEach(function(s){jaUsados.add(s);});});
+  var jaUsados = new Set();
+  escalaFixada.forEach(function(l){ l.setores.forEach(function(s){ jaUsados.add(s); }); });
 
-  var longoPool=setores.filter(function(s){ return !s.r && !jaUsados.has(s.n);});
-  var curtoPool=setores.filter(function(s){ return s.r && !jaUsados.has(s.n);});
+  var longoPool = setores.filter(function(s){ return !s.r && !jaUsados.has(s.n); });
+  var curtoPool = setores.filter(function(s){ return s.r && !jaUsados.has(s.n); });
 
   function elegDupla(d,s){ return pode(d.e,s) && pode(d.i,s); }
   function nEleg(s){ return duplas.filter(function(d){ return elegDupla(d,s.n); }).length; }
@@ -320,136 +381,116 @@ function tentarSortear(diasFixados, escalaFixada){
   longoPool.sort(function(a,b){ return nEleg(a)-nEleg(b); });
   curtoPool.sort(function(a,b){ return nEleg(a)-nEleg(b); });
 
-  var LP=longoPool.slice(), CP=curtoPool.slice();
-  var slotsUsados=new Map();
-  duplas.forEach(function(d){slotsUsados.set(ck(d.e,d.i), usosKey.get(ck(d.e,d.i))||0);});
+  var LP = longoPool.slice(), CP = curtoPool.slice();
+  var slotsUsados = new Map();
+  duplas.forEach(function(d){ slotsUsados.set(ck(d.e,d.i), usosKey.get(ck(d.e,d.i))||0); });
 
-  var resultado=[];
+  var resultado = [];
 
   function auDisp(d){
-    var k2=ck(d.e,d.i);
+    var k2 = ck(d.e,d.i);
     return slotsUsados.get(k2) < cap.get(k2)
         && (usosAud.get(d.e)||0) < limiteAuditor(d.e)
         && (usosAud.get(d.i)||0) < limiteAuditor(d.i);
   }
 
-  function registrar(d,lista){
-    var vistos=new Set(), listaFinal=[];
-    lista.forEach(function(s){if(!vistos.has(s)&&!jaUsados.has(s)){vistos.add(s);listaFinal.push(s);}});
+  function registrar(d, lista){
+    var vistos = new Set(), listaFinal = [];
+    lista.forEach(function(s){ if(!vistos.has(s) && !jaUsados.has(s)){ vistos.add(s); listaFinal.push(s); } });
     if(!listaFinal.length) return;
-    var k2=ck(d.e,d.i);
-    slotsUsados.set(k2,slotsUsados.get(k2)+1);
-    usosAud.set(d.e,(usosAud.get(d.e)||0)+1);
-    usosAud.set(d.i,(usosAud.get(d.i)||0)+1);
-    listaFinal.forEach(function(s){jaUsados.add(s);});
-    resultado.push({e:d.e,i:d.i,setores:listaFinal});
-  }
-
-  function escolherDupla(listaNomes){
-    var cands=duplas.filter(function(d){
-      if(!auDisp(d)) return false;
-      return listaNomes.every(function(s){return elegDupla(d,s);});
-    });
-    if(!cands.length) return null;
-    cands.sort(function(a,b){
-      var sa=slotsUsados.get(ck(a.e,a.i)), sb=slotsUsados.get(ck(b.e,b.i));
-      if(sa!==sb) return sa-sb;
-      return ((usosAud.get(a.e)||0)+(usosAud.get(a.i)||0))-((usosAud.get(b.e)||0)+(usosAud.get(b.i)||0));
-    });
-    return cands[0];
+    var k2 = ck(d.e,d.i);
+    slotsUsados.set(k2, slotsUsados.get(k2)+1);
+    usosAud.set(d.e, (usosAud.get(d.e)||0)+1);
+    usosAud.set(d.i, (usosAud.get(d.i)||0)+1);
+    listaFinal.forEach(function(s){ jaUsados.add(s); });
+    resultado.push({e:d.e, i:d.i, setores:listaFinal});
   }
 
   var maxIter=400, iter=0;
-  while((LP.length||CP.length)&&iter<maxIter){
+  while((LP.length||CP.length) && iter<maxIter){
     iter++;
-    var dispNow=duplas.filter(function(d){return auDisp(d);});
+    var dispNow = duplas.filter(function(d){ return auDisp(d); });
     if(!dispNow.length) break;
 
-    var todos=LP.concat(CP);
+    var todos = LP.concat(CP);
     todos.sort(function(a,b){
-      var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
-      var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+      var ea = dispNow.filter(function(d){ return elegDupla(d,a.n); }).length;
+      var eb = dispNow.filter(function(d){ return elegDupla(d,b.n); }).length;
       return ea-eb;
     });
-    var hard=todos[0];
+    var hard = todos[0];
     if(!hard) break;
-    var ehLongo=LP.indexOf(hard)>=0;
+    var ehLongo = LP.indexOf(hard) >= 0;
 
-    var candsHard=dispNow.filter(function(d){return elegDupla(d,hard.n);});
+    var candsHard = dispNow.filter(function(d){ return elegDupla(d,hard.n); });
     if(!candsHard.length){
       if(ehLongo) LP.unshift(hard); else CP.unshift(hard);
       iter++; continue;
     }
     candsHard.sort(function(a,b){
-      var sa=slotsUsados.get(ck(a.e,a.i)), sb=slotsUsados.get(ck(b.e,b.i));
+      var sa = slotsUsados.get(ck(a.e,a.i)), sb = slotsUsados.get(ck(b.e,b.i));
       return sa-sb;
     });
-    var dupEsc=candsHard[0];
-
-    var slot=[hard.n];
-    if(ehLongo) LP=LP.filter(function(s){return s.n!==hard.n;});
-    else CP=CP.filter(function(s){return s.n!==hard.n;});
+    var dupEsc = candsHard[0];
+    var slot = [hard.n];
+    if(ehLongo) LP = LP.filter(function(s){ return s.n!==hard.n; });
+    else        CP = CP.filter(function(s){ return s.n!==hard.n; });
 
     if(regras.forcar1L1C){
       if(ehLongo){
-        var cposs=CP.filter(function(s){return elegDupla(dupEsc,s.n);});
+        var cposs = CP.filter(function(s){ return elegDupla(dupEsc,s.n); });
         cposs.sort(function(a,b){
-          var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
-          var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+          var ea = dispNow.filter(function(d){ return elegDupla(d,a.n); }).length;
+          var eb = dispNow.filter(function(d){ return elegDupla(d,b.n); }).length;
           return ea-eb;
         });
         if(cposs.length){
-          var c1=cposs[0]; slot.push(c1.n); CP=CP.filter(function(s){return s.n!==c1.n;});
-          if(CP.length>LP.length && cposs.length>1){
-            var c2=cposs[1]; slot.push(c2.n); CP=CP.filter(function(s){return s.n!==c2.n;});
+          var c1 = cposs[0]; slot.push(c1.n); CP = CP.filter(function(s){ return s.n!==c1.n; });
+          if(CP.length > LP.length && cposs.length > 1){
+            var c2 = cposs[1]; slot.push(c2.n); CP = CP.filter(function(s){ return s.n!==c2.n; });
           }
         } else if(regras.fallbackLongo){
-          var lposs2=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
-          if(lposs2.length){var l2=lposs2[0];slot.push(l2.n);LP=LP.filter(function(s){return s.n!==l2.n;});}
+          var lposs2 = LP.filter(function(s){ return elegDupla(dupEsc,s.n); });
+          if(lposs2.length){ var l2=lposs2[0]; slot.push(l2.n); LP=LP.filter(function(s){ return s.n!==l2.n; }); }
         }
       } else {
-        var lposs=LP.filter(function(s){return elegDupla(dupEsc,s.n);});
-        if(!lposs.length){
-          if(regras.fallbackLongo){
-            CP.unshift(hard); iter++; continue;
-          } else { CP.unshift(hard); iter++; continue; }
-        }
-        var lEsc=lposs[0]; slot=[lEsc.n,hard.n]; LP=LP.filter(function(s){return s.n!==lEsc.n;});
+        var lposs = LP.filter(function(s){ return elegDupla(dupEsc,s.n); });
+        if(!lposs.length){ CP.unshift(hard); iter++; continue; }
+        var lEsc = lposs[0]; slot=[lEsc.n, hard.n]; LP=LP.filter(function(s){ return s.n!==lEsc.n; });
       }
     } else {
-      // modo livre: pega mais um longo ou curto qualquer
-      var extra=LP.length?LP[0]:CP[0];
+      var extra = LP.length ? LP[0] : CP[0];
       if(extra) slot.push(extra.n);
-      if(extra && !extra.r) LP=LP.filter(s=>s.n!==extra.n);
-      else if(extra) CP=CP.filter(s=>s.n!==extra.n);
+      if(extra && !extra.r) LP = LP.filter(function(s){ return s.n!==extra.n; });
+      else if(extra) CP = CP.filter(function(s){ return s.n!==extra.n; });
     }
-    registrar(dupEsc,slot);
+    registrar(dupEsc, slot);
   }
 
-  var cobertos=new Set(resultado.reduce(function(a,r){return a.concat(r.setores);},[]).concat([...jaUsados]));
-  var naoAloc=setores.filter(function(s){return!cobertos.has(s.n);});
+  var cobertos = new Set(resultado.reduce(function(a,r){ return a.concat(r.setores); },[]).concat([...jaUsados]));
+  var naoAloc = setores.filter(function(s){ return !cobertos.has(s.n); });
   if(naoAloc.length) return null;
   return {resultado:resultado, duplas:duplas};
 }
 
 // ========== SORTEAR ==========
 function sortear(respFixed){
-  if(!setores.length||!diasUteis.length) return;
+  if(!setores.length || !diasUteis.length) return;
   usosDupla.clear();
-  var novaEsc=[], diasFixados=new Set();
+  var novaEsc = [], diasFixados = new Set();
   if(respFixed){
-    escala.filter(function(l){return l.fixado;}).forEach(function(l){
+    escala.filter(function(l){ return l.fixado; }).forEach(function(l){
       novaEsc.push(Object.assign({},l));
-      var k=ck(l.e,l.i); usosDupla.set(k,(usosDupla.get(k)||0)+1);
+      var k = ck(l.e,l.i); usosDupla.set(k,(usosDupla.get(k)||0)+1);
       diasFixados.add(l.data);
     });
   }
   var MAX_TENT=40, tent=0, res=null;
-  while(tent<MAX_TENT&&!res){
+  while(tent<MAX_TENT && !res){
     tent++;
-    res=tentarSortear(diasFixados, novaEsc.filter(function(l){return l.fixado;}));
+    res = tentarSortear(diasFixados, novaEsc.filter(function(l){ return l.fixado; }));
   }
-  var avisoEl=document.getElementById('aviso'), alertaEl=document.getElementById('alerta');
+  var avisoEl = document.getElementById('aviso'), alertaEl = document.getElementById('alerta');
   if(!res){
     avisoEl.style.display='none';
     alertaEl.style.display='block';
@@ -474,16 +515,14 @@ function sortear(respFixed){
     return isDisponivelNoDia(slot.e, dia) && isDisponivelNoDia(slot.i, dia) && (duplasNoDia.get(dia)||0) < MAX_POR_DIA;
   }
 
-  // Alocar cada slot em ordem, tentando espalhar
-  var diasOrdenados = regras.distribuirEquitativamente ? [...diasDisp] : [...diasDisp];
-  if(regras.distribuirEquitativamente) diasOrdenados.sort(); // já ordenado
+  var diasOrdenados = [...diasDisp].sort();
   for(var idxSlot=0; idxSlot<slots.length; idxSlot++){
     var slot = slots[idxSlot];
     var alocado = false;
     for(var i=0; i<diasOrdenados.length; i++){
       var dia = diasOrdenados[i];
       if(diaValido(dia, slot)){
-        alocacoes.push({dia: dia, slot: slot, segunda: false});
+        alocacoes.push({dia:dia, slot:slot, segunda:false});
         duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
         alocado = true;
         break;
@@ -496,26 +535,23 @@ function sortear(respFixed){
     }
   }
 
-  // Forçar 2 por dia se solicitado, tentando juntar duplas
   if(forceTwo){
     var slotsPorDia = new Map();
     alocacoes.forEach(function(a){
-      if(!slotsPorDia.has(a.dia)) slotsPorDia.set(a.dia, []);
+      if(!slotsPorDia.has(a.dia)) slotsPorDia.set(a.dia,[]);
       slotsPorDia.get(a.dia).push(a);
     });
     var diasComUm = [];
-    for(var [dia, arr] of slotsPorDia.entries()){
-      if(arr.length === 1) diasComUm.push(dia);
-    }
-    for(var i=0; i<diasComUm.length && slots.length > diasComUm.length; i++){
+    for(var [dia, arr] of slotsPorDia.entries()){ if(arr.length===1) diasComUm.push(dia); }
+    for(var i=0; i<diasComUm.length && slots.length>diasComUm.length; i++){
       var diaOrig = diasComUm[i];
       var slotUnico = slotsPorDia.get(diaOrig)[0];
       for(var j=0; j<diasComUm.length; j++){
         if(i===j) continue;
         var diaAlvo = diasComUm[j];
-        if(diaValido(diaAlvo, slotUnico.slot) && duplasNoDia.get(diaAlvo) === 1){
+        if(diaValido(diaAlvo, slotUnico.slot) && duplasNoDia.get(diaAlvo)===1){
           alocacoes = alocacoes.map(function(a){
-            if(a === slotUnico) return {dia: diaAlvo, slot: a.slot, segunda: true};
+            if(a===slotUnico) return {dia:diaAlvo, slot:a.slot, segunda:true};
             return a;
           });
           duplasNoDia.set(diaOrig, 0);
@@ -524,56 +560,41 @@ function sortear(respFixed){
         }
       }
     }
-    alocacoes.forEach(function(a,idx){
-      a.segunda = (duplasNoDia.get(a.dia) === 2 && idx % 2 === 1);
-    });
+    alocacoes.forEach(function(a, idx){ a.segunda = (duplasNoDia.get(a.dia)===2 && idx%2===1); });
   }
 
-  // Evitar dois setores longos no mesmo dia (se regra ativa)
   if(regras.evitar2LongosDia){
     var diasMap = new Map();
-    alocacoes.forEach(a => {
-      if(!diasMap.has(a.dia)) diasMap.set(a.dia, []);
+    alocacoes.forEach(function(a){
+      if(!diasMap.has(a.dia)) diasMap.set(a.dia,[]);
       diasMap.get(a.dia).push(a);
     });
-    var conflitos = true;
-    var maxSwap = 100;
-    while(conflitos && maxSwap-- > 0){
-      conflitos = false;
-      for(var [dia, lista] of diasMap.entries()){
+    var conflitos=true, maxSwap=100;
+    while(conflitos && maxSwap-->0){
+      conflitos=false;
+      for(var [dia,lista] of diasMap.entries()){
         if(lista.length===2){
-          var longos = lista.filter(a => a.slot.setores.some(s => setores.find(x=>x.n===s)?.r===0));
+          var longos = lista.filter(function(a){ return a.slot.setores.some(function(s){ var x=setores.find(function(x){ return x.n===s; }); return x&&x.r===0; }); });
           if(longos.length>=2){
-            conflitos = true;
-            // tentar trocar uma das duplas com outro dia que tenha apenas 1 dupla e que aceite a troca sem gerar dois longos
-            var candidatoSwap = null;
-            for(var [outroDia, outraLista] of diasMap.entries()){
-              if(outroDia !== dia && outraLista.length===1){
-                var duplaTroca = outraLista[0];
-                var duplaProblema = longos[0];
-                if(diaValido(outroDia, duplaProblema.slot) && diaValido(dia, duplaTroca.slot)){
-                  var novoOutroLongos = [duplaProblema, ...outraLista].some(a => a.slot.setores.some(s=>setores.find(x=>x.n===s)?.r===0));
-                  var novoDiaLongos = [duplaTroca, ...lista.filter(x=>x!==duplaProblema)].some(a=>a.slot.setores.some(s=>setores.find(x=>x.n===s)?.r===0));
-                  if(!novoOutroLongos && !novoDiaLongos){
-                    candidatoSwap = {diaOrig: dia, diaDest: outroDia, duplaProblema, duplaTroca};
-                    break;
-                  }
+            conflitos=true;
+            var candidatoSwap=null;
+            for(var [outroDia,outraLista] of diasMap.entries()){
+              if(outroDia!==dia && outraLista.length===1){
+                var duplaTroca=outraLista[0], duplaProblema=longos[0];
+                if(diaValido(outroDia,duplaProblema.slot) && diaValido(dia,duplaTroca.slot)){
+                  candidatoSwap={diaOrig:dia,diaDest:outroDia,duplaProblema,duplaTroca};
+                  break;
                 }
               }
             }
             if(candidatoSwap){
-              // executar swap
-              alocacoes = alocacoes.map(a => {
-                if(a === candidatoSwap.duplaProblema) return {dia: candidatoSwap.diaDest, slot: a.slot, segunda: a.segunda};
-                if(a === candidatoSwap.duplaTroca) return {dia: candidatoSwap.diaOrig, slot: a.slot, segunda: a.segunda};
+              alocacoes = alocacoes.map(function(a){
+                if(a===candidatoSwap.duplaProblema) return {dia:candidatoSwap.diaDest, slot:a.slot, segunda:a.segunda};
+                if(a===candidatoSwap.duplaTroca)    return {dia:candidatoSwap.diaOrig,  slot:a.slot, segunda:a.segunda};
                 return a;
               });
-              // reconstruir map
               diasMap.clear();
-              alocacoes.forEach(a => {
-                if(!diasMap.has(a.dia)) diasMap.set(a.dia, []);
-                diasMap.get(a.dia).push(a);
-              });
+              alocacoes.forEach(function(a){ if(!diasMap.has(a.dia)) diasMap.set(a.dia,[]); diasMap.get(a.dia).push(a); });
               break;
             }
           }
@@ -583,24 +604,24 @@ function sortear(respFixed){
   }
 
   alocacoes.sort(function(a,b){
-    if (a.dia !== b.dia) return new Date(a.dia) - new Date(b.dia);
-    return (a.segunda ? 1 : 0) - (b.segunda ? 1 : 0);
+    if(a.dia!==b.dia) return new Date(a.dia)-new Date(b.dia);
+    return (a.segunda?1:0)-(b.segunda?1:0);
   });
 
   var novaEscalaFinal = novaEsc.slice();
   alocacoes.forEach(function(aloc){
     var k = ck(aloc.slot.e, aloc.slot.i);
     usosDupla.set(k, (usosDupla.get(k)||0)+1);
-    novaEscalaFinal.push({data: aloc.dia, e: aloc.slot.e, i: aloc.slot.i, setores: aloc.slot.setores, fixado: false, seg: aloc.segunda});
+    novaEscalaFinal.push({data:aloc.dia, e:aloc.slot.e, i:aloc.slot.i, setores:aloc.slot.setores, fixado:false, seg:aloc.segunda});
   });
-  escala = novaEscalaFinal.sort(function(a,b){ return new Date(a.data) - new Date(b.data); });
+  escala = novaEscalaFinal.sort(function(a,b){ return new Date(a.data)-new Date(b.data); });
 
   atualizarParticipacao();
-  var diasComDuas = 0, contagem = new Map();
+  var diasComDuas=0, contagem=new Map();
   escala.forEach(function(l){ contagem.set(l.data, (contagem.get(l.data)||0)+1); });
-  for (var q of contagem.values()) if (q===2) diasComDuas++;
-  if (diasComDuas > 0) avisoEl.innerHTML = '<i class="fas fa-calendar-week"></i> Foram usadas ' + diasComDuas + ' segunda(s) auditoria(s).';
-  else avisoEl.innerHTML = '<i class="fas fa-check-circle"></i> Apenas auditorias de manhã.';
+  for(var q of contagem.values()) if(q===2) diasComDuas++;
+  if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Foram usadas '+diasComDuas+' segunda(s) auditoria(s).';
+  else              avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Apenas auditorias de manhã.';
 
   var resumo = [];
   if(regras.forcar1L1C) resumo.push('1L+1C');
@@ -610,22 +631,22 @@ function sortear(respFixed){
   if(regras.distribuirEquitativamente) resumo.push('Distribuição uniforme');
   document.getElementById('regrasResumo').innerHTML = resumo.join(' | ') || 'padrão';
 
-  if (escalaVisivel) renderizarEscala();
+  if(escalaVisivel) renderizarEscala();
   else mostrarPlaceholder();
 }
 
 function atualizarParticipacao(){
-  var p=new Set(); escala.forEach(function(l){p.add(l.e);p.add(l.i);});
-  var tot=aExp.length+aInexp.length;
-  var pt=tot-p.size;
-  document.getElementById('pCt').innerText=pt;
-  document.getElementById('pTot').innerText=tot;
-  document.getElementById('pSt').innerHTML=pt===tot?' ✅ Todos participaram!':'';
-  var fd=document.getElementById('pFalt'); fd.innerHTML='';
-  var faltExp = aExp.filter(function(a){return !p.has(a);});
-  var faltInexp = aInexp.filter(function(a){return !p.has(a);});
-  if(faltExp.length) fd.innerHTML+='<div>⭐ Sem auditoria: '+faltExp.join(', ')+'</div>';
-  if(faltInexp.length) fd.innerHTML+='<div>🌱 Sem auditoria: '+faltInexp.join(', ')+'</div>';
+  var p = new Set(); escala.forEach(function(l){ p.add(l.e); p.add(l.i); });
+  var tot = aExp.length + aInexp.length;
+  var pt  = tot - p.size;
+  document.getElementById('pCt').innerText = pt;
+  document.getElementById('pTot').innerText = tot;
+  document.getElementById('pSt').innerHTML  = pt===tot ? ' ✅ Todos participaram!' : '';
+  var fd = document.getElementById('pFalt'); fd.innerHTML = '';
+  var faltExp   = aExp.filter(function(a){ return !p.has(a); });
+  var faltInexp = aInexp.filter(function(a){ return !p.has(a); });
+  if(faltExp.length)   fd.innerHTML += '<div>⭐ Sem auditoria: '+faltExp.join(', ')+'</div>';
+  if(faltInexp.length) fd.innerHTML += '<div>🌱 Sem auditoria: '+faltInexp.join(', ')+'</div>';
 }
 
 function renderizarEscala(){
@@ -640,30 +661,30 @@ function renderizarEscala(){
   var tb = document.getElementById('tbody');
   if(!tb) return;
   tb.innerHTML = '';
-  escala.forEach(function(l,idx){
-    var tr=document.createElement('tr');
+  escala.forEach(function(l, idx){
+    var tr = document.createElement('tr');
     if(l.fixado) tr.classList.add('fixado');
-    var dBR=l.data.split('-').reverse().join('/');
-    var sh=l.setores.map(function(s){
-      var st=setores.find(function(x){return x.n===s;});
+    var dBR = l.data.split('-').reverse().join('/');
+    var sh = l.setores.map(function(s){
+      var st = setores.find(function(x){ return x.n===s; });
       return '<span class="'+(st&&st.r?'sc':'sl')+'">'+s+'</span>';
     }).join(' ');
-    var b2=l.seg?'<span class="badge2">2ª dupla (tarde)</span>':'<span class="badge2">1ª dupla (manhã)</span>';
-    tr.innerHTML='<tr><strong>'+dBR+'</strong></td>'
+    var b2 = l.seg ? '<span class="badge2">2ª dupla (tarde)</span>' : '<span class="badge2">1ª dupla (manhã)</span>';
+    tr.innerHTML = '<td><strong>'+dBR+'</strong></td>'
       +'<td><i class="fas fa-user-friends"></i> '+l.e+' + '+l.i+' '+b2+'</td>'
       +'<td><div style="display:flex;flex-direction:column;gap:3px">'+sh+'</div></td>'
       +'<td><button class="manter-btn'+(l.fixado?' on':'')+'" data-i="'+idx+'">'
       +'<i class="fas fa-'+(l.fixado?'lock':'lock-open')+'"></i> '+(l.fixado?'Manter':'Manter?')+'</button></td>';
     tb.appendChild(tr);
   });
-  var du = [...new Set(escala.map(function(l){return l.data;}))].length;
-  var ts = escala.reduce(function(a,l){return a+l.setores.length;},0);
-  var diasCom2 = 0, mapDias = new Map();
+  var du = [...new Set(escala.map(function(l){ return l.data; }))].length;
+  var ts = escala.reduce(function(a,l){ return a+l.setores.length; }, 0);
+  var diasCom2=0, mapDias=new Map();
   escala.forEach(function(l){ mapDias.set(l.data, (mapDias.get(l.data)||0)+1); });
-  for (var v of mapDias.values()) if (v===2) diasCom2++;
-  var duplasRepetidas = 0, mapDupla = new Map();
-  escala.forEach(function(l){ var k=ck(l.e,l.i); mapDupla.set(k, (mapDupla.get(k)||0)+1); });
-  for (var q of mapDupla.values()) if (q>=2) duplasRepetidas++;
+  for(var v of mapDias.values()) if(v===2) diasCom2++;
+  var duplasRepetidas=0, mapDupla=new Map();
+  escala.forEach(function(l){ var k=ck(l.e,l.i); mapDupla.set(k,(mapDupla.get(k)||0)+1); });
+  for(var q of mapDupla.values()) if(q>=2) duplasRepetidas++;
   document.getElementById('sDias').innerText = du;
   document.getElementById('sDiasT').innerText = diasUteis.length;
   document.getElementById('sSet').innerText = ts;
@@ -672,26 +693,23 @@ function renderizarEscala(){
   document.getElementById('sDupRep').innerText = duplasRepetidas;
   document.getElementById('sDias2').innerText = diasCom2;
   document.querySelectorAll('.manter-btn').forEach(function(b){
-    b.addEventListener('click',function(){
+    b.addEventListener('click', function(){
       escala[+b.dataset.i].fixado = !escala[+b.dataset.i].fixado;
-      renderizarEscala();
-      atualizarParticipacao();
+      renderizarEscala(); atualizarParticipacao();
     });
   });
   function gerarCsv(){
-    var linhas=['Data;Dupla;Setores;Período'];
+    var linhas = ['Data;Dupla;Setores;Período'];
     escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); });
     return linhas.join('\n');
   }
   var btnCsv = document.getElementById('btnCsv');
-  if(btnCsv) btnCsv.onclick = function(){
-    document.getElementById('csvArea').value = gerarCsv();
-  };
+  if(btnCsv) btnCsv.onclick = function(){ document.getElementById('csvArea').value = gerarCsv(); };
 }
 
 function mostrarPlaceholder(){
   var protectedDiv = document.getElementById('protectedArea');
-  if(protectedDiv) protectedDiv.innerHTML = `<div class="protected-placeholder"><i class="fas fa-eye-slash" style="font-size:2rem;margin-bottom:0.5rem;display:block;"></i>Escala protegida por senha.<br>Clique no botão acima para visualizar.</div>`;
+  if(protectedDiv) protectedDiv.innerHTML = `<div class="protected-placeholder"><i class="fas fa-eye-slash" style="font-size:2rem;margin-bottom:.5rem;display:block"></i>Escala protegida por senha.<br>Clique no botão acima para visualizar.</div>`;
 }
 
 // ========== AUTENTICAÇÃO ==========
@@ -703,214 +721,366 @@ function pedirSenha(callback) {
   const input = modal.querySelector('#senhaEscala');
   const btn = modal.querySelector('#btnConfirmarSenha');
   const erroDiv = modal.querySelector('#erroSenha');
-  function verificar() { if (input.value.trim() === SENHA_CORRETA) { modal.remove(); callback(true); } else { erroDiv.innerText = 'Senha incorreta.'; input.value = ''; input.focus(); } }
+  function verificar(){ if(input.value.trim()===SENHA_CORRETA){ modal.remove(); callback(true); } else { erroDiv.innerText='Senha incorreta.'; input.value=''; input.focus(); } }
   btn.onclick = verificar;
-  input.onkeypress = function(e){ if(e.key === 'Enter') verificar(); };
+  input.onkeypress = function(e){ if(e.key==='Enter') verificar(); };
   input.focus();
 }
-function toggleEscala() {
-  if (escalaVisivel) { escalaVisivel=false; autenticado=false; sessionStorage.removeItem('escalaRevelada_5s'); mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-lock"></i> Mostrar Escala (requer senha)'; document.getElementById('btnToggleEscala').style.background='#e6a020';
-  } else { if (!autenticado) { pedirSenha(function(sucesso){ if(sucesso){ autenticado=true; sessionStorage.setItem('escalaRevelada_5s','true'); escalaVisivel=true; if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; } }); } else { escalaVisivel=true; if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder(); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; } }
+function toggleEscala(){
+  if(escalaVisivel){
+    escalaVisivel=false; autenticado=false; sessionStorage.removeItem('escalaRevelada_5s'); mostrarPlaceholder();
+    document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-lock"></i> Mostrar Escala (requer senha)';
+    document.getElementById('btnToggleEscala').style.background='#e6a020';
+  } else {
+    if(!autenticado){
+      pedirSenha(function(sucesso){
+        if(sucesso){
+          autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true');
+          if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder();
+          document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+          document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+        }
+      });
+    } else {
+      escalaVisivel=true;
+      if(escala && escala.length>0) renderizarEscala(); else mostrarPlaceholder();
+      document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+      document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+    }
+  }
 }
 
 // ========== DIAS ÚTEIS ==========
-function calcDias(ini,fim){
-  var dias=[]; for(var d=new Date(ini);d<=new Date(fim);d.setDate(d.getDate()+1)){ var dw=d.getDay(); if(dw&&dw!==6) dias.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')); } return dias;
+function calcDias(ini, fim){
+  var dias = [];
+  for(var d=new Date(ini); d<=new Date(fim); d.setDate(d.getDate()+1)){
+    var dw = d.getDay();
+    if(dw && dw!==6) dias.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'));
+  }
+  return dias;
 }
 function renderDias(){
-  document.getElementById('diasCt').innerText=diasUteis.length;
-  var c=document.getElementById('diasList'); c.innerHTML='';
+  document.getElementById('diasCt').innerText = diasUteis.length;
+  var c = document.getElementById('diasList'); c.innerHTML = '';
   diasUteis.forEach(function(d){
-    var sp=document.createElement('span'); sp.className='dia-badge';
+    var sp = document.createElement('span'); sp.className='dia-badge';
     sp.appendChild(document.createTextNode(d.split('-').reverse().join('/')));
-    var b=document.createElement('button'); b.innerHTML='\u00d7'; b.title='Remover';
-    b.onclick=function(){diasUteis=diasUteis.filter(function(x){return x!==d;});renderDias();sortear(true);};
+    var b = document.createElement('button'); b.innerHTML='×'; b.title='Remover';
+    b.onclick = function(){ diasUteis = diasUteis.filter(function(x){ return x!==d; }); renderDias(); sortear(true); };
     sp.appendChild(b); c.appendChild(sp);
   });
 }
-function atuDias(){ diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value); renderDias(); sortear(false); }
+function atuDias(){ diasUteis=calcDias(document.getElementById('dtIni').value, document.getElementById('dtFim').value); renderDias(); sortear(false); }
 
 // ========== AUDITORES E SETORES ==========
+function sortPT(arr){ return [...arr].sort(function(a,b){ return a.localeCompare(b,'pt-BR',{sensitivity:'base'}); }); }
+
 function renderAuds(){
-  [{id:'expList',arr:aExp,cls:'tag-exp',ico:'fa-star'},{id:'inexpList',arr:aInexp,cls:'tag-inexp',ico:'fa-seedling'}].forEach(function(tp){
-    var div=document.getElementById(tp.id); if(!div) return;
-    div.innerHTML='';
+  [{id:'expList',   arr:sortPT(aExp),   cls:'tag-exp',   ico:'fa-star'},
+   {id:'inexpList', arr:sortPT(aInexp), cls:'tag-inexp', ico:'fa-seedling'}].forEach(function(tp){
+    var div = document.getElementById(tp.id); if(!div) return;
+    div.innerHTML = '';
     tp.arr.forEach(function(nome){
-      var sp=document.createElement('span'); sp.className='tag '+tp.cls;
-      var ns=nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      sp.innerHTML='<span onclick="window._tA(\''+ns+'\')" style="cursor:pointer"><i class="fas '+tp.ico+'"></i> '+nome+'</span><button class="btn-x" onclick="window._dA(\''+ns+'\')" ><i class="fas fa-times-circle"></i></button>';
+      var sp = document.createElement('span'); sp.className='tag '+tp.cls;
+      var ns = nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      sp.innerHTML = '<span onclick="window._tA(\''+ns+'\')" style="cursor:pointer"><i class="fas '+tp.ico+'"></i> '+nome+'</span>'
+                   + '<button class="btn-x" onclick="window._dA(\''+ns+'\')"><i class="fas fa-times-circle"></i></button>';
       div.appendChild(sp);
     });
   });
 }
-window._tA=function(n){ var ie=aExp.indexOf(n); if(ie>=0){aExp.splice(ie,1);aInexp.push(n);} else{var ii=aInexp.indexOf(n);if(ii>=0){aInexp.splice(ii,1);aExp.push(n);}} renderAuds(); sincronizarRestricoes(); sortear(true); };
-window._dA=function(n){ if(!confirm('Remover '+n+'?'))return; aExp=aExp.filter(function(a){return a!==n;}); aInexp=aInexp.filter(function(a){return a!==n;}); delete maxOne[n]; delete diasIndisponiveis[n]; sincronizarRestricoes(); renderAuds(); sortear(true); };
-function addA(isE){ var v=document.getElementById(isE?'inpExp':'inpInexp').value.trim(); if(!v||aExp.indexOf(v)>=0||aInexp.indexOf(v)>=0)return; if(isE)aExp.push(v); else aInexp.push(v); document.getElementById(isE?'inpExp':'inpInexp').value=''; sincronizarRestricoes(); renderAuds(); sortear(true); }
-function renderSets(){ var c=document.getElementById('setList'); if(!c) return; c.innerHTML=''; setores.forEach(function(s,i){ var sp=document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo'); sp.innerHTML='<span onclick="window._tS('+i+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span><button class="btn-x" onclick="window._dS('+i+')"><i class="fas fa-times-circle"></i></button>'; c.appendChild(sp); }); }
-window._tS=function(i){setores[i].r=setores[i].r?0:1;renderSets();sincronizarRestricoes();sortear(true);};
-window._dS=function(i){ if(!confirm('Remover '+setores[i].n+'?'))return; setores.splice(i,1); sincronizarRestricoes(); renderSets(); sortear(true); };
-function addS(r){ var v=document.getElementById('inpSet').value.trim(); if(!v||setores.some(function(s){return s.n===v;}))return; setores.push({n:v,r:r}); document.getElementById('inpSet').value=''; sincronizarRestricoes(); renderSets(); sortear(true); }
+window._tA = function(n){
+  var ie = aExp.indexOf(n); if(ie>=0){ aExp.splice(ie,1); aInexp.push(n); }
+  else { var ii=aInexp.indexOf(n); if(ii>=0){ aInexp.splice(ii,1); aExp.push(n); } }
+  renderAuds(); sincronizarRestricoes(); sortear(true);
+};
+window._dA = function(n){
+  if(!confirm('Remover '+n+'?')) return;
+  aExp=aExp.filter(function(a){ return a!==n; }); aInexp=aInexp.filter(function(a){ return a!==n; });
+  delete maxOne[n]; delete diasIndisponiveis[n]; delete parceirosProibidos[n];
+  sincronizarRestricoes(); renderAuds(); sortear(true);
+};
+function addA(isE){
+  var v = document.getElementById(isE?'inpExp':'inpInexp').value.trim();
+  if(!v || aExp.indexOf(v)>=0 || aInexp.indexOf(v)>=0) return;
+  if(isE) aExp.push(v); else aInexp.push(v);
+  document.getElementById(isE?'inpExp':'inpInexp').value = '';
+  sincronizarRestricoes(); renderAuds(); sortear(true);
+}
+function renderSets(){
+  var c = document.getElementById('setList'); if(!c) return; c.innerHTML = '';
+  var sorted = setores.map(function(s,i){ return {n:s.n,r:s.r,origIdx:i}; })
+                      .sort(function(a,b){ return a.n.localeCompare(b.n,'pt-BR',{sensitivity:'base'}); });
+  sorted.forEach(function(s){
+    var sp = document.createElement('span'); sp.className='tag '+(s.r?'tag-curto':'tag-longo');
+    sp.innerHTML = '<span onclick="window._tS('+s.origIdx+')" style="cursor:pointer"><i class="fas fa-'+(s.r?'bolt':'clock')+'"></i> '+s.n+'</span>'
+                 + '<button class="btn-x" onclick="window._dS('+s.origIdx+')"><i class="fas fa-times-circle"></i></button>';
+    c.appendChild(sp);
+  });
+}
+window._tS = function(i){ setores[i].r = setores[i].r ? 0 : 1; renderSets(); sincronizarRestricoes(); sortear(true); };
+window._dS = function(i){ if(!confirm('Remover '+setores[i].n+'?')) return; setores.splice(i,1); sincronizarRestricoes(); renderSets(); sortear(true); };
+function addS(r){
+  var v = document.getElementById('inpSet').value.trim();
+  if(!v || setores.some(function(s){ return s.n===v; })) return;
+  setores.push({n:v, r:r}); document.getElementById('inpSet').value='';
+  sincronizarRestricoes(); renderSets(); sortear(true);
+}
 
 // ========== RESTRIÇÕES ==========
 function abrirRest(){
   sincronizarRestricoes();
-  var c=document.getElementById('listaRest'); c.innerHTML='';
-  var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;});
+  var c = document.getElementById('listaRest'); c.innerHTML = '';
+  var todos  = sortPT([...aExp, ...aInexp]);
+  var nomes  = setores.map(function(s){ return s.n; }).sort(function(a,b){ return a.localeCompare(b,'pt-BR',{sensitivity:'base'}); });
+
   todos.forEach(function(aud){
-    var pr=restr[aud]||[];
-    var idSanit = aud.replace(/[^a-z0-9]/gi, '_');
-    var div=document.createElement('div'); div.className='rest-item';
-    div.innerHTML=`<div class="rest-nome">${aud} <label class="maxone-label"><input type="checkbox" id="maxone_${idSanit}" ${maxOne[aud]?'checked':''}> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label></div>
-                   <div class="rest-sets" id="rs-${idSanit}"></div>
-                   <div class="dias-indisponiveis"><i class="fas fa-calendar-times"></i> Dias indisponível (férias/folga):<br>
-                   <div class="dias-tags" id="diasTags_${idSanit}"></div>
-                   <div style="display:flex;gap:5px;margin-top:6px;"><input type="date" id="dateInput_${idSanit}" style="font-size:0.7rem; padding:4px;"> <button class="btn-sm btn" data-aud="${aud}" data-adddia="1">Adicionar</button></div></div>`;
+    var pr        = restr[aud] || [];
+    var parcBloq  = parceirosProibidos[aud] || [];
+    var idSanit   = aud.replace(/[^a-z0-9]/gi, '_');
+
+    var div = document.createElement('div'); div.className = 'rest-item';
+    div.innerHTML = `
+      <div class="rest-nome">
+        ${aud}
+        <label class="maxone-label"><input type="checkbox" id="maxone_${idSanit}" ${maxOne[aud]?'checked':''}> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label>
+        <button class="btn-del-aud" data-del-aud="${aud.replace(/"/g,'&quot;')}"><i class="fas fa-user-minus"></i> Excluir auditor</button>
+      </div>
+
+      <div class="rest-section-label"><i class="fas fa-building"></i> Setores bloqueados</div>
+      <div class="rest-sets" id="rs-${idSanit}"></div>
+
+      <div class="rest-section-label" style="color:#8b3030"><i class="fas fa-user-slash"></i> Não auditar junto com</div>
+      <div class="parc-sets" id="parc-${idSanit}"></div>
+
+      <div class="dias-indisponiveis">
+        <div class="rest-section-label" style="margin-bottom:2px"><i class="fas fa-calendar-times"></i> Dias indisponível (férias / folga)</div>
+        <div class="dias-tags" id="diasTags_${idSanit}"></div>
+        <div class="intervalo-row">
+          <span>De:</span>
+          <input type="date" id="dateIni_${idSanit}">
+          <span>até:</span>
+          <input type="date" id="dateFim_${idSanit}">
+          <button class="btn btn-sm" data-aud="${aud.replace(/"/g,'&quot;')}" data-adddia="1">+ Adicionar</button>
+        </div>
+      </div>`;
+
     c.appendChild(div);
-    var sd=div.querySelector('.rest-sets');
+
+    // Checkboxes de setores bloqueados
+    var sd = document.getElementById('rs-'+idSanit);
     nomes.forEach(function(s){
-      var lb=document.createElement('label');
-      var cb=document.createElement('input'); cb.type='checkbox'; cb.value=s; cb.checked=pr.indexOf(s)>=0;
+      var lb = document.createElement('label');
+      var cb = document.createElement('input'); cb.type='checkbox'; cb.value=s; cb.checked=(pr.indexOf(s)>=0);
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+s)); sd.appendChild(lb);
     });
-    var diasDiv = document.getElementById(`diasTags_${idSanit}`);
+
+    // Checkboxes de parceiros proibidos
+    var pd = document.getElementById('parc-'+idSanit);
+    var outrosAuditores = todos.filter(function(a){ return a!==aud; });
+    outrosAuditores.forEach(function(outro){
+      var lb = document.createElement('label');
+      var cb = document.createElement('input'); cb.type='checkbox'; cb.value=outro; cb.checked=(parcBloq.indexOf(outro)>=0);
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+outro)); pd.appendChild(lb);
+    });
+
+    // Botão excluir auditor
+    div.querySelector('[data-del-aud]').onclick = function(){
+      var nome = this.getAttribute('data-del-aud');
+      if(!confirm('Excluir auditor "'+nome+'" de todas as listas?')) return;
+      aExp   = aExp.filter(function(a){ return a!==nome; });
+      aInexp = aInexp.filter(function(a){ return a!==nome; });
+      delete maxOne[nome]; delete diasIndisponiveis[nome]; delete parceirosProibidos[nome];
+      sincronizarRestricoes(); renderAuds(); sortear(true);
+      div.remove(); // remove da lista do modal
+    };
+
+    // Tags de dias indisponíveis existentes
+    var diasDiv = document.getElementById('diasTags_'+idSanit);
     if(diasIndisponiveis[aud]){
-      diasIndisponiveis[aud].forEach(function(dia){
-        var tag = document.createElement('span'); tag.className='dia-tag'; tag.innerHTML = dia.split('-').reverse().join('/') + '<button data-dia="'+dia+'" data-aud="'+aud+'">&times;</button>';
+      var diasOrd = [...diasIndisponiveis[aud]].sort();
+      diasOrd.forEach(function(dia){
+        var tag = criarTagDia(dia, aud, diasDiv);
         diasDiv.appendChild(tag);
       });
     }
-    var btnAdd = div.querySelector(`[data-adddia="1"]`);
+
+    // Adicionar intervalo de datas
+    var btnAdd = div.querySelector('[data-adddia="1"]');
     if(btnAdd){
       btnAdd.onclick = function(){
-        var dateInput = document.getElementById(`dateInput_${idSanit}`);
-        var dia = dateInput.value;
-        if(!dia) return;
-        if(!diasIndisponiveis[aud]) diasIndisponiveis[aud]=[];
-        if(diasIndisponiveis[aud].indexOf(dia)===-1){
-          diasIndisponiveis[aud].push(dia);
-          var tag = document.createElement('span'); tag.className='dia-tag'; tag.innerHTML = dia.split('-').reverse().join('/') + '<button data-dia="'+dia+'" data-aud="'+aud+'">&times;</button>';
-          diasDiv.appendChild(tag);
-          tag.querySelector('button').onclick = function(e){
-            var d = this.getAttribute('data-dia');
-            var a = this.getAttribute('data-aud');
-            if(diasIndisponiveis[a]) diasIndisponiveis[a] = diasIndisponiveis[a].filter(function(x){return x!==d;});
-            tag.remove();
-            salvarRestr();
-          };
+        var iniEl = document.getElementById('dateIni_'+idSanit);
+        var fimEl = document.getElementById('dateFim_'+idSanit);
+        var dataIni = iniEl.value;
+        if(!dataIni) return;
+        var dataFim = fimEl.value || dataIni;
+        if(!diasIndisponiveis[aud]) diasIndisponiveis[aud] = [];
+        var cur = new Date(dataIni+'T00:00:00');
+        var end = new Date(dataFim+'T00:00:00');
+        while(cur <= end){
+          var dStr = cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+          if(diasIndisponiveis[aud].indexOf(dStr)===-1){
+            diasIndisponiveis[aud].push(dStr);
+            var tag = criarTagDia(dStr, aud, diasDiv);
+            diasDiv.appendChild(tag);
+          }
+          cur.setDate(cur.getDate()+1);
         }
-        dateInput.value='';
-      };
-    }
-    diasDiv.querySelectorAll('button').forEach(function(btn){
-      btn.onclick = function(e){
-        var d = this.getAttribute('data-dia');
-        var a = this.getAttribute('data-aud');
-        if(diasIndisponiveis[a]) diasIndisponiveis[a] = diasIndisponiveis[a].filter(function(x){return x!==d;});
-        this.parentElement.remove();
+        iniEl.value = '';
+        fimEl.value = '';
         salvarRestr();
       };
-    });
+    }
   });
-  document.getElementById('modalRest').style.display='flex';
+  document.getElementById('modalRest').style.display = 'flex';
 }
+
+function criarTagDia(dia, aud, diasDiv){
+  var tag = document.createElement('span'); tag.className='dia-tag';
+  var btn = document.createElement('button'); btn.innerHTML='&times;';
+  btn.onclick = function(){
+    if(diasIndisponiveis[aud]) diasIndisponiveis[aud] = diasIndisponiveis[aud].filter(function(x){ return x!==dia; });
+    tag.remove(); salvarRestr();
+  };
+  tag.appendChild(document.createTextNode(dia.split('-').reverse().join('/')));
+  tag.appendChild(btn);
+  return tag;
+}
+
 function salvarRest(){
-  var todos=aExp.concat(aInexp), nomes=setores.map(function(s){return s.n;}), novo={};
-  var novoMaxOne = {};
+  var todos = sortPT([...aExp, ...aInexp]);
+  var novo = {}, novoMaxOne = {}, novoParceiros = {};
   todos.forEach(function(aud){
-    var idSanit = aud.replace(/[^a-z0-9]/gi, '_');
-    var d = document.getElementById('rs-'+idSanit);
-    var cbMax = document.getElementById('maxone_'+idSanit);
+    var idSanit  = aud.replace(/[^a-z0-9]/gi,'_');
+    var sd       = document.getElementById('rs-'+idSanit);
+    var pd       = document.getElementById('parc-'+idSanit);
+    var cbMax    = document.getElementById('maxone_'+idSanit);
     if(cbMax) novoMaxOne[aud] = cbMax.checked;
-    if(!d) return;
-    var pr=[];
-    d.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
-      if(cb.checked) pr.push(nomes[i]);
-    });
-    novo[aud]=pr;
+    if(sd){
+      var pr = [];
+      sd.querySelectorAll('input[type=checkbox]').forEach(function(cb){ if(cb.checked) pr.push(cb.value); });
+      novo[aud] = pr;
+    }
+    if(pd){
+      var parc = [];
+      pd.querySelectorAll('input[type=checkbox]').forEach(function(cb){ if(cb.checked) parc.push(cb.value); });
+      if(parc.length) novoParceiros[aud] = parc;
+    }
   });
-  restr=novo; maxOne=novoMaxOne;
+  restr = novo; maxOne = novoMaxOne; parceirosProibidos = novoParceiros;
   salvarRestr();
-  document.getElementById('modalRest').style.display='none';
+  document.getElementById('modalRest').style.display = 'none';
   sortear(true);
   alert('Restrições salvas!');
 }
 
 // ========== HISTÓRICO ==========
 function salvarH(){
-  var nome=prompt('Nome (ex: Abril 2026):'); if(!nome)return;
-  var h=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
-  h.push({nome:nome,data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasIndisponiveis:diasIndisponiveis, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
-  localStorage.setItem('h5s_v6',JSON.stringify(h));
+  var nome = prompt('Nome (ex: Abril 2026):'); if(!nome) return;
+  var h = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
+  h.push({nome:nome, data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasIndisponiveis:diasIndisponiveis, parceirosProibidos:parceirosProibidos, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
+  localStorage.setItem('h5s_v6', JSON.stringify(h));
   alert('"'+nome+'" salvo!');
 }
 function abrirH(){
-  var h=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
-  var c=document.getElementById('listaHist'); c.innerHTML='';
-  if(!h.length){c.innerHTML='<p style="padding:1rem;color:#888">Nenhum sorteio salvo.</p>';}
-  else h.forEach(function(it,idx){
-    var d=document.createElement('div'); d.className='hist-item';
-    d.innerHTML='<span><strong>'+it.nome+'</strong> &mdash; '+it.data+'</span><div style="display:flex;gap:.4rem"><button class="btn btn-sm btn-outline" data-idx="'+idx+'" data-a="load">Carregar</button><button class="btn btn-sm" style="background:#c2673a;color:white;border-color:#c2673a" data-idx="'+idx+'" data-a="del">Excluir</button></div>';
+  var h = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
+  var c = document.getElementById('listaHist'); c.innerHTML = '';
+  if(!h.length){ c.innerHTML='<p style="padding:1rem;color:#888">Nenhum sorteio salvo.</p>'; }
+  else h.forEach(function(it, idx){
+    var d = document.createElement('div'); d.className='hist-item';
+    d.innerHTML = '<span><strong>'+it.nome+'</strong> &mdash; '+it.data+'</span>'
+                + '<div style="display:flex;gap:.4rem">'
+                + '<button class="btn btn-sm btn-outline" data-idx="'+idx+'" data-a="load">Carregar</button>'
+                + '<button class="btn btn-sm" style="background:#c2673a;color:white;border-color:#c2673a" data-idx="'+idx+'" data-a="del">Excluir</button></div>';
     c.appendChild(d);
   });
   c.querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click',function(){
-      var idx=+b.dataset.idx, h2=JSON.parse(localStorage.getItem('h5s_v6')||'[]');
-      if(b.dataset.a==='load'){
-        function carregar() {
-          var it=h2[idx];
-          escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores; restr=it.restr; maxOne=it.maxOne || {}; diasIndisponiveis=it.diasIndisponiveis || {}; diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
+    b.addEventListener('click', function(){
+      var idx = +b.dataset.idx;
+      var h2  = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
+      if(b.dataset.a === 'load'){
+        function carregar(){
+          var it = h2[idx];
+          escala=it.escala; aExp=it.aExp; aInexp=it.aInexp; setores=it.setores;
+          restr=it.restr; maxOne=it.maxOne||{}; diasIndisponiveis=it.diasIndisponiveis||{};
+          parceirosProibidos=it.parceirosProibidos||{};
+          diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
           sincronizarRestricoes();
           renderDias(); renderAuds(); renderSets(); atualizarParticipacao();
-          if(escalaVisivel && escala.length>0) renderizarEscala();
-          else mostrarPlaceholder();
+          if(escalaVisivel && escala.length>0) renderizarEscala(); else mostrarPlaceholder();
           document.getElementById('modalHist').style.display='none';
           alert('Histórico carregado.');
         }
         if(!autenticado && !escalaVisivel){
-          pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true'); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; carregar(); } });
+          pedirSenha(function(ok){
+            if(ok){
+              autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true');
+              document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+              document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+              carregar();
+            }
+          });
         } else { carregar(); }
       } else {
-        if(!confirm('Excluir?'))return;
+        if(!confirm('Excluir?')) return;
         h2.splice(idx,1); localStorage.setItem('h5s_v6',JSON.stringify(h2)); abrirH();
       }
     });
   });
-  document.getElementById('modalHist').style.display='flex';
+  document.getElementById('modalHist').style.display = 'flex';
 }
 
 function expCsv(){
-  if (!escalaVisivel) { pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true'); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala.length) renderizarEscala(); else mostrarPlaceholder(); expCsv(); } }); return; }
+  if(!escalaVisivel){
+    pedirSenha(function(ok){
+      if(ok){
+        autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true');
+        document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+        document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+        if(escala.length) renderizarEscala(); else mostrarPlaceholder();
+        expCsv();
+      }
+    });
+    return;
+  }
   function gerarCsv(){ var linhas=['Data;Dupla;Setores;Período']; escala.forEach(function(l){ linhas.push(l.data+';'+l.e+' + '+l.i+';'+l.setores.join(' | ')+';'+(l.seg?'Tarde':'Manhã')); }); return linhas.join('\n'); }
-  var b=new Blob(['\uFEFF'+gerarCsv()],{type:'text/csv;charset=utf-8;'}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio_5s_'+new Date().toISOString().slice(0,10)+'.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  var b = new Blob(['﻿'+gerarCsv()],{type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio_5s_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-window.onload=function(){
+window.onload = function(){
   renderAuds(); renderSets(); atuDias();
-  document.getElementById('btnGerar').onclick=atuDias;
-  document.getElementById('btnSort').onclick=function(){sortear(true);};
-  document.getElementById('btnLFix').onclick=function(){escala.forEach(function(l){l.fixado=false;});if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder();};
-  document.getElementById('btnLEsc').onclick=function(){if(confirm('Limpar toda a escala?')){escala=[];if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder();}};
-  document.getElementById('btnExp').onclick=expCsv;
-  document.getElementById('btnAExp').onclick=function(){addA(true);};
-  document.getElementById('btnAInexp').onclick=function(){addA(false);};
-  document.getElementById('btnACurto').onclick=function(){addS(1);};
-  document.getElementById('btnALongo').onclick=function(){addS(0);};
-  document.getElementById('btnRest').onclick=abrirRest;
-  document.getElementById('btnFRest').onclick=function(){document.getElementById('modalRest').style.display='none';};
-  document.getElementById('btnSRest').onclick=salvarRest;
-  document.getElementById('btnSalv').onclick=salvarH;
-  document.getElementById('btnHist').onclick=abrirH;
-  document.getElementById('btnFHist').onclick=function(){document.getElementById('modalHist').style.display='none';};
-  document.getElementById('btnToggleEscala').onclick=toggleEscala;
-  document.getElementById('inpExp').onkeydown=function(e){if(e.key==='Enter')addA(true);};
-  document.getElementById('inpInexp').onkeydown=function(e){if(e.key==='Enter')addA(false);};
-  document.getElementById('inpSet').onkeydown=function(e){if(e.key==='Enter')addS(1);};
-  if(sessionStorage.getItem('escalaRevelada_5s') === 'true'){ autenticado=true; escalaVisivel=true; document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala && escala.length>0) renderizarEscala(); } else { mostrarPlaceholder(); }
-  document.getElementById('regra1L1C').addEventListener('change',()=>sortear(true));
-  document.getElementById('regraFallbackLongo').addEventListener('change',()=>sortear(true));
-  document.getElementById('regraEvitar2LongosDia').addEventListener('change',()=>sortear(true));
-  document.getElementById('regraEvitarDuplasRepetidas').addEventListener('change',()=>sortear(true));
-  document.getElementById('regraDistribuirEquitativamente').addEventListener('change',()=>sortear(true));
+  document.getElementById('btnGerar').onclick   = atuDias;
+  document.getElementById('btnSort').onclick    = function(){ sortear(true); };
+  document.getElementById('btnLFix').onclick    = function(){ escala.forEach(function(l){ l.fixado=false; }); if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); };
+  document.getElementById('btnLEsc').onclick    = function(){ if(confirm('Limpar toda a escala?')){ escala=[]; if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); } };
+  document.getElementById('btnExp').onclick     = expCsv;
+  document.getElementById('btnAExp').onclick    = function(){ addA(true); };
+  document.getElementById('btnAInexp').onclick  = function(){ addA(false); };
+  document.getElementById('btnACurto').onclick  = function(){ addS(1); };
+  document.getElementById('btnALongo').onclick  = function(){ addS(0); };
+  document.getElementById('btnRest').onclick    = abrirRest;
+  document.getElementById('btnFRest').onclick   = function(){ document.getElementById('modalRest').style.display='none'; };
+  document.getElementById('btnSRest').onclick   = salvarRest;
+  document.getElementById('btnSalv').onclick    = salvarH;
+  document.getElementById('btnHist').onclick    = abrirH;
+  document.getElementById('btnFHist').onclick   = function(){ document.getElementById('modalHist').style.display='none'; };
+  document.getElementById('btnToggleEscala').onclick = toggleEscala;
+  document.getElementById('inpExp').onkeydown   = function(e){ if(e.key==='Enter') addA(true); };
+  document.getElementById('inpInexp').onkeydown = function(e){ if(e.key==='Enter') addA(false); };
+  document.getElementById('inpSet').onkeydown   = function(e){ if(e.key==='Enter') addS(1); };
+  if(sessionStorage.getItem('escalaRevelada_5s')==='true'){
+    autenticado=true; escalaVisivel=true;
+    document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
+    document.getElementById('btnToggleEscala').style.background='#2a8e6b';
+    if(escala && escala.length>0) renderizarEscala();
+  } else { mostrarPlaceholder(); }
+  document.getElementById('regra1L1C').addEventListener('change',function(){ sortear(true); });
+  document.getElementById('regraFallbackLongo').addEventListener('change',function(){ sortear(true); });
+  document.getElementById('regraEvitar2LongosDia').addEventListener('change',function(){ sortear(true); });
+  document.getElementById('regraEvitarDuplasRepetidas').addEventListener('change',function(){ sortear(true); });
+  document.getElementById('regraDistribuirEquitativamente').addEventListener('change',function(){ sortear(true); });
 };
 })();
 </script>
