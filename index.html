@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5S – Sorteio de Auditorias (escala protegida + regras flexíveis)</title>
+<title>5S – Sorteio de Auditorias</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 <style>
@@ -87,6 +87,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 .maxone-label{font-size:.7rem;background:#f0e6d2;padding:2px 6px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
 .regras-panel{background:#eef3f2;border-radius:24px;padding:1rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center}
 .regra-opcao{display:flex;align-items:center;gap:8px;background:white;padding:5px 14px;border-radius:60px;font-size:.8rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.hist-badge{font-size:.68rem;background:#d4f0e8;color:#1a6b54;border-radius:12px;padding:1px 8px;margin-left:4px;font-weight:600}
 </style>
 </head>
 <body>
@@ -95,9 +96,11 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <h1>
   <span><i class="fas fa-clipboard-check"></i> 5S &mdash; Sorteio de Auditorias</span>
   <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-    <button id="btnRest"  class="btn btn-outline"><i class="fas fa-sliders-h"></i> Restrições</button>
-    <button id="btnSalv"  class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
-    <button id="btnHist"  class="btn btn-outline"><i class="fas fa-history"></i> Histórico</button>
+    <button id="btnRest"     class="btn btn-outline"><i class="fas fa-sliders-h"></i> Restrições</button>
+    <button id="btnSalv"     class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    <button id="btnHist"     class="btn btn-outline"><i class="fas fa-history"></i> Histórico</button>
+    <button id="btnExpJson"  class="btn btn-outline"><i class="fas fa-file-export"></i> Exportar</button>
+    <button id="btnImpJson"  class="btn btn-outline"><i class="fas fa-file-import"></i> Importar</button>
   </div>
 </h1>
 
@@ -114,6 +117,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
     <label class="regra-opcao"><input type="checkbox" id="regraEvitar2LongosDia" checked> <i class="fas fa-ban"></i> Evitar dois setores longos no mesmo dia</label>
     <label class="regra-opcao"><input type="checkbox" id="regraEvitarDuplasRepetidas" checked> <i class="fas fa-random"></i> Evitar duplas repetidas ao máximo</label>
     <label class="regra-opcao"><input type="checkbox" id="regraDistribuirEquitativamente" checked> <i class="fas fa-calendar-week"></i> Distribuir auditorias uniformemente nos dias</label>
+    <label class="regra-opcao"><input type="checkbox" id="regraUsarHistorico" checked> <i class="fas fa-history"></i> Evitar repetir duplas e setores do mês anterior</label>
   </div>
 </div>
 
@@ -186,8 +190,8 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <div class="card">
   <h2><i class="fas fa-calendar-week"></i> Período</h2>
   <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end">
-    <div><label style="font-size:.82rem">Início</label><br><input type="date" id="dtIni" value="2026-04-01"></div>
-    <div><label style="font-size:.82rem">Fim</label><br><input type="date" id="dtFim" value="2026-04-30"></div>
+    <div><label style="font-size:.82rem">Início</label><br><input type="date" id="dtIni" value="2026-07-01"></div>
+    <div><label style="font-size:.82rem">Fim</label><br><input type="date" id="dtFim" value="2026-07-31"></div>
     <button id="btnGerar" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Gerar dias</button>
     <span class="dias-info"><i class="far fa-calendar"></i> <strong id="diasCt">0</strong> dias úteis</span>
   </div>
@@ -205,7 +209,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
       <button id="btnLEsc"  class="btn btn-warn"><i class="fas fa-trash-alt"></i> Limpar escala</button>
     </div>
   </div>
-  <div class="regra">Regras ativas: 1L+1C | MTA máx 1x | Sem par P&D | <span id="regrasResumo"></span></div>
+  <div class="regra">Regras: <span id="regrasResumo">padrão</span></div>
   <div class="painel-part" id="pPart"><strong>Participação: <span id="pCt">0</span>/<span id="pTot">0</span></strong><span id="pSt"></span><div id="pFalt" style="margin-top:.25rem"></div></div>
   <div id="aviso" class="aviso"></div>
   <div id="alerta" class="alerta"></div>
@@ -230,10 +234,10 @@ const SENHA_CORRETA = "5s2026";
 let autenticado = false;
 let escalaVisivel = false;
 
-// ========== DADOS PRINCIPAIS ==========
-var aExp   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto'];
-var aInexp = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
-var setores = [
+// ========== DADOS PADRÃO (fallback quando localStorage está vazio) ==========
+var aExpDefault   = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto'];
+var aInexpDefault = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
+var setoresDefault = [
   {n:'Usinagem',r:0},{n:'P&D - RAID',r:1},{n:'P&D - Areas Comuns',r:1},
   {n:'MTA - Resfriar',r:0},{n:'ORH',r:0},{n:'Assistência Técnica',r:0},
   {n:'P&D - Software',r:1},{n:'Montagem de Placas',r:0},{n:'Qualidade e Meio Ambiente',r:0},
@@ -246,7 +250,98 @@ var setores = [
   {n:'Gestão Industrial',r:1},{n:'Gestão PID',r:1},{n:'Direção',r:1}
 ];
 
-// Restrições: setores bloqueados por auditor
+var aExp   = aExpDefault.slice();
+var aInexp = aInexpDefault.slice();
+var setores = JSON.parse(JSON.stringify(setoresDefault));
+
+// ========== HISTÓRICO INICIAL (Mar-Jun 2026) ==========
+var HISTORICO_INICIAL = [
+  {
+    nome:'Março 2026', data:'31/03/2026 23:59:00',
+    diasUteis:['2026-03-04','2026-03-05','2026-03-10','2026-03-11','2026-03-12','2026-03-16','2026-03-17','2026-03-18','2026-03-19','2026-03-23','2026-03-24','2026-03-25','2026-03-26','2026-03-27'],
+    aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
+    escala:[
+      {data:'2026-03-04',e:'Lucas Carnizella',i:'Felipe Martins Barcellos',setores:['Manutenção','Café Produção'],fixado:false,seg:false},
+      {data:'2026-03-05',e:'Lucas Carnizella',i:'Felipe Martins Barcellos',setores:['Comercial','Controladoria'],fixado:false,seg:false},
+      {data:'2026-03-10',e:'Alexandre Vivan',i:'Suélen Correa',setores:['ORH','P&D Flex'],fixado:false,seg:false},
+      {data:'2026-03-11',e:'Ana Carolina Adamatti',i:'Márcio Perotti Barros',setores:['Usinagem'],fixado:false,seg:false},
+      {data:'2026-03-12',e:'Jeferson Kessler',i:'Henrique Adamatti',setores:['Qualidade e Meio Ambiente','Tecnologia da Informação'],fixado:false,seg:false},
+      {data:'2026-03-16',e:'Gustavo Pauletti',i:'Vanessa Benedita Silveira',setores:['MTA - Resfriar','P&D - Software'],fixado:false,seg:false},
+      {data:'2026-03-17',e:'Maiara da Veiga Saretto',i:'Alexandre Silva de Avila',setores:['PPCPM','Café Subsolo'],fixado:false,seg:false},
+      {data:'2026-03-18',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Logística','Copa'],fixado:false,seg:false},
+      {data:'2026-03-19',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Chicote','P&D - RAID'],fixado:false,seg:false},
+      {data:'2026-03-23',e:'Aloísio Vargas Arrial',i:'Vinícius Maia',setores:['Montagem de Placas','P&D - Areas Comuns'],fixado:false,seg:false},
+      {data:'2026-03-24',e:'Aloísio Vargas Arrial',i:'Vinícius Maia',setores:['MTA - Industrial'],fixado:false,seg:false},
+      {data:'2026-03-25',e:'Cristiano dos Santos Gubert',i:'cristhian albuquerque pedroni',setores:['Métodos e Processos','P&D - Industrial'],fixado:false,seg:false},
+      {data:'2026-03-26',e:'Marcelo Henrique Sgarbi',i:'Gabriel Dedea',setores:['Assistência Técnica','P&D - Documentação'],fixado:false,seg:false},
+      {data:'2026-03-27',e:'Renata dos Santos',i:'Nathan Mossói padilha',setores:['MTA - Automotivo','P&D - HIT'],fixado:false,seg:false}
+    ]
+  },
+  {
+    nome:'Abril 2026', data:'30/04/2026 23:59:00',
+    diasUteis:['2026-04-07','2026-04-08','2026-04-10','2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-22','2026-04-23','2026-04-24','2026-04-27','2026-04-28','2026-04-29'],
+    aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
+    escala:[
+      {data:'2026-04-07',e:'Renata dos Santos',i:'Henrique Adamatti',setores:['Métodos e Processos','Café Subsolo'],fixado:false,seg:false},
+      {data:'2026-04-08',e:'Laiza da Silva Gonçalves',i:'Suélen Correa',setores:['MTA - Automotivo','P&D - Areas Comuns'],fixado:false,seg:false},
+      {data:'2026-04-10',e:'Lucas Carnizella',i:'Tamara Rech Kuchnir',setores:['Logística','P&D - RAID'],fixado:false,seg:false},
+      {data:'2026-04-13',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['MTA - Industrial','Copa'],fixado:false,seg:false},
+      {data:'2026-04-14',e:'Cristiano dos Santos Gubert',i:'Vanessa Benedita Silveira',setores:['Assistência Técnica','P&D - HIT'],fixado:false,seg:false},
+      {data:'2026-04-15',e:'Jeferson Kessler',i:'Nathan Mossói padilha',setores:['Usinagem','P&D - Software'],fixado:false,seg:false},
+      {data:'2026-04-16',e:'Marcelo Henrique Sgarbi',i:'Felipe Martins Barcellos',setores:['Montagem de Placas'],fixado:false,seg:false},
+      {data:'2026-04-22',e:'Laiza 2',i:'Márcio Perotti Barros',setores:['Tecnologia da Informação','P&D - Documentação'],fixado:false,seg:false},
+      {data:'2026-04-23',e:'Alexandre Vivan',i:'Maiara da Veiga Saretto',setores:['Chicote','PPCPM'],fixado:false,seg:false},
+      {data:'2026-04-24',e:'Gustavo Pauletti',i:'Alexandre Silva de Avila',setores:['Manutenção','ORH'],fixado:false,seg:false},
+      {data:'2026-04-27',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['Comercial','Controladoria'],fixado:false,seg:false},
+      {data:'2026-04-28',e:'Gustavo Pauletti',i:'Alexandre Silva de Avila',setores:['MTA - Resfriar','Café Produção'],fixado:false,seg:false},
+      {data:'2026-04-29',e:'Ana Carolina Adamatti',i:'cristhian albuquerque pedroni',setores:['Qualidade e Meio Ambiente','P&D - Industrial'],fixado:false,seg:false}
+    ]
+  },
+  {
+    nome:'Maio 2026', data:'31/05/2026 23:59:00',
+    diasUteis:['2026-05-04','2026-05-05','2026-05-06','2026-05-07','2026-05-11','2026-05-12','2026-05-13','2026-05-14','2026-05-18','2026-05-19','2026-05-20','2026-05-26','2026-05-27','2026-05-28'],
+    aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
+    escala:[
+      {data:'2026-05-04',e:'Jeferson Kessler',i:'Felipe Martins Barcellos',setores:['MTA - Resfriar','Café Produção'],fixado:false,seg:false},
+      {data:'2026-05-05',e:'Renata dos Santos',i:'Suélen Correa',setores:['P&D - Areas Comuns','Café Subsolo'],fixado:false,seg:false},
+      {data:'2026-05-06',e:'Laiza da Silva Gonçalves',i:'Márcio Perotti Barros',setores:['ORH','Controladoria'],fixado:false,seg:false},
+      {data:'2026-05-07',e:'Alexandre Vivan',i:'cristhian albuquerque pedroni',setores:['MTA - Automotivo','Copa'],fixado:false,seg:false},
+      {data:'2026-05-11',e:'Marcelo Henrique Sgarbi',i:'Henrique Adamatti',setores:['MTA - Industrial','P&D - Software'],fixado:false,seg:false},
+      {data:'2026-05-12',e:'Ana Carolina Adamatti',i:'Vanessa Benedita Silveira',setores:['P&D - Industrial','Qualidade e Meio Ambiente'],fixado:false,seg:false},
+      {data:'2026-05-13',e:'Lucas Carnizella',i:'Alexandre Silva de Avila',setores:['Métodos e Processos','Tecnologia da Informação'],fixado:false,seg:false},
+      {data:'2026-05-14',e:'Gustavo Pauletti',i:'Maiara da Veiga Saretto',setores:['PPCPM','P&D - Documentação'],fixado:false,seg:false},
+      {data:'2026-05-18',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['P&D - RAID','P&D - HIT'],fixado:false,seg:false},
+      {data:'2026-05-19',e:'Gustavo Pauletti',i:'Maiara da Veiga Saretto',setores:['Assistência Técnica','Gestão PID'],fixado:false,seg:false},
+      {data:'2026-05-20',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Chicote','Manutenção'],fixado:false,seg:false},
+      {data:'2026-05-26',e:'Jeferson Kessler',i:'Felipe Martins Barcellos',setores:['Montagem de Placas','Direção'],fixado:false,seg:false},
+      {data:'2026-05-27',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['Logística','Gestão Industrial'],fixado:false,seg:false},
+      {data:'2026-05-28',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Usinagem','Comercial'],fixado:false,seg:false}
+    ]
+  },
+  {
+    nome:'Junho 2026', data:'30/06/2026 23:59:00',
+    diasUteis:['2026-06-03','2026-06-08','2026-06-09','2026-06-10','2026-06-11','2026-06-12','2026-06-16','2026-06-17','2026-06-18','2026-06-22','2026-06-23','2026-06-24','2026-06-25','2026-06-29'],
+    aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
+    escala:[
+      {data:'2026-06-03',e:'Jeferson Kessler',i:'Henrique Adamatti',setores:['P&D - RAID','Café Subsolo'],fixado:false,seg:false},
+      {data:'2026-06-08',e:'Felipe Martins Barcellos',i:'Alexandre Silva de Avila',setores:['Assistência Técnica','Café Produção'],fixado:false,seg:false},
+      {data:'2026-06-09',e:'Laiza da Silva Gonçalves',i:'Maiara da Veiga Saretto',setores:['P&D - Areas Comuns','P&D - HIT'],fixado:false,seg:false},
+      {data:'2026-06-10',e:'Renata dos Santos',i:'cristhian albuquerque pedroni',setores:['P&D - Industrial','P&D - Software'],fixado:false,seg:false},
+      {data:'2026-06-11',e:'Jeferson Kessler',i:'Márcio Perotti Barros',setores:['Métodos e Processos','Gestão PID'],fixado:false,seg:false},
+      {data:'2026-06-12',e:'Lucas Carnizella',i:'Gustavo Pauletti',setores:['MTA - Industrial','Gestão Industrial'],fixado:false,seg:false},
+      {data:'2026-06-16',e:'Alexandre Vivan',i:'Vanessa Benedita Silveira',setores:['Chicote','Copa'],fixado:false,seg:false},
+      {data:'2026-06-17',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Tecnologia da Informação','MTA - Resfriar'],fixado:false,seg:false},
+      {data:'2026-06-18',e:'Marcelo Henrique Sgarbi',i:'Gabriel Dedea',setores:['Qualidade e Meio Ambiente','Direção'],fixado:false,seg:false},
+      {data:'2026-06-22',e:'Lucas Carnizella',i:'Gustavo Pauletti',setores:['Manutenção','ORH'],fixado:false,seg:false},
+      {data:'2026-06-23',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Comercial','Controladoria'],fixado:false,seg:false},
+      {data:'2026-06-24',e:'Ana Carolina Adamatti',i:'Tamara Rech Kuchnir',setores:['Logística','P&D - Documentação'],fixado:false,seg:false},
+      {data:'2026-06-25',e:'Laiza da Silva Gonçalves',i:'Gabriel Dedea',setores:['PPCPM','MTA - Automotivo'],fixado:false,seg:false},
+      {data:'2026-06-29',e:'Alexandre Vivan',i:'Márcio Perotti Barros',setores:['Usinagem','Montagem de Placas'],fixado:false,seg:false}
+    ]
+  }
+];
+
+// Restrições padrão
 var restrPadrao = {
   'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
   'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
@@ -274,10 +369,45 @@ var maxOne = {};
 var diasIndisponiveis = {};
 var parceirosProibidos = {};
 
-// Verifica se dois auditores têm restrição de parceria
 function parBloqueado(a, b) {
   return (parceirosProibidos[a] && parceirosProibidos[a].indexOf(b) >= 0) ||
          (parceirosProibidos[b] && parceirosProibidos[b].indexOf(a) >= 0);
+}
+
+// ========== PERSISTÊNCIA ==========
+function salvarDados(){
+  localStorage.setItem('aExp_v6',    JSON.stringify(aExp));
+  localStorage.setItem('aInexp_v6',  JSON.stringify(aInexp));
+  localStorage.setItem('setores_v6', JSON.stringify(setores));
+}
+
+function salvarRestr(){
+  localStorage.setItem('r5s_v6',         JSON.stringify(restr));
+  localStorage.setItem('maxOne_v6',       JSON.stringify(maxOne));
+  localStorage.setItem('diasIndisp_v6',   JSON.stringify(diasIndisponiveis));
+  localStorage.setItem('parceiros_v6',    JSON.stringify(parceirosProibidos));
+}
+
+function initHistorico(){
+  if(localStorage.getItem('h5s_v6')) return;
+  localStorage.setItem('h5s_v6', JSON.stringify(HISTORICO_INICIAL));
+}
+
+function carregarDados(){
+  var se = localStorage.getItem('aExp_v6');
+  var si = localStorage.getItem('aInexp_v6');
+  var ss = localStorage.getItem('setores_v6');
+  if(se) aExp    = JSON.parse(se);
+  if(si) aInexp  = JSON.parse(si);
+  if(ss) setores = JSON.parse(ss);
+}
+
+function carregarRestricoes(){
+  try{ var s=localStorage.getItem('r5s_v6'); if(s) restr=JSON.parse(s); else{ restr=JSON.parse(JSON.stringify(restrPadrao)); localStorage.setItem('r5s_v6',JSON.stringify(restr)); } }catch(e){ restr=JSON.parse(JSON.stringify(restrPadrao)); }
+  try{ var mo=localStorage.getItem('maxOne_v6'); if(mo) maxOne=JSON.parse(mo); }catch(e){ maxOne={}; }
+  try{ var di=localStorage.getItem('diasIndisp_v6'); if(di) diasIndisponiveis=JSON.parse(di); }catch(e){ diasIndisponiveis={}; }
+  try{ var pp=localStorage.getItem('parceiros_v6'); if(pp) parceirosProibidos=JSON.parse(pp); }catch(e){ parceirosProibidos={}; }
+  sincronizarRestricoes();
 }
 
 function sincronizarRestricoes() {
@@ -298,43 +428,40 @@ function sincronizarRestricoes() {
   salvarRestr();
 }
 
-function carregarRestricoes(){
-  try{ var s=localStorage.getItem('r5s_v6'); if(s) restr=JSON.parse(s); else{ restr=JSON.parse(JSON.stringify(restrPadrao)); localStorage.setItem('r5s_v6',JSON.stringify(restr)); } }catch(e){ restr=JSON.parse(JSON.stringify(restrPadrao)); }
-  try{ var mo=localStorage.getItem('maxOne_v6'); if(mo) maxOne=JSON.parse(mo); }catch(e){ maxOne={}; }
-  try{ var di=localStorage.getItem('diasIndisp_v6'); if(di) diasIndisponiveis=JSON.parse(di); }catch(e){ diasIndisponiveis={}; }
-  try{ var pp=localStorage.getItem('parceiros_v6'); if(pp) parceirosProibidos=JSON.parse(pp); }catch(e){ parceirosProibidos={}; }
-  sincronizarRestricoes();
+// ========== HISTÓRICO RECENTE (memória entre meses) ==========
+function getHistoricoRecente(){
+  var h = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
+  if(!h.length) return null;
+  var ultimo = h[h.length-1];
+  var duplas = new Set();
+  var setoresAuditor = new Map();
+  (ultimo.escala||[]).forEach(function(l){
+    if(!l.e || !l.i) return;
+    duplas.add(ck(l.e, l.i));
+    [l.e, l.i].forEach(function(aud){
+      if(!setoresAuditor.has(aud)) setoresAuditor.set(aud, new Set());
+      (l.setores||[]).forEach(function(s){ setoresAuditor.get(aud).add(s); });
+    });
+  });
+  return {duplas: duplas, setoresAud: setoresAuditor, nome: ultimo.nome||''};
 }
-function salvarRestr(){
-  localStorage.setItem('r5s_v6', JSON.stringify(restr));
-  localStorage.setItem('maxOne_v6', JSON.stringify(maxOne));
-  localStorage.setItem('diasIndisp_v6', JSON.stringify(diasIndisponiveis));
-  localStorage.setItem('parceiros_v6', JSON.stringify(parceirosProibidos));
-}
-carregarRestricoes();
 
-var diasUteis=[], escala=[], usosDupla=new Map();
-
-function limiteAuditor(a){ return maxOne[a] ? 1 : (temMTA(a)?1:2); }
-function temMTA(a){ var p=restr[a]; return p && p.some(function(s){ return s.indexOf('MTA')===0; }); }
-function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
-function ck(a,b){ return a<b ? a+'|'+b : b+'|'+a; }
-function isDisponivelNoDia(auditor, dia){ return !diasIndisponiveis[auditor] || diasIndisponiveis[auditor].indexOf(dia)===-1; }
-
-// ========== REGRAS CONFIGURÁVEIS ==========
+// ========== REGRAS ==========
 function getRegras() {
   return {
-    forcar1L1C: document.getElementById('regra1L1C').checked,
-    fallbackLongo: document.getElementById('regraFallbackLongo').checked,
-    evitar2LongosDia: document.getElementById('regraEvitar2LongosDia').checked,
-    evitarDuplasRepetidas: document.getElementById('regraEvitarDuplasRepetidas').checked,
-    distribuirEquitativamente: document.getElementById('regraDistribuirEquitativamente').checked
+    forcar1L1C:               document.getElementById('regra1L1C').checked,
+    fallbackLongo:            document.getElementById('regraFallbackLongo').checked,
+    evitar2LongosDia:         document.getElementById('regraEvitar2LongosDia').checked,
+    evitarDuplasRepetidas:    document.getElementById('regraEvitarDuplasRepetidas').checked,
+    distribuirEquitativamente:document.getElementById('regraDistribuirEquitativamente').checked,
+    usarHistorico:            document.getElementById('regraUsarHistorico').checked
   };
 }
 
 function shuffle(a){ var b=a.slice(); for(var i=b.length-1;i>0;i--){ var j=0|Math.random()*(i+1); var t=b[i]; b[i]=b[j]; b[j]=t; } return b; }
 
-function tentarSortear(diasFixados, escalaFixada){
+// ========== ALGORITMO DE SORTEIO ==========
+function tentarSortear(diasFixados, escalaFixada, hist){
   var regras = getRegras();
   var jaFixos = new Set(escalaFixada.map(function(l){ return l.e; }).concat(escalaFixada.map(function(l){ return l.i; })));
   var eL = shuffle(aExp.filter(function(a){ return !jaFixos.has(a); }));
@@ -349,7 +476,6 @@ function tentarSortear(diasFixados, escalaFixada){
   duplas.forEach(function(d){ var k2=ck(d.e,d.i); if(!dmap.has(k2)) dmap.set(k2,d); });
   duplas = [...dmap.values()];
 
-  // Filtrar pares bloqueados (mantém os fixados)
   var fixadosSet = new Set(escalaFixada.map(function(l){ return ck(l.e,l.i); }));
   duplas = duplas.filter(function(d){ return fixadosSet.has(ck(d.e,d.i)) || !parBloqueado(d.e, d.i); });
 
@@ -406,6 +532,18 @@ function tentarSortear(diasFixados, escalaFixada){
     resultado.push({e:d.e, i:d.i, setores:listaFinal});
   }
 
+  // Penalidade histórica: quanto maior, mais indesejado
+  function penHist(d){
+    if(!hist) return 0;
+    return hist.duplas.has(ck(d.e,d.i)) ? 1 : 0;
+  }
+  function penHistSetor(dupEsc, setorNome){
+    if(!hist) return 0;
+    var sA = hist.setoresAud.get(dupEsc.e)||new Set();
+    var sB = hist.setoresAud.get(dupEsc.i)||new Set();
+    return (sA.has(setorNome)||sB.has(setorNome)) ? 1 : 0;
+  }
+
   var maxIter=400, iter=0;
   while((LP.length||CP.length) && iter<maxIter){
     iter++;
@@ -428,8 +566,15 @@ function tentarSortear(diasFixados, escalaFixada){
       iter++; continue;
     }
     candsHard.sort(function(a,b){
+      // 1) preferir duplas com menos slots usados
       var sa = slotsUsados.get(ck(a.e,a.i)), sb = slotsUsados.get(ck(b.e,b.i));
-      return sa-sb;
+      if(sa !== sb) return sa-sb;
+      // 2) deprioritizar duplas que já se repetiram no mês anterior
+      if(hist && regras.usarHistorico){
+        var pa = penHist(a), pb = penHist(b);
+        if(pa !== pb) return pa-pb;
+      }
+      return 0;
     });
     var dupEsc = candsHard[0];
     var slot = [hard.n];
@@ -442,7 +587,13 @@ function tentarSortear(diasFixados, escalaFixada){
         cposs.sort(function(a,b){
           var ea = dispNow.filter(function(d){ return elegDupla(d,a.n); }).length;
           var eb = dispNow.filter(function(d){ return elegDupla(d,b.n); }).length;
-          return ea-eb;
+          if(ea !== eb) return ea-eb;
+          // deprioritizar setores já feitos pela dupla no mês anterior
+          if(hist && regras.usarHistorico){
+            var ra = penHistSetor(dupEsc,a.n), rb = penHistSetor(dupEsc,b.n);
+            if(ra !== rb) return ra-rb;
+          }
+          return 0;
         });
         if(cposs.length){
           var c1 = cposs[0]; slot.push(c1.n); CP = CP.filter(function(s){ return s.n!==c1.n; });
@@ -451,10 +602,24 @@ function tentarSortear(diasFixados, escalaFixada){
           }
         } else if(regras.fallbackLongo){
           var lposs2 = LP.filter(function(s){ return elegDupla(dupEsc,s.n); });
+          lposs2.sort(function(a,b){
+            if(hist && regras.usarHistorico){
+              var ra = penHistSetor(dupEsc,a.n), rb = penHistSetor(dupEsc,b.n);
+              if(ra !== rb) return ra-rb;
+            }
+            return 0;
+          });
           if(lposs2.length){ var l2=lposs2[0]; slot.push(l2.n); LP=LP.filter(function(s){ return s.n!==l2.n; }); }
         }
       } else {
         var lposs = LP.filter(function(s){ return elegDupla(dupEsc,s.n); });
+        lposs.sort(function(a,b){
+          if(hist && regras.usarHistorico){
+            var ra = penHistSetor(dupEsc,a.n), rb = penHistSetor(dupEsc,b.n);
+            if(ra !== rb) return ra-rb;
+          }
+          return 0;
+        });
         if(!lposs.length){ CP.unshift(hard); iter++; continue; }
         var lEsc = lposs[0]; slot=[lEsc.n, hard.n]; LP=LP.filter(function(s){ return s.n!==lEsc.n; });
       }
@@ -476,6 +641,8 @@ function tentarSortear(diasFixados, escalaFixada){
 // ========== SORTEAR ==========
 function sortear(respFixed){
   if(!setores.length || !diasUteis.length) return;
+  var regras = getRegras();
+  var hist = regras.usarHistorico ? getHistoricoRecente() : null;
   usosDupla.clear();
   var novaEsc = [], diasFixados = new Set();
   if(respFixed){
@@ -488,7 +655,7 @@ function sortear(respFixed){
   var MAX_TENT=40, tent=0, res=null;
   while(tent<MAX_TENT && !res){
     tent++;
-    res = tentarSortear(diasFixados, novaEsc.filter(function(l){ return l.fixado; }));
+    res = tentarSortear(diasFixados, novaEsc.filter(function(l){ return l.fixado; }), hist);
   }
   var avisoEl = document.getElementById('aviso'), alertaEl = document.getElementById('alerta');
   if(!res){
@@ -505,7 +672,6 @@ function sortear(respFixed){
   var slots = res.resultado;
   var MAX_POR_DIA = 2;
   var forceTwo = document.getElementById('forceTwo').checked;
-  var regras = getRegras();
 
   var alocacoes = [];
   var duplasNoDia = new Map();
@@ -530,7 +696,7 @@ function sortear(respFixed){
     }
     if(!alocado){
       alertaEl.style.display='block';
-      alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias. Ajuste férias ou datas.';
+      alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias.';
       return;
     }
   }
@@ -620,8 +786,8 @@ function sortear(respFixed){
   var diasComDuas=0, contagem=new Map();
   escala.forEach(function(l){ contagem.set(l.data, (contagem.get(l.data)||0)+1); });
   for(var q of contagem.values()) if(q===2) diasComDuas++;
-  if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Foram usadas '+diasComDuas+' segunda(s) auditoria(s).';
-  else              avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Apenas auditorias de manhã.';
+  if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Sorteio concluído na tentativa '+tent+'. '+diasComDuas+' dia(s) com 2 auditorias.';
+  else              avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Sorteio concluído na tentativa '+tent+'.';
 
   var resumo = [];
   if(regras.forcar1L1C) resumo.push('1L+1C');
@@ -629,6 +795,7 @@ function sortear(respFixed){
   if(regras.evitar2LongosDia) resumo.push('Sem 2 longos/dia');
   if(regras.evitarDuplasRepetidas) resumo.push('Duplas únicas');
   if(regras.distribuirEquitativamente) resumo.push('Distribuição uniforme');
+  if(regras.usarHistorico && hist) resumo.push('Histórico: '+hist.nome+' <span class="hist-badge">✓</span>');
   document.getElementById('regrasResumo').innerHTML = resumo.join(' | ') || 'padrão';
 
   if(escalaVisivel) renderizarEscala();
@@ -638,7 +805,7 @@ function sortear(respFixed){
 function atualizarParticipacao(){
   var p = new Set(); escala.forEach(function(l){ p.add(l.e); p.add(l.i); });
   var tot = aExp.length + aInexp.length;
-  var pt  = tot - p.size;
+  var pt  = p.size;
   document.getElementById('pCt').innerText = pt;
   document.getElementById('pTot').innerText = tot;
   document.getElementById('pSt').innerHTML  = pt===tot ? ' ✅ Todos participaram!' : '';
@@ -792,20 +959,20 @@ function renderAuds(){
 window._tA = function(n){
   var ie = aExp.indexOf(n); if(ie>=0){ aExp.splice(ie,1); aInexp.push(n); }
   else { var ii=aInexp.indexOf(n); if(ii>=0){ aInexp.splice(ii,1); aExp.push(n); } }
-  renderAuds(); sincronizarRestricoes(); sortear(true);
+  salvarDados(); renderAuds(); sincronizarRestricoes(); sortear(true);
 };
 window._dA = function(n){
   if(!confirm('Remover '+n+'?')) return;
   aExp=aExp.filter(function(a){ return a!==n; }); aInexp=aInexp.filter(function(a){ return a!==n; });
   delete maxOne[n]; delete diasIndisponiveis[n]; delete parceirosProibidos[n];
-  sincronizarRestricoes(); renderAuds(); sortear(true);
+  salvarDados(); sincronizarRestricoes(); renderAuds(); sortear(true);
 };
 function addA(isE){
   var v = document.getElementById(isE?'inpExp':'inpInexp').value.trim();
   if(!v || aExp.indexOf(v)>=0 || aInexp.indexOf(v)>=0) return;
   if(isE) aExp.push(v); else aInexp.push(v);
   document.getElementById(isE?'inpExp':'inpInexp').value = '';
-  sincronizarRestricoes(); renderAuds(); sortear(true);
+  salvarDados(); sincronizarRestricoes(); renderAuds(); sortear(true);
 }
 function renderSets(){
   var c = document.getElementById('setList'); if(!c) return; c.innerHTML = '';
@@ -818,14 +985,22 @@ function renderSets(){
     c.appendChild(sp);
   });
 }
-window._tS = function(i){ setores[i].r = setores[i].r ? 0 : 1; renderSets(); sincronizarRestricoes(); sortear(true); };
-window._dS = function(i){ if(!confirm('Remover '+setores[i].n+'?')) return; setores.splice(i,1); sincronizarRestricoes(); renderSets(); sortear(true); };
+window._tS = function(i){ setores[i].r = setores[i].r ? 0 : 1; salvarDados(); renderSets(); sincronizarRestricoes(); sortear(true); };
+window._dS = function(i){ if(!confirm('Remover '+setores[i].n+'?')) return; setores.splice(i,1); salvarDados(); sincronizarRestricoes(); renderSets(); sortear(true); };
 function addS(r){
   var v = document.getElementById('inpSet').value.trim();
   if(!v || setores.some(function(s){ return s.n===v; })) return;
   setores.push({n:v, r:r}); document.getElementById('inpSet').value='';
-  sincronizarRestricoes(); renderSets(); sortear(true);
+  salvarDados(); sincronizarRestricoes(); renderSets(); sortear(true);
 }
+
+// ========== HELPERS ==========
+var diasUteis=[], escala=[], usosDupla=new Map();
+function limiteAuditor(a){ return maxOne[a] ? 1 : (temMTA(a)?1:2); }
+function temMTA(a){ var p=restr[a]; return p && p.some(function(s){ return s.indexOf('MTA')===0; }); }
+function pode(a,s){ var p=restr[a]; return !p || p.indexOf(s)<0; }
+function ck(a,b){ return a<b ? a+'|'+b : b+'|'+a; }
+function isDisponivelNoDia(auditor, dia){ return !diasIndisponiveis[auditor] || diasIndisponiveis[auditor].indexOf(dia)===-1; }
 
 // ========== RESTRIÇÕES ==========
 function abrirRest(){
@@ -846,13 +1021,10 @@ function abrirRest(){
         <label class="maxone-label"><input type="checkbox" id="maxone_${idSanit}" ${maxOne[aud]?'checked':''}> <i class="fas fa-hourglass-half"></i> Máx 1 vez/mês</label>
         <button class="btn-del-aud" data-del-aud="${aud.replace(/"/g,'&quot;')}"><i class="fas fa-user-minus"></i> Excluir auditor</button>
       </div>
-
       <div class="rest-section-label"><i class="fas fa-building"></i> Setores bloqueados</div>
       <div class="rest-sets" id="rs-${idSanit}"></div>
-
       <div class="rest-section-label" style="color:#8b3030"><i class="fas fa-user-slash"></i> Não auditar junto com</div>
       <div class="parc-sets" id="parc-${idSanit}"></div>
-
       <div class="dias-indisponiveis">
         <div class="rest-section-label" style="margin-bottom:2px"><i class="fas fa-calendar-times"></i> Dias indisponível (férias / folga)</div>
         <div class="dias-tags" id="diasTags_${idSanit}"></div>
@@ -867,7 +1039,6 @@ function abrirRest(){
 
     c.appendChild(div);
 
-    // Checkboxes de setores bloqueados
     var sd = document.getElementById('rs-'+idSanit);
     nomes.forEach(function(s){
       var lb = document.createElement('label');
@@ -875,7 +1046,6 @@ function abrirRest(){
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+s)); sd.appendChild(lb);
     });
 
-    // Checkboxes de parceiros proibidos
     var pd = document.getElementById('parc-'+idSanit);
     var outrosAuditores = todos.filter(function(a){ return a!==aud; });
     outrosAuditores.forEach(function(outro){
@@ -884,18 +1054,16 @@ function abrirRest(){
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' '+outro)); pd.appendChild(lb);
     });
 
-    // Botão excluir auditor
     div.querySelector('[data-del-aud]').onclick = function(){
       var nome = this.getAttribute('data-del-aud');
       if(!confirm('Excluir auditor "'+nome+'" de todas as listas?')) return;
       aExp   = aExp.filter(function(a){ return a!==nome; });
       aInexp = aInexp.filter(function(a){ return a!==nome; });
       delete maxOne[nome]; delete diasIndisponiveis[nome]; delete parceirosProibidos[nome];
-      sincronizarRestricoes(); renderAuds(); sortear(true);
-      div.remove(); // remove da lista do modal
+      salvarDados(); sincronizarRestricoes(); renderAuds(); sortear(true);
+      div.remove();
     };
 
-    // Tags de dias indisponíveis existentes
     var diasDiv = document.getElementById('diasTags_'+idSanit);
     if(diasIndisponiveis[aud]){
       var diasOrd = [...diasIndisponiveis[aud]].sort();
@@ -905,7 +1073,6 @@ function abrirRest(){
       });
     }
 
-    // Adicionar intervalo de datas
     var btnAdd = div.querySelector('[data-adddia="1"]');
     if(btnAdd){
       btnAdd.onclick = function(){
@@ -976,19 +1143,20 @@ function salvarRest(){
 
 // ========== HISTÓRICO ==========
 function salvarH(){
-  var nome = prompt('Nome (ex: Abril 2026):'); if(!nome) return;
+  var nome = prompt('Nome (ex: Julho 2026):'); if(!nome) return;
   var h = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
   h.push({nome:nome, data:new Date().toLocaleString('pt-BR'), escala:escala, aExp:aExp, aInexp:aInexp, setores:setores, restr:restr, maxOne:maxOne, diasIndisponiveis:diasIndisponiveis, parceirosProibidos:parceirosProibidos, diasUteis:diasUteis, usosDupla:[...usosDupla.entries()]});
   localStorage.setItem('h5s_v6', JSON.stringify(h));
-  alert('"'+nome+'" salvo!');
+  alert('"'+nome+'" salvo! O próximo sorteio já vai considerar esse mês como histórico.');
 }
 function abrirH(){
   var h = JSON.parse(localStorage.getItem('h5s_v6')||'[]');
   var c = document.getElementById('listaHist'); c.innerHTML = '';
   if(!h.length){ c.innerHTML='<p style="padding:1rem;color:#888">Nenhum sorteio salvo.</p>'; }
   else h.forEach(function(it, idx){
+    var isUltimo = (idx === h.length - 1);
     var d = document.createElement('div'); d.className='hist-item';
-    d.innerHTML = '<span><strong>'+it.nome+'</strong> &mdash; '+it.data+'</span>'
+    d.innerHTML = '<span><strong>'+it.nome+'</strong>'+(isUltimo?' <span class="hist-badge">base do histórico</span>':'')+' &mdash; '+it.data+'</span>'
                 + '<div style="display:flex;gap:.4rem">'
                 + '<button class="btn btn-sm btn-outline" data-idx="'+idx+'" data-a="load">Carregar</button>'
                 + '<button class="btn btn-sm" style="background:#c2673a;color:white;border-color:#c2673a" data-idx="'+idx+'" data-a="del">Excluir</button></div>';
@@ -1005,7 +1173,7 @@ function abrirH(){
           restr=it.restr; maxOne=it.maxOne||{}; diasIndisponiveis=it.diasIndisponiveis||{};
           parceirosProibidos=it.parceirosProibidos||{};
           diasUteis=it.diasUteis; usosDupla=new Map(it.usosDupla);
-          sincronizarRestricoes();
+          salvarDados(); sincronizarRestricoes();
           renderDias(); renderAuds(); renderSets(); atualizarParticipacao();
           if(escalaVisivel && escala.length>0) renderizarEscala(); else mostrarPlaceholder();
           document.getElementById('modalHist').style.display='none';
@@ -1030,6 +1198,7 @@ function abrirH(){
   document.getElementById('modalHist').style.display = 'flex';
 }
 
+// ========== EXPORTAR CSV ==========
 function expCsv(){
   if(!escalaVisivel){
     pedirSenha(function(ok){
@@ -1049,38 +1218,98 @@ function expCsv(){
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
+// ========== EXPORTAR / IMPORTAR JSON ==========
+function exportarConfig(){
+  var cfg = {
+    versao: 6,
+    aExp: aExp,
+    aInexp: aInexp,
+    setores: setores,
+    restr: restr,
+    maxOne: maxOne,
+    diasIndisponiveis: diasIndisponiveis,
+    parceirosProibidos: parceirosProibidos,
+    historico: JSON.parse(localStorage.getItem('h5s_v6')||'[]')
+  };
+  var b = new Blob([JSON.stringify(cfg, null, 2)],{type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'sorteio5s_backup_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function importarConfig(){
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.json';
+  inp.onchange = function(){
+    var f = inp.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(e){
+      try{
+        var cfg = JSON.parse(e.target.result);
+        if(cfg.aExp)              aExp = cfg.aExp;
+        if(cfg.aInexp)            aInexp = cfg.aInexp;
+        if(cfg.setores)           setores = cfg.setores;
+        if(cfg.restr)             restr = cfg.restr;
+        if(cfg.maxOne)            maxOne = cfg.maxOne;
+        if(cfg.diasIndisponiveis) diasIndisponiveis = cfg.diasIndisponiveis;
+        if(cfg.parceirosProibidos)parceirosProibidos = cfg.parceirosProibidos;
+        if(cfg.historico)         localStorage.setItem('h5s_v6', JSON.stringify(cfg.historico));
+        salvarDados(); salvarRestr();
+        renderAuds(); renderSets(); atuDias();
+        alert('Configuração importada com sucesso! '+aExp.length+' experientes, '+aInexp.length+' inexperientes, '+setores.length+' setores, '+(cfg.historico||[]).length+' meses no histórico.');
+      }catch(err){
+        alert('Erro ao importar: '+err.message);
+      }
+    };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+
+// ========== INICIALIZAÇÃO ==========
 window.onload = function(){
+  initHistorico();
+  carregarDados();
+  carregarRestricoes();
   renderAuds(); renderSets(); atuDias();
-  document.getElementById('btnGerar').onclick   = atuDias;
-  document.getElementById('btnSort').onclick    = function(){ sortear(true); };
-  document.getElementById('btnLFix').onclick    = function(){ escala.forEach(function(l){ l.fixado=false; }); if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); };
-  document.getElementById('btnLEsc').onclick    = function(){ if(confirm('Limpar toda a escala?')){ escala=[]; if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); } };
-  document.getElementById('btnExp').onclick     = expCsv;
-  document.getElementById('btnAExp').onclick    = function(){ addA(true); };
-  document.getElementById('btnAInexp').onclick  = function(){ addA(false); };
-  document.getElementById('btnACurto').onclick  = function(){ addS(1); };
-  document.getElementById('btnALongo').onclick  = function(){ addS(0); };
-  document.getElementById('btnRest').onclick    = abrirRest;
-  document.getElementById('btnFRest').onclick   = function(){ document.getElementById('modalRest').style.display='none'; };
-  document.getElementById('btnSRest').onclick   = salvarRest;
-  document.getElementById('btnSalv').onclick    = salvarH;
-  document.getElementById('btnHist').onclick    = abrirH;
-  document.getElementById('btnFHist').onclick   = function(){ document.getElementById('modalHist').style.display='none'; };
+
+  document.getElementById('btnGerar').onclick    = atuDias;
+  document.getElementById('btnSort').onclick     = function(){ sortear(true); };
+  document.getElementById('btnLFix').onclick     = function(){ escala.forEach(function(l){ l.fixado=false; }); if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); };
+  document.getElementById('btnLEsc').onclick     = function(){ if(confirm('Limpar toda a escala?')){ escala=[]; if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); } };
+  document.getElementById('btnExp').onclick      = expCsv;
+  document.getElementById('btnAExp').onclick     = function(){ addA(true); };
+  document.getElementById('btnAInexp').onclick   = function(){ addA(false); };
+  document.getElementById('btnACurto').onclick   = function(){ addS(1); };
+  document.getElementById('btnALongo').onclick   = function(){ addS(0); };
+  document.getElementById('btnRest').onclick     = abrirRest;
+  document.getElementById('btnFRest').onclick    = function(){ document.getElementById('modalRest').style.display='none'; };
+  document.getElementById('btnSRest').onclick    = salvarRest;
+  document.getElementById('btnSalv').onclick     = salvarH;
+  document.getElementById('btnHist').onclick     = abrirH;
+  document.getElementById('btnFHist').onclick    = function(){ document.getElementById('modalHist').style.display='none'; };
   document.getElementById('btnToggleEscala').onclick = toggleEscala;
-  document.getElementById('inpExp').onkeydown   = function(e){ if(e.key==='Enter') addA(true); };
-  document.getElementById('inpInexp').onkeydown = function(e){ if(e.key==='Enter') addA(false); };
-  document.getElementById('inpSet').onkeydown   = function(e){ if(e.key==='Enter') addS(1); };
+  document.getElementById('btnExpJson').onclick  = exportarConfig;
+  document.getElementById('btnImpJson').onclick  = importarConfig;
+
+  document.getElementById('inpExp').onkeydown    = function(e){ if(e.key==='Enter') addA(true); };
+  document.getElementById('inpInexp').onkeydown  = function(e){ if(e.key==='Enter') addA(false); };
+  document.getElementById('inpSet').onkeydown    = function(e){ if(e.key==='Enter') addS(1); };
+
   if(sessionStorage.getItem('escalaRevelada_5s')==='true'){
     autenticado=true; escalaVisivel=true;
     document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
     document.getElementById('btnToggleEscala').style.background='#2a8e6b';
     if(escala && escala.length>0) renderizarEscala();
   } else { mostrarPlaceholder(); }
+
   document.getElementById('regra1L1C').addEventListener('change',function(){ sortear(true); });
   document.getElementById('regraFallbackLongo').addEventListener('change',function(){ sortear(true); });
   document.getElementById('regraEvitar2LongosDia').addEventListener('change',function(){ sortear(true); });
   document.getElementById('regraEvitarDuplasRepetidas').addEventListener('change',function(){ sortear(true); });
   document.getElementById('regraDistribuirEquitativamente').addEventListener('change',function(){ sortear(true); });
+  document.getElementById('regraUsarHistorico').addEventListener('change',function(){ sortear(true); });
 };
 })();
 </script>
