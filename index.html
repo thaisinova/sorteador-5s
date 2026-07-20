@@ -685,15 +685,31 @@ function sortear(respFixed){
   for(var idxSlot=0; idxSlot<slots.length; idxSlot++){
     var slot = slots[idxSlot];
     var alocado = false;
-    for(var i=0; i<diasOrdenados.length; i++){
+
+    // Passo 1: procurar SOMENTE dias com 0 auditorias — prioridade máxima de espalhamento
+    for(var i=0; i<diasOrdenados.length && !alocado; i++){
       var dia = diasOrdenados[i];
-      if(diaValido(dia, slot)){
+      if((duplasNoDia.get(dia)||0) === 0 &&
+          isDisponivelNoDia(slot.e, dia) &&
+          isDisponivelNoDia(slot.i, dia)){
         alocacoes.push({dia:dia, slot:slot, segunda:false});
-        duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
+        duplasNoDia.set(dia, 1);
         alocado = true;
-        break;
       }
     }
+
+    // Passo 2 (último recurso): aceitar dia com 1 auditoria se não houver dia vazio disponível para esta dupla
+    if(!alocado){
+      for(var i=0; i<diasOrdenados.length && !alocado; i++){
+        var dia = diasOrdenados[i];
+        if(diaValido(dia, slot)){
+          alocacoes.push({dia:dia, slot:slot, segunda:false});
+          duplasNoDia.set(dia, (duplasNoDia.get(dia)||0)+1);
+          alocado = true;
+        }
+      }
+    }
+
     if(!alocado){
       alertaEl.style.display='block';
       alertaEl.innerHTML='<i class="fas fa-exclamation-triangle"></i> Não foi possível alocar uma auditoria devido a indisponibilidade de dias.';
