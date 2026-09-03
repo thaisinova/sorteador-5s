@@ -52,7 +52,6 @@ table.aud-table tbody tr:hover{background:#f4fafb}
 .aud-del{background:none;border:none;color:#c26b6b;cursor:pointer;font-size:.95rem;padding:2px 6px}
 .aud-del:hover{color:#a04040}
 .td-center{text-align:center}
-/* segmented toggle experiente/inexperiente */
 .seg{display:inline-flex;background:#e9f1f3;border-radius:40px;padding:3px;gap:2px}
 .seg button{border:none;background:none;padding:.3rem .75rem;border-radius:40px;font-size:.74rem;font-weight:600;cursor:pointer;color:#5a7d86;display:inline-flex;align-items:center;gap:5px;transition:.15s}
 .seg button.on-exp{background:#219f94;color:white;box-shadow:0 2px 5px rgba(33,159,148,.3)}
@@ -113,7 +112,6 @@ table.matrix tbody th{position:sticky;left:0;z-index:2;background:#f4fafb;text-a
 .regra-txt{flex:1}
 .regra-titulo{font-weight:700;font-size:.92rem;color:#0f606b;margin-bottom:.15rem}
 .regra-desc{font-size:.82rem;color:#5a7d86;line-height:1.4}
-/* switch */
 .switch{position:relative;display:inline-block;width:48px;height:27px;flex-shrink:0;margin-top:.4rem}
 .switch input{opacity:0;width:0;height:0}
 .slider{position:absolute;cursor:pointer;inset:0;background:#c6d5d9;border-radius:27px;transition:.2s}
@@ -176,7 +174,6 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <div class="container">
 <h1><i class="fas fa-clipboard-check"></i> 5S — Sorteio de Auditorias</h1>
 
-<!-- NAV EM ETAPAS -->
 <div class="steps">
 <div class="step active" data-panel="pAud"><span class="num">1</span> <i class="fas fa-users"></i> Auditores</div>
 <div class="step" data-panel="pSet"><span class="num">2</span> <i class="fas fa-industry"></i> Setores</div>
@@ -187,14 +184,13 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <div class="step" data-panel="pHist"><span class="num"><i class="fas fa-history" style="font-size:.7rem"></i></span> Histórico</div>
 </div>
 
-<!-- backup rápido -->
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
 <button id="btnExpJson" class="btn btn-outline btn-sm"><i class="fas fa-file-export"></i> Exportar backup</button>
 <button id="btnImpJson" class="btn btn-outline btn-sm"><i class="fas fa-file-import"></i> Importar backup</button>
 <span class="autosave-pill"><i class="fas fa-cloud"></i> Tudo é salvo automaticamente neste computador</span>
 </div>
 
-<!-- ============ 1. AUDITORES ============ -->
+<!-- 1. AUDITORES -->
 <div class="panel active" id="pAud">
 <div class="card">
 <h2><i class="fas fa-users"></i> Auditores</h2>
@@ -213,7 +209,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-<!-- ============ 2. SETORES ============ -->
+<!-- 2. SETORES -->
 <div class="panel" id="pSet">
 <div class="card">
 <h2><i class="fas fa-industry"></i> Setores</h2>
@@ -227,7 +223,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-<!-- ============ 3. RESTRIÇÕES ============ -->
+<!-- 3. RESTRIÇÕES -->
 <div class="panel" id="pRest">
 <div class="card">
 <h2><i class="fas fa-shield-alt"></i> Restrições</h2>
@@ -237,8 +233,6 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <div class="subtab" data-sub="subParc"><i class="fas fa-user-slash"></i> Quem não audita junto</div>
 <div class="subtab" data-sub="subAus"><i class="fas fa-calendar-times"></i> Ausências (férias/folga)</div>
 </div>
-
-<!-- 3a. Matriz auditor x setor -->
 <div class="subpanel active" id="subSet">
 <div class="row-tools">
 <button class="btn btn-sm" id="btnTodosOk"><i class="fas fa-check-double"></i> Liberar tudo</button>
@@ -251,8 +245,6 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <span style="color:#5a8a95">Clique na célula para alternar.</span>
 </div>
 </div>
-
-<!-- 3b. Matriz parcerias -->
 <div class="subpanel" id="subParc">
 <div class="hint" style="margin-bottom:.6rem">Marque em vermelho as duplas que <b>NÃO</b> devem auditar juntas. A tabela é espelhada automaticamente.</div>
 <div class="matrix-wrap" id="matrizParc"></div>
@@ -261,15 +253,13 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <span><span class="legbox" style="background:#fde3e0"></span> Não podem</span>
 </div>
 </div>
-
-<!-- 3c. Ausências -->
 <div class="subpanel" id="subAus">
 <div id="listaAus"></div>
 </div>
 </div>
 </div>
 
-<!-- ============ 4. REGRAS ============ -->
+<!-- 4. REGRAS -->
 <div class="panel" id="pRegras">
 <div class="card">
 <h2><i class="fas fa-sliders-h"></i> Regras do sorteio</h2>
@@ -278,7 +268,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-<!-- ============ 5. PERÍODO ============ -->
+<!-- 5. PERÍODO -->
 <div class="panel" id="pPeriodo">
 <div class="card">
 <h2><i class="fas fa-calendar-week"></i> Período da auditoria</h2>
@@ -293,7 +283,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-<!-- ============ 6. ESCALA ============ -->
+<!-- 6. ESCALA -->
 <div class="panel" id="pEscala">
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.7rem;margin-bottom:1rem">
@@ -319,7 +309,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-<!-- ============ HISTÓRICO ============ -->
+<!-- HISTÓRICO -->
 <div class="panel" id="pHist">
 <div class="card">
 <h2><i class="fas fa-history"></i> Histórico dos meses</h2>
@@ -333,7 +323,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 </div>
 </div>
 
-</div><!-- /container -->
+</div>
 
 <div id="toast"></div>
 
@@ -344,20 +334,19 @@ const SENHA_CORRETA = "5s2026";
 let autenticado = false;
 let escalaVisivel = false;
 
-/* ===================== TOAST ===================== */
 var toastTimer=null;
 function toast(msg, tipo){
 var t=document.getElementById('toast');
-t.className=''; t.classList.add(tipo||'ok'); 
+t.className=''; t.classList.add(tipo||'ok');
 t.innerHTML='<i class="fas fa-'+(tipo==='err'?'exclamation-circle':tipo==='warn'?'exclamation-triangle':'check-circle')+'"></i> '+msg;
 t.classList.add('show');
 clearTimeout(toastTimer);
 toastTimer=setTimeout(function(){ t.classList.remove('show'); },2600);
 }
 
-/* ===================== DADOS PADRÃO ===================== */
-var aExpDefault = ['Alexandre Vivan','Laiza da Silva Gonçalves','Cristiano dos Santos Gubert','Lucas Carnizella','Ana Carolina Adamatti','Gustavo Pauletti','Jeferson Kessler','Renata dos Santos','Marcelo Henrique Sgarbi','Maiara da Veiga Saretto'];
-var aInexpDefault = ['Alexandre Silva de Avila','Nathan Mossói padilha','Suélen Correa','cristhian albuquerque pedroni','Márcio Perotti Barros','Vanessa Benedita Silveira','Tamara Rech Kuchnir','Gabriel Dedea','Henrique Adamatti','Felipe Martins Barcellos'];
+/* ===================== DADOS PADRÃO (Auditores 5S 2026) ===================== */
+var aExpDefault = ['Alexandre Silva de Avila','Alexandre Vivan','Cristiano dos Santos Gubert','Daniel Paim','Jeferson Kessler','Laiza da Silva Gonçalves','Lucas Carnizella','Maiara da Veiga Saretto','Marcelo Henrique Sgarbi','Renata dos Santos'];
+var aInexpDefault = ['Ana Carolina Adamatti','Cristhian Albuquerque Pedroni','Felipe Martins Barcellos','Gabriel Dedea','Henrique Adamatti','Julia Fernanda Morais','Leticia Zerbetto','Márcio Perotti Barros','Nathan Mossói padilha','Taise Silva','Tamara Rech Kuchnir','Tatiane Santos','Vanessa Benedita Silveira'];
 var setoresDefault = [
 {n:'Usinagem',r:0},{n:'P&D - RAID',r:1},{n:'P&D - Areas Comuns',r:1},
 {n:'MTA - Resfriar',r:0},{n:'ORH',r:0},{n:'Assistência Técnica',r:0},
@@ -374,105 +363,32 @@ var aExp = aExpDefault.slice();
 var aInexp = aInexpDefault.slice();
 var setores = JSON.parse(JSON.stringify(setoresDefault));
 
-var HISTORICO_INICIAL = [
-{nome:'Março 2026', data:'31/03/2026 23:59:00',
-diasUteis:['2026-03-04','2026-03-05','2026-03-10','2026-03-11','2026-03-12','2026-03-16','2026-03-17','2026-03-18','2026-03-19','2026-03-23','2026-03-24','2026-03-25','2026-03-26','2026-03-27'],
-aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
-escala:[
-{data:'2026-03-04',e:'Lucas Carnizella',i:'Felipe Martins Barcellos',setores:['Manutenção','Café Produção'],fixado:false,seg:false},
-{data:'2026-03-05',e:'Lucas Carnizella',i:'Felipe Martins Barcellos',setores:['Comercial','Controladoria'],fixado:false,seg:false},
-{data:'2026-03-10',e:'Alexandre Vivan',i:'Suélen Correa',setores:['ORH','P&D Flex'],fixado:false,seg:false},
-{data:'2026-03-11',e:'Ana Carolina Adamatti',i:'Márcio Perotti Barros',setores:['Usinagem'],fixado:false,seg:false},
-{data:'2026-03-12',e:'Jeferson Kessler',i:'Henrique Adamatti',setores:['Qualidade e Meio Ambiente','Tecnologia da Informação'],fixado:false,seg:false},
-{data:'2026-03-16',e:'Gustavo Pauletti',i:'Vanessa Benedita Silveira',setores:['MTA - Resfriar','P&D - Software'],fixado:false,seg:false},
-{data:'2026-03-17',e:'Maiara da Veiga Saretto',i:'Alexandre Silva de Avila',setores:['PPCPM','Café Subsolo'],fixado:false,seg:false},
-{data:'2026-03-18',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Logística','Copa'],fixado:false,seg:false},
-{data:'2026-03-19',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Chicote','P&D - RAID'],fixado:false,seg:false},
-{data:'2026-03-23',e:'Aloísio Vargas Arrial',i:'Vinícius Maia',setores:['Montagem de Placas','P&D - Areas Comuns'],fixado:false,seg:false},
-{data:'2026-03-24',e:'Aloísio Vargas Arrial',i:'Vinícius Maia',setores:['MTA - Industrial'],fixado:false,seg:false},
-{data:'2026-03-25',e:'Cristiano dos Santos Gubert',i:'cristhian albuquerque pedroni',setores:['Métodos e Processos','P&D - Industrial'],fixado:false,seg:false},
-{data:'2026-03-26',e:'Marcelo Henrique Sgarbi',i:'Gabriel Dedea',setores:['Assistência Técnica','P&D - Documentação'],fixado:false,seg:false},
-{data:'2026-03-27',e:'Renata dos Santos',i:'Nathan Mossói padilha',setores:['MTA - Automotivo','P&D - HIT'],fixado:false,seg:false}
-]},
-{nome:'Abril 2026', data:'30/04/2026 23:59:00',
-diasUteis:['2026-04-07','2026-04-08','2026-04-10','2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-22','2026-04-23','2026-04-24','2026-04-27','2026-04-28','2026-04-29'],
-aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
-escala:[
-{data:'2026-04-07',e:'Renata dos Santos',i:'Henrique Adamatti',setores:['Métodos e Processos','Café Subsolo'],fixado:false,seg:false},
-{data:'2026-04-08',e:'Laiza da Silva Gonçalves',i:'Suélen Correa',setores:['MTA - Automotivo','P&D - Areas Comuns'],fixado:false,seg:false},
-{data:'2026-04-10',e:'Lucas Carnizella',i:'Tamara Rech Kuchnir',setores:['Logística','P&D - RAID'],fixado:false,seg:false},
-{data:'2026-04-13',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['MTA - Industrial','Copa'],fixado:false,seg:false},
-{data:'2026-04-14',e:'Cristiano dos Santos Gubert',i:'Vanessa Benedita Silveira',setores:['Assistência Técnica','P&D - HIT'],fixado:false,seg:false},
-{data:'2026-04-15',e:'Jeferson Kessler',i:'Nathan Mossói padilha',setores:['Usinagem','P&D - Software'],fixado:false,seg:false},
-{data:'2026-04-16',e:'Marcelo Henrique Sgarbi',i:'Felipe Martins Barcellos',setores:['Montagem de Placas'],fixado:false,seg:false},
-{data:'2026-04-22',e:'Laiza 2',i:'Márcio Perotti Barros',setores:['Tecnologia da Informação','P&D - Documentação'],fixado:false,seg:false},
-{data:'2026-04-23',e:'Alexandre Vivan',i:'Maiara da Veiga Saretto',setores:['Chicote','PPCPM'],fixado:false,seg:false},
-{data:'2026-04-24',e:'Gustavo Pauletti',i:'Alexandre Silva de Avila',setores:['Manutenção','ORH'],fixado:false,seg:false},
-{data:'2026-04-27',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['Comercial','Controladoria'],fixado:false,seg:false},
-{data:'2026-04-28',e:'Gustavo Pauletti',i:'Alexandre Silva de Avila',setores:['MTA - Resfriar','Café Produção'],fixado:false,seg:false},
-{data:'2026-04-29',e:'Ana Carolina Adamatti',i:'cristhian albuquerque pedroni',setores:['Qualidade e Meio Ambiente','P&D - Industrial'],fixado:false,seg:false}
-]},
-{nome:'Maio 2026', data:'31/05/2026 23:59:00',
-diasUteis:['2026-05-04','2026-05-05','2026-05-06','2026-05-07','2026-05-11','2026-05-12','2026-05-13','2026-05-14','2026-05-18','2026-05-19','2026-05-20','2026-05-26','2026-05-27','2026-05-28'],
-aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
-escala:[
-{data:'2026-05-04',e:'Jeferson Kessler',i:'Felipe Martins Barcellos',setores:['MTA - Resfriar','Café Produção'],fixado:false,seg:false},
-{data:'2026-05-05',e:'Renata dos Santos',i:'Suélen Correa',setores:['P&D - Areas Comuns','Café Subsolo'],fixado:false,seg:false},
-{data:'2026-05-06',e:'Laiza da Silva Gonçalves',i:'Márcio Perotti Barros',setores:['ORH','Controladoria'],fixado:false,seg:false},
-{data:'2026-05-07',e:'Alexandre Vivan',i:'cristhian albuquerque pedroni',setores:['MTA - Automotivo','Copa'],fixado:false,seg:false},
-{data:'2026-05-11',e:'Marcelo Henrique Sgarbi',i:'Henrique Adamatti',setores:['MTA - Industrial','P&D - Software'],fixado:false,seg:false},
-{data:'2026-05-12',e:'Ana Carolina Adamatti',i:'Vanessa Benedita Silveira',setores:['P&D - Industrial','Qualidade e Meio Ambiente'],fixado:false,seg:false},
-{data:'2026-05-13',e:'Lucas Carnizella',i:'Alexandre Silva de Avila',setores:['Métodos e Processos','Tecnologia da Informação'],fixado:false,seg:false},
-{data:'2026-05-14',e:'Gustavo Pauletti',i:'Maiara da Veiga Saretto',setores:['PPCPM','P&D - Documentação'],fixado:false,seg:false},
-{data:'2026-05-18',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['P&D - RAID','P&D - HIT'],fixado:false,seg:false},
-{data:'2026-05-19',e:'Gustavo Pauletti',i:'Maiara da Veiga Saretto',setores:['Assistência Técnica','Gestão PID'],fixado:false,seg:false},
-{data:'2026-05-20',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Chicote','Manutenção'],fixado:false,seg:false},
-{data:'2026-05-26',e:'Jeferson Kessler',i:'Felipe Martins Barcellos',setores:['Montagem de Placas','Direção'],fixado:false,seg:false},
-{data:'2026-05-27',e:'Aloísio Vargas Arrial',i:'Gabriel Dedea',setores:['Logística','Gestão Industrial'],fixado:false,seg:false},
-{data:'2026-05-28',e:'Laiza da Silva Gonçalves',i:'Tamara Rech Kuchnir',setores:['Usinagem','Comercial'],fixado:false,seg:false}
-]},
-{nome:'Junho 2026', data:'30/06/2026 23:59:00',
-diasUteis:['2026-06-03','2026-06-08','2026-06-09','2026-06-10','2026-06-11','2026-06-12','2026-06-16','2026-06-17','2026-06-18','2026-06-22','2026-06-23','2026-06-24','2026-06-25','2026-06-29'],
-aExp:[], aInexp:[], setores:[], restr:{}, maxOne:{}, diasIndisponiveis:{}, parceirosProibidos:{}, usosDupla:[],
-escala:[
-{data:'2026-06-03',e:'Jeferson Kessler',i:'Henrique Adamatti',setores:['P&D - RAID','Café Subsolo'],fixado:false,seg:false},
-{data:'2026-06-08',e:'Felipe Martins Barcellos',i:'Alexandre Silva de Avila',setores:['Assistência Técnica','Café Produção'],fixado:false,seg:false},
-{data:'2026-06-09',e:'Laiza da Silva Gonçalves',i:'Maiara da Veiga Saretto',setores:['P&D - Areas Comuns','P&D - HIT'],fixado:false,seg:false},
-{data:'2026-06-10',e:'Renata dos Santos',i:'cristhian albuquerque pedroni',setores:['P&D - Industrial','P&D - Software'],fixado:false,seg:false},
-{data:'2026-06-11',e:'Jeferson Kessler',i:'Márcio Perotti Barros',setores:['Métodos e Processos','Gestão PID'],fixado:false,seg:false},
-{data:'2026-06-12',e:'Lucas Carnizella',i:'Gustavo Pauletti',setores:['MTA - Industrial','Gestão Industrial'],fixado:false,seg:false},
-{data:'2026-06-16',e:'Alexandre Vivan',i:'Vanessa Benedita Silveira',setores:['Chicote','Copa'],fixado:false,seg:false},
-{data:'2026-06-17',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Tecnologia da Informação','MTA - Resfriar'],fixado:false,seg:false},
-{data:'2026-06-18',e:'Marcelo Henrique Sgarbi',i:'Gabriel Dedea',setores:['Qualidade e Meio Ambiente','Direção'],fixado:false,seg:false},
-{data:'2026-06-22',e:'Lucas Carnizella',i:'Gustavo Pauletti',setores:['Manutenção','ORH'],fixado:false,seg:false},
-{data:'2026-06-23',e:'Cristiano dos Santos Gubert',i:'Nathan Mossói padilha',setores:['Comercial','Controladoria'],fixado:false,seg:false},
-{data:'2026-06-24',e:'Ana Carolina Adamatti',i:'Tamara Rech Kuchnir',setores:['Logística','P&D - Documentação'],fixado:false,seg:false},
-{data:'2026-06-25',e:'Laiza da Silva Gonçalves',i:'Gabriel Dedea',setores:['PPCPM','MTA - Automotivo'],fixado:false,seg:false},
-{data:'2026-06-29',e:'Alexandre Vivan',i:'Márcio Perotti Barros',setores:['Usinagem','Montagem de Placas'],fixado:false,seg:false}
-]}
-];
+var HISTORICO_INICIAL = [];
 
+/* Restrições padrão: cada auditor NÃO audita o próprio setor (coluna da sua lista). */
 var restrPadrao = {
-'Lucas Carnizella':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Felipe Martins Barcellos':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Alexandre Vivan':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Suélen Correa':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
-'Ana Carolina Adamatti':['Chicote','Café Subsolo'],
-'Márcio Perotti Barros':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Jeferson Kessler':['PPCPM','Copa'],
-'Vanessa Benedita Silveira':['Montagem de Placas','Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
-'Alexandre Silva de Avila':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Maiara da Veiga Saretto':['Qualidade e Meio Ambiente','Copa'],
-'Laiza da Silva Gonçalves':['Métodos e Processos','Café Subsolo','Usinagem'],
-'Tamara Rech Kuchnir':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
-'Cristiano dos Santos Gubert':['Usinagem','Café Subsolo','Métodos e Processos'],
-'cristhian albuquerque pedroni':['Logística','Café Produção'],
-'Marcelo Henrique Sgarbi':['Manutenção','Café Subsolo'],
-'Renata dos Santos':['Logística','Café Produção'],
-'Nathan Mossói padilha':['Métodos e Processos','Café Subsolo','Usinagem'],
-'Gabriel Dedea':['P&D - Software','P&D - RAID','P&D - HIT','P&D - Areas Comuns','Café Subsolo','P&D Flex','P&D - Industrial'],
-'Henrique Adamatti':['Café Produção','MTA - Industrial','MTA - Automotivo','MTA - Resfriar'],
-'Gustavo Pauletti':['Tecnologia da Informação','Copa']
+'Alexandre Silva de Avila':['P&D - HIT'],
+'Alexandre Vivan':['P&D - HIT'],
+'Ana Carolina Adamatti':['Chicote'],
+'Cristhian Albuquerque Pedroni':['Logística'],
+'Cristiano dos Santos Gubert':['Usinagem'],
+'Daniel Paim':['Métodos e Processos'],
+'Felipe Martins Barcellos':['P&D - RAID'],
+'Gabriel Dedea':['P&D - Industrial'],
+'Henrique Adamatti':['MTA - Automotivo'],
+'Jeferson Kessler':['PPCPM'],
+'Julia Fernanda Morais':['MTA - Automotivo'],
+'Laiza da Silva Gonçalves':['Métodos e Processos'],
+'Lucas Carnizella':['P&D - Software'],
+'Maiara da Veiga Saretto':['Qualidade e Meio Ambiente'],
+'Marcelo Henrique Sgarbi':['Manutenção'],
+'Márcio Perotti Barros':['P&D - Industrial'],
+'Nathan Mossói padilha':['Métodos e Processos'],
+'Renata dos Santos':['Logística'],
+'Taise Silva':['P&D - Documentação'],
+'Tamara Rech Kuchnir':['MTA - Industrial'],
+'Tatiane Santos':['Assistência Técnica'],
+'Vanessa Benedita Silveira':['Montagem de Placas']
 };
 var restr = {};
 var maxOne = {};
@@ -483,42 +399,36 @@ return (parceirosProibidos[a] && parceirosProibidos[a].indexOf(b)>=0) ||
 (parceirosProibidos[b] && parceirosProibidos[b].indexOf(a)>=0);
 }
 
-/* ===================== PERSISTÊNCIA ===================== */
+/* ===================== PERSISTÊNCIA (v8) ===================== */
 function salvarDados(){
-localStorage.setItem('aExp_v7', JSON.stringify(aExp));
-localStorage.setItem('aInexp_v7', JSON.stringify(aInexp));
-localStorage.setItem('setores_v7', JSON.stringify(setores));
+localStorage.setItem('aExp_v8', JSON.stringify(aExp));
+localStorage.setItem('aInexp_v8', JSON.stringify(aInexp));
+localStorage.setItem('setores_v8', JSON.stringify(setores));
 }
 function salvarRestr(){
-localStorage.setItem('r5s_v7', JSON.stringify(restr));
-localStorage.setItem('maxOne_v7', JSON.stringify(maxOne));
-localStorage.setItem('diasIndisp_v7', JSON.stringify(diasIndisponiveis));
-localStorage.setItem('parceiros_v7', JSON.stringify(parceirosProibidos));
+localStorage.setItem('r5s_v8', JSON.stringify(restr));
+localStorage.setItem('maxOne_v8', JSON.stringify(maxOne));
+localStorage.setItem('diasIndisp_v8', JSON.stringify(diasIndisponiveis));
+localStorage.setItem('parceiros_v8', JSON.stringify(parceirosProibidos));
 }
-function salvarRegras(){
-var r=getRegras();
-localStorage.setItem('regras_v7', JSON.stringify(r));
-}
-function initHistorico(){
-if(localStorage.getItem('h5s_v7')) return;
-localStorage.setItem('h5s_v7', JSON.stringify(HISTORICO_INICIAL));
-}
+function salvarRegras(){ localStorage.setItem('regras_v8', JSON.stringify(getRegras())); }
+function initHistorico(){ if(localStorage.getItem('h5s_v8')) return; localStorage.setItem('h5s_v8', JSON.stringify(HISTORICO_INICIAL)); }
 function carregarDados(){
-var se=localStorage.getItem('aExp_v7'), si=localStorage.getItem('aInexp_v7'), ss=localStorage.getItem('setores_v7');
+var se=localStorage.getItem('aExp_v8'), si=localStorage.getItem('aInexp_v8'), ss=localStorage.getItem('setores_v8');
 if(se) aExp=JSON.parse(se);
 if(si) aInexp=JSON.parse(si);
 if(ss) setores=JSON.parse(ss);
 }
 function carregarRestricoes(){
-try{ var s=localStorage.getItem('r5s_v7'); if(s) restr=JSON.parse(s); else{ restr=JSON.parse(JSON.stringify(restrPadrao)); localStorage.setItem('r5s_v7',JSON.stringify(restr)); } }catch(e){ restr=JSON.parse(JSON.stringify(restrPadrao)); }
-try{ var mo=localStorage.getItem('maxOne_v7'); if(mo) maxOne=JSON.parse(mo); }catch(e){ maxOne={}; }
-try{ var di=localStorage.getItem('diasIndisp_v7'); if(di) diasIndisponiveis=JSON.parse(di); }catch(e){ diasIndisponiveis={}; }
-try{ var pp=localStorage.getItem('parceiros_v7'); if(pp) parceirosProibidos=JSON.parse(pp); }catch(e){ parceirosProibidos={}; }
+try{ var s=localStorage.getItem('r5s_v8'); if(s) restr=JSON.parse(s); else{ restr=JSON.parse(JSON.stringify(restrPadrao)); localStorage.setItem('r5s_v8',JSON.stringify(restr)); } }catch(e){ restr=JSON.parse(JSON.stringify(restrPadrao)); }
+try{ var mo=localStorage.getItem('maxOne_v8'); if(mo) maxOne=JSON.parse(mo); }catch(e){ maxOne={}; }
+try{ var di=localStorage.getItem('diasIndisp_v8'); if(di) diasIndisponiveis=JSON.parse(di); }catch(e){ diasIndisponiveis={}; }
+try{ var pp=localStorage.getItem('parceiros_v8'); if(pp) parceirosProibidos=JSON.parse(pp); }catch(e){ parceirosProibidos={}; }
 sincronizarRestricoes();
 }
 function carregarRegras(){
 try{
-var r=JSON.parse(localStorage.getItem('regras_v7')||'null');
+var r=JSON.parse(localStorage.getItem('regras_v8')||'null');
 if(r){
 setChk('regra1L1C', r.forcar1L1C);
 setChk('regraFallbackLongo', r.fallbackLongo);
@@ -549,9 +459,8 @@ restr[aud]=Array.isArray(lista)?lista.filter(function(s){return todosSetores.has
 salvarRestr();
 }
 
-/* ===================== HISTÓRICO RECENTE ===================== */
 function getHistoricoRecente(){
-var h=JSON.parse(localStorage.getItem('h5s_v7')||'[]');
+var h=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
 if(!h.length) return null;
 var ultimo=h[h.length-1];
 var duplas=new Set(); var setoresAuditor=new Map();
@@ -566,7 +475,6 @@ if(!setoresAuditor.has(aud)) setoresAuditor.set(aud,new Set());
 return {duplas:duplas, setoresAud:setoresAuditor, nome:ultimo.nome||''};
 }
 
-/* ===================== REGRAS ===================== */
 function getRegras(){
 return {
 forcar1L1C: document.getElementById('regra1L1C').checked,
@@ -725,7 +633,6 @@ avisoEl.innerHTML='<i class="fas fa-info-circle"></i> Sorteio concluído na tent
 var diasDisp=diasUteis.filter(function(d){return !diasFixados.has(d);}).sort();
 var slots=res.resultado;
 var MAX_POR_DIA=2;
-var forceTwo=false;
 var alocacoes=[]; var duplasNoDia=new Map();
 novaEsc.forEach(function(l){ duplasNoDia.set(l.data,(duplasNoDia.get(l.data)||0)+1); });
 function diaValido(dia,slot){ return isDisponivelNoDia(slot.e,dia)&&isDisponivelNoDia(slot.i,dia)&&(duplasNoDia.get(dia)||0)<MAX_POR_DIA; }
@@ -867,7 +774,6 @@ var protectedDiv=document.getElementById('protectedArea');
 if(protectedDiv) protectedDiv.innerHTML='<div class="protected-placeholder"><i class="fas fa-eye-slash" style="font-size:2rem;margin-bottom:.5rem;display:block"></i>Escala protegida por senha.<br>Clique no botão acima para visualizar.</div>';
 }
 
-/* ===================== SENHA ===================== */
 function pedirSenha(callback){
 var modal=document.createElement('div'); modal.className='password-modal';
 modal.innerHTML='<div class="password-box"><i class="fas fa-clipboard-list"></i><h3>Acesso à Escala</h3><p>Digite a senha para visualizar as auditorias:</p><input type="password" id="senhaEscala" placeholder="Senha" autocomplete="off"><button id="btnConfirmarSenha">Confirmar</button><div id="erroSenha" class="erro-senha"></div></div>';
@@ -900,7 +806,6 @@ document.getElementById('btnToggleEscala').style.background='#2a8e6b';
 }
 }
 
-/* ===================== DIAS ÚTEIS ===================== */
 function calcDias(ini,fim){
 var dias=[];
 for(var d=new Date(ini);d<=new Date(fim);d.setDate(d.getDate()+1)){
@@ -922,7 +827,6 @@ sp.appendChild(b); c.appendChild(sp);
 }
 function atuDias(){ diasUteis=calcDias(document.getElementById('dtIni').value,document.getElementById('dtFim').value); renderDias(); toast(diasUteis.length+' dias úteis gerados.'); }
 
-/* ===================== HELPERS ===================== */
 var diasUteis=[], escala=[], usosDupla=new Map();
 function limiteAuditor(a){ return maxOne[a]?1:(temMTA(a)?1:2); }
 function temMTA(a){ var p=restr[a]; return p&&p.some(function(s){return s.indexOf('MTA')===0;}); }
@@ -931,7 +835,7 @@ function ck(a,b){ return a<b?a+'|'+b:b+'|'+a; }
 function isDisponivelNoDia(auditor,dia){ return !diasIndisponiveis[auditor]||diasIndisponiveis[auditor].indexOf(dia)===-1; }
 function sortPT(arr){ return arr.slice().sort(function(a,b){return a.localeCompare(b,'pt-BR',{sensitivity:'base'});}); }
 
-/* ===================== 1. AUDITORES (novo cadastro) ===================== */
+/* ===================== 1. AUDITORES (tabela) ===================== */
 function renderAuds(){
 var grid=document.getElementById('audGrid'); if(!grid) return; grid.innerHTML='';
 var todos=sortPT([].concat(aExp,aInexp));
@@ -953,7 +857,6 @@ grid.appendChild(tr);
 document.getElementById('ctExp').innerText=aExp.length;
 document.getElementById('ctInexp').innerText=aInexp.length;
 document.getElementById('ctTot').innerText=aExp.length+aInexp.length;
-// eventos
 grid.querySelectorAll('[data-set-exp]').forEach(function(b){ b.onclick=function(){ setNivel(b.getAttribute('data-set-exp'),true); }; });
 grid.querySelectorAll('[data-set-inexp]').forEach(function(b){ b.onclick=function(){ setNivel(b.getAttribute('data-set-inexp'),false); }; });
 grid.querySelectorAll('[data-del]').forEach(function(b){ b.onclick=function(){ delAud(b.getAttribute('data-del')); }; });
@@ -1073,7 +976,7 @@ if(!parceirosProibidos[a]) parceirosProibidos[a]=[];
 if(parceirosProibidos[a].indexOf(b)<0) parceirosProibidos[a].push(b);
 }
 salvarRestr();
-renderMatrizParc(); // re-render p/ espelhar
+renderMatrizParc();
 };
 });
 }
@@ -1122,7 +1025,7 @@ tag.appendChild(btn);
 return tag;
 }
 
-/* ===================== 4. REGRAS (com explicação) ===================== */
+/* ===================== 4. REGRAS ===================== */
 var REGRAS_DEF=[
 {id:'regra1L1C', on:true, icon:'fa-balance-scale', titulo:'Juntar 1 setor longo + 1 curto', desc:'Cada dupla audita um setor demorado e um rápido no mesmo dia, equilibrando o esforço.'},
 {id:'regraFallbackLongo', on:false, icon:'fa-exchange-alt', titulo:'Permitir só longo se faltar curto', desc:'Se acabarem os setores curtos, deixa a dupla ficar só com um setor longo em vez de sobrar setor sem auditar.'},
@@ -1146,14 +1049,14 @@ box.querySelectorAll('input[type=checkbox]').forEach(function(cb){ cb.addEventLi
 /* ===================== HISTÓRICO ===================== */
 function salvarH(){
 var nome=prompt('Nome do mês (ex: Setembro 2026):'); if(!nome) return;
-var h=JSON.parse(localStorage.getItem('h5s_v7')||'[]');
+var h=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
 h.push({nome:nome,data:new Date().toLocaleString('pt-BR'),escala:escala,aExp:aExp,aInexp:aInexp,setores:setores,restr:restr,maxOne:maxOne,diasIndisponiveis:diasIndisponiveis,parceirosProibidos:parceirosProibidos,diasUteis:diasUteis,usosDupla:Array.from(usosDupla.entries())});
-localStorage.setItem('h5s_v7',JSON.stringify(h));
+localStorage.setItem('h5s_v8',JSON.stringify(h));
 toast('"'+nome+'" salvo no histórico!');
 renderHist();
 }
 function renderHist(){
-var h=JSON.parse(localStorage.getItem('h5s_v7')||'[]');
+var h=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
 var c=document.getElementById('listaHist'); if(!c) return; c.innerHTML='';
 if(!h.length){ c.innerHTML='<p style="padding:1rem;color:#888">Nenhum mês salvo ainda.</p>'; return; }
 h.forEach(function(it,idx){
@@ -1165,7 +1068,7 @@ c.appendChild(d);
 });
 c.querySelectorAll('button').forEach(function(b){
 b.addEventListener('click',function(){
-var idx=+b.dataset.idx; var h2=JSON.parse(localStorage.getItem('h5s_v7')||'[]');
+var idx=+b.dataset.idx; var h2=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
 if(b.dataset.a==='load'){
 function carregar(){
 var it=h2[idx];
@@ -1182,7 +1085,7 @@ pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionSt
 } else { carregar(); }
 } else {
 if(!confirm('Excluir este mês do histórico?')) return;
-h2.splice(idx,1); localStorage.setItem('h5s_v7',JSON.stringify(h2)); renderHist(); toast('Mês excluído.','warn');
+h2.splice(idx,1); localStorage.setItem('h5s_v8',JSON.stringify(h2)); renderHist(); toast('Mês excluído.','warn');
 }
 });
 });
@@ -1190,7 +1093,7 @@ h2.splice(idx,1); localStorage.setItem('h5s_v7',JSON.stringify(h2)); renderHist(
 
 /* ===================== BACKUP JSON ===================== */
 function exportarConfig(){
-var cfg={versao:7,aExp:aExp,aInexp:aInexp,setores:setores,restr:restr,maxOne:maxOne,diasIndisponiveis:diasIndisponiveis,parceirosProibidos:parceirosProibidos,regras:getRegras(),historico:JSON.parse(localStorage.getItem('h5s_v7')||'[]')};
+var cfg={versao:8,aExp:aExp,aInexp:aInexp,setores:setores,restr:restr,maxOne:maxOne,diasIndisponiveis:diasIndisponiveis,parceirosProibidos:parceirosProibidos,regras:getRegras(),historico:JSON.parse(localStorage.getItem('h5s_v8')||'[]')};
 var b=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
 var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='sorteio5s_backup_'+new Date().toISOString().slice(0,10)+'.json';
 document.body.appendChild(a); a.click(); document.body.removeChild(a);
@@ -1210,7 +1113,7 @@ if(cfg.restr) restr=cfg.restr;
 if(cfg.maxOne) maxOne=cfg.maxOne;
 if(cfg.diasIndisponiveis) diasIndisponiveis=cfg.diasIndisponiveis;
 if(cfg.parceirosProibidos) parceirosProibidos=cfg.parceirosProibidos;
-if(cfg.historico) localStorage.setItem('h5s_v7',JSON.stringify(cfg.historico));
+if(cfg.historico) localStorage.setItem('h5s_v8',JSON.stringify(cfg.historico));
 salvarDados(); salvarRestr();
 if(cfg.regras){
 setChk('regra1L1C',cfg.regras.forcar1L1C); setChk('regraFallbackLongo',cfg.regras.fallbackLongo);
@@ -1227,7 +1130,6 @@ r.readAsText(f);
 inp.click();
 }
 
-/* ===================== EXPORTAR CSV ===================== */
 function expCsv(){
 if(!escalaVisivel){
 pedirSenha(function(ok){ if(ok){ autenticado=true; escalaVisivel=true; sessionStorage.setItem('escalaRevelada_5s','true'); document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala'; document.getElementById('btnToggleEscala').style.background='#2a8e6b'; if(escala.length) renderizarEscala(); else mostrarPlaceholder(); expCsv(); } });
@@ -1241,7 +1143,6 @@ document.body.appendChild(a); a.click(); document.body.removeChild(a);
 toast('CSV exportado.');
 }
 
-/* ===================== NAVEGAÇÃO ===================== */
 function irPara(panelId){
 document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('active', s.dataset.panel===panelId); });
 document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id===panelId); });
@@ -1250,30 +1151,25 @@ if(panelId==='pHist'){ renderHist(); }
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ===================== INIT ===================== */
 window.onload=function(){
 initHistorico();
 carregarDados();
-renderRegras();          // cria os checkboxes de regras primeiro
-carregarRegras();        // aplica valores salvos
+renderRegras();
+carregarRegras();
 carregarRestricoes();
 renderAuds(); renderSets(); renderHist();
 atuDias();
 
-// steps
 document.querySelectorAll('.step').forEach(function(s){ s.onclick=function(){ irPara(s.dataset.panel); }; });
 
-// auditores
 document.getElementById('btnAddExp').onclick=function(){ addAud(true); };
 document.getElementById('btnAddInexp').onclick=function(){ addAud(false); };
 document.getElementById('inpAud').onkeydown=function(e){ if(e.key==='Enter') addAud(true); };
 
-// setores
 document.getElementById('btnAddLongo').onclick=function(){ addSet(0); };
 document.getElementById('btnAddCurto').onclick=function(){ addSet(1); };
 document.getElementById('inpSet').onkeydown=function(e){ if(e.key==='Enter') addSet(0); };
 
-// restrições - subtabs
 document.querySelectorAll('.subtab').forEach(function(st){
 st.onclick=function(){
 document.querySelectorAll('.subtab').forEach(function(x){ x.classList.toggle('active',x===st); });
@@ -1283,10 +1179,8 @@ document.querySelectorAll('.subpanel').forEach(function(p){ p.classList.toggle('
 document.getElementById('btnTodosOk').onclick=liberarTudo;
 document.getElementById('btnTodosBlock').onclick=bloquearTudo;
 
-// período
 document.getElementById('btnGerar').onclick=atuDias;
 
-// escala
 document.getElementById('btnSort').onclick=function(){ sortear(true); };
 document.getElementById('btnLFix').onclick=function(){ escala.forEach(function(l){ l.fixado=false; }); if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); toast('Fixos limpos.'); };
 document.getElementById('btnLEsc').onclick=function(){ if(confirm('Limpar toda a escala?')){ escala=[]; if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder(); atualizarParticipacao(); toast('Escala limpa.','warn'); } };
@@ -1294,11 +1188,9 @@ document.getElementById('btnExp').onclick=expCsv;
 document.getElementById('btnSalv').onclick=salvarH;
 document.getElementById('btnToggleEscala').onclick=toggleEscala;
 
-// backup
 document.getElementById('btnExpJson').onclick=exportarConfig;
 document.getElementById('btnImpJson').onclick=importarConfig;
 
-// senha lembrada na sessão
 if(sessionStorage.getItem('escalaRevelada_5s')==='true'){
 autenticado=true; escalaVisivel=true;
 document.getElementById('btnToggleEscala').innerHTML='<i class="fas fa-unlock-alt"></i> Ocultar Escala';
