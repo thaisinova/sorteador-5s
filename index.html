@@ -184,7 +184,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 <div class="panel" id="pSet">
 <div class="card">
 <h2><i class="fas fa-industry"></i> Setores</h2>
-<div class="hint">Clique no botão <b>Longo</b> / <b>Curto</b> para mudar a duração do setor. Cada auditoria junta 1 longo + 1 curto.</div>
+<div class="hint">Clique no botão <b>Longo</b> / <b>Curto</b> para mudar a duração do setor. Cada auditoria junta 1 longo + até 2 curtos (regra configurável na aba Regras).</div>
 <div class="set-grid" id="setGrid"></div>
 <div class="add-row">
 <input id="inpSet" placeholder="Nome do novo setor">
@@ -409,6 +409,7 @@ try{
 var r=JSON.parse(localStorage.getItem('regras_v8')||'null');
 if(r){
 setChk('regra1L1C', r.forcar1L1C);
+if(r.agrupar1L2C!==undefined) setChk('regra1L2C', r.agrupar1L2C);
 setChk('regraFallbackLongo', r.fallbackLongo);
 setChk('regraEvitar2LongosDia', r.evitar2LongosDia);
 setChk('regraEvitarDuplasRepetidas', r.evitarDuplasRepetidas);
@@ -456,6 +457,7 @@ return {duplas:duplas, setoresAud:setoresAuditor, nome:ultimo.nome||''};
 function getRegras(){
 return {
 forcar1L1C: document.getElementById('regra1L1C').checked,
+agrupar1L2C: (document.getElementById('regra1L2C')||{}).checked!==false,
 fallbackLongo: document.getElementById('regraFallbackLongo').checked,
 evitar2LongosDia: document.getElementById('regraEvitar2LongosDia').checked,
 evitarDuplasRepetidas: document.getElementById('regraEvitarDuplasRepetidas').checked,
@@ -562,7 +564,35 @@ var dupEsc=candsHard[0];
 var slot=[hard.n];
 if(ehLongo) LP=LP.filter(function(s){return s.n!==hard.n;});
 else CP=CP.filter(function(s){return s.n!==hard.n;});
-if(regras.forcar1L1C){
+if(regras.agrupar1L2C){
+/* NOVA REGRA 26/10/2026: 1 setor longo + até 2 curtos na mesma auditoria.
+   Objetivo: menos auditorias no mês -> menos pessoas auditando 2x e menos duplas repetidas. */
+var ordenar=function(lista){
+lista.sort(function(a,b){
+var ea=dispNow.filter(function(d){return elegDupla(d,a.n);}).length;
+var eb=dispNow.filter(function(d){return elegDupla(d,b.n);}).length;
+if(ea!==eb) return ea-eb;
+if(hist&&regras.usarHistorico){ var ra=penHistSetor(dupEsc,a.n), rb=penHistSetor(dupEsc,b.n); if(ra!==rb) return ra-rb; }
+return 0;
+});
+return lista;
+};
+var temLongo=ehLongo;
+if(!temLongo){
+var lpossG=ordenar(LP.filter(function(s){return elegDupla(dupEsc,s.n);}));
+if(lpossG.length){ var lG=lpossG[0]; slot.unshift(lG.n); LP=LP.filter(function(s){return s.n!==lG.n;}); temLongo=true; }
+}
+var nCurtos=slot.length-(temLongo?1:0);
+var maxCurtos=2;
+var cpossG=ordenar(CP.filter(function(s){return elegDupla(dupEsc,s.n);}));
+while(nCurtos<maxCurtos && cpossG.length){
+var cG=cpossG.shift(); slot.push(cG.n); CP=CP.filter(function(s){return s.n!==cG.n;}); nCurtos++;
+}
+if(ehLongo && slot.length===1 && regras.fallbackLongo){
+var lpossF=ordenar(LP.filter(function(s){return elegDupla(dupEsc,s.n);}));
+if(lpossF.length){ var lF=lpossF[0]; slot.push(lF.n); LP=LP.filter(function(s){return s.n!==lF.n;}); }
+}
+} else if(regras.forcar1L1C){
 if(ehLongo){
 var cposs=CP.filter(function(s){return elegDupla(dupEsc,s.n);});
 cposs.sort(function(a,b){
@@ -753,10 +783,14 @@ atualizarParticipacao();
 var diasComDuas=0, contagem=new Map();
 escala.forEach(function(l){ contagem.set(l.data,(contagem.get(l.data)||0)+1); });
 for(var q of contagem.values()) if(q===2) diasComDuas++;
-if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Sorteio concluído na tentativa '+tent+'. '+diasComDuas+' dia(s) com 2 auditorias.';
-else avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Sorteio concluído na tentativa '+tent+'.';
+var nAud=escala.length, nPess=aExp.length+aInexp.length, nLongos=setores.filter(function(s){return !s.r;}).length;
+var cntP={}; escala.forEach(function(l){ cntP[l.e]=(cntP[l.e]||0)+1; cntP[l.i]=(cntP[l.i]||0)+1; });
+var nRep=Object.keys(cntP).filter(function(k){return cntP[k]>=2;}).length;
+var diag=' <br><i class="fas fa-chart-bar"></i> <b>'+nAud+' auditorias</b> ('+(nAud*2)+' vagas) para '+nPess+' auditores → <b>'+nRep+' pessoa(s) auditando 2x</b>.'+(nAud*2>nPess?' Como há mais vagas ('+(nAud*2)+') do que auditores ('+nPess+'), algumas repetições são inevitáveis.':' ✅ Ninguém precisa auditar 2x.');
+if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Sorteio concluído na tentativa '+tent+'. '+diasComDuas+' dia(s) com 2 auditorias.'+diag;
+else avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Sorteio concluído na tentativa '+tent+'.'+diag;
 var resumo=[];
-if(regras.forcar1L1C) resumo.push('1L+1C');
+if(regras.agrupar1L2C) resumo.push('1L + até 2C'); else if(regras.forcar1L1C) resumo.push('1L+1C');
 if(regras.fallbackLongo) resumo.push('Fallback longo');
 if(regras.evitar2LongosDia) resumo.push('Sem 2 longos/dia');
 if(regras.evitarDuplasRepetidas) resumo.push('Duplas únicas');
@@ -1151,6 +1185,7 @@ tag.appendChild(btn);
 return tag;
 }
 var REGRAS_DEF=[
+{id:'regra1L2C', on:true, icon:'fa-layer-group', titulo:'Agrupar 1 setor longo + até 2 curtos', desc:'Quando sobram setores curtos, a dupla leva um longo e dois curtos no mesmo dia, em vez de abrir outra auditoria só com curtos. Resultado: menos auditorias no mês, menos gente auditando 2 vezes e menos duplas repetidas. Quando ligada, tem prioridade sobre a regra 1 longo + 1 curto.'},
 {id:'regra1L1C', on:true, icon:'fa-balance-scale', titulo:'Juntar 1 setor longo + 1 curto', desc:'Cada dupla audita um setor demorado e um rápido no mesmo dia, equilibrando o esforço.'},
 {id:'regraFallbackLongo', on:false, icon:'fa-exchange-alt', titulo:'Permitir só longo se faltar curto', desc:'Se acabarem os setores curtos, deixa a dupla ficar só com um setor longo em vez de sobrar setor sem auditar.'},
 {id:'regraEvitar2LongosDia', on:true, icon:'fa-ban', titulo:'Nunca 2 setores longos no mesmo dia', desc:'Impede que um único dia fique sobrecarregado com dois setores demorados.'},
@@ -1241,7 +1276,7 @@ if(cfg.diasSemanaBloq) diasSemanaBloq=cfg.diasSemanaBloq;
 if(cfg.historico) localStorage.setItem('h5s_v8',JSON.stringify(cfg.historico));
 salvarDados(); salvarRestr();
 if(cfg.regras){
-setChk('regra1L1C',cfg.regras.forcar1L1C); setChk('regraFallbackLongo',cfg.regras.fallbackLongo);
+setChk('regra1L1C',cfg.regras.forcar1L1C); if(cfg.regras.agrupar1L2C!==undefined) setChk('regra1L2C',cfg.regras.agrupar1L2C); setChk('regraFallbackLongo',cfg.regras.fallbackLongo);
 setChk('regraEvitar2LongosDia',cfg.regras.evitar2LongosDia); setChk('regraEvitarDuplasRepetidas',cfg.regras.evitarDuplasRepetidas);
 setChk('regraDistribuirEquitativamente',cfg.regras.distribuirEquitativamente); setChk('regraUsarHistorico',cfg.regras.usarHistorico);
 setChk('regraBanheiroMisto',cfg.regras.banheiroMisto); setChk('regraEspacar',cfg.regras.espacar);
