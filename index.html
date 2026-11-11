@@ -159,6 +159,7 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 .ed-err{color:#b31b1b}.ed-warn{color:#a86b00}.ed-okmsg{color:#2e7d32}
 .ed-acoes{display:flex;gap:.5rem;align-items:center;margin-top:1.1rem;flex-wrap:wrap}
 .ed-acoes button[disabled]{opacity:.45;cursor:not-allowed}
+table.t .rep{outline:2px dashed #d9a066;outline-offset:1px}
 </style>
 </head>
 <body>
@@ -293,7 +294,8 @@ table.t td{padding:.85rem .55rem;border-bottom:1px solid #c6dee6;vertical-align:
 • <b>Auditores, setores e restrições</b> são salvos <b>sozinhos</b>, a cada mudança — você não precisa fazer nada.<br>
 • Já <b>a escala de um mês</b> só entra no histórico quando você clica em <b>"Salvar no histórico"</b> (na aba Sortear).<br>
 • O <b>último mês salvo</b> vira a <b>base</b> que o próximo sorteio usa pra evitar repetir duplas e setores. Ele fica marcado abaixo com o selo <span class="hist-badge">base atual</span>.
-</div>
+<br>
+• <b>Todos os meses</b> salvos aqui alimentam a regra <b>Priorizar setores inéditos</b> (aba Regras): quanto mais completo o histórico, menos o sorteio repete setor para a mesma pessoa.</div>
 <div id="listaHist"><div class="hist-item base"><div><span class="hist-nome">Setembro 2026</span><span class="hist-badge">base atual</span><br><span class="hist-data"><i class="far fa-clock"></i> Salvo em 08/09/2026, 18:45:00 • 16 auditorias</span></div><div style="display:flex;gap:.4rem"><button class="btn btn-sm btn-outline" data-idx="0" data-a="load"><i class="fas fa-folder-open"></i> Carregar</button><button class="btn btn-sm btn-danger" data-idx="0" data-a="del"><i class="fas fa-trash"></i></button></div></div></div>
 </div>
 </div>
@@ -348,6 +350,25 @@ try{
     localStorage.setItem(SEED_FLAG,'1');
   }
 }catch(e){ console.warn('Seed falhou',e); }
+})();
+</script>
+<script>
+/* v3 (11/11/2026): histórico de 2026 (mar–nov) importado da planilha "Auditorias 5S - Calendário e Histórico".
+   Roda uma única vez neste navegador: acrescenta os meses ao histórico já salvo (se existir um mês de mesmo nome, ele é substituído
+   pelo que está na planilha). Não mexe em auditores, setores, restrições nem regras. */
+(function(){
+  var FLAG='seed_hist2026_v1_aplicado';
+  var NOVOS=[{"nome":"Março 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-03-04","e":"Lucas Carnizella","i":"Felipe Martins Barcellos","setores":["Manutenção","Café Produção"],"fixado":false},{"data":"2026-03-05","e":"Lucas Carnizella","i":"Felipe Martins Barcellos","setores":["Comercial","Controladoria"],"fixado":false},{"data":"2026-03-10","e":"Alexandre Vivan","i":"Suélen Correa","setores":["RH","Direção","P&D - Flex"],"fixado":false},{"data":"2026-03-11","e":"Ana Carolina Adamatti","i":"Márcio Perotti Barros","setores":["Usinagem"],"fixado":false},{"data":"2026-03-12","e":"Jeferson Kessler","i":"Henrique Adamatti","setores":["Qualidade e Meio Ambiente","Tecnologia da Informação"],"fixado":false},{"data":"2026-03-16","e":"Gustavo Pauletti","i":"Vanessa Benedita Silveira","setores":["MTA - Resfriar","P&D - Software"],"fixado":false},{"data":"2026-03-17","e":"Maiara da Veiga Saretto","i":"Alexandre Silva de Avila","setores":["PPCPM","Café Subsolo"],"fixado":false},{"data":"2026-03-18","e":"Laiza da Silva Gonçalves","i":"Tamara Rech Kuchnir","setores":["Logística","Copa"],"fixado":false},{"data":"2026-03-19","e":"Laiza da Silva Gonçalves","i":"Tamara Rech Kuchnir","setores":["Chicote","P&D - RAID"],"fixado":false},{"data":"2026-03-23","e":"Aloísio Vargas Arrial","i":"Vinícius Maia","setores":["Montagem de Placas","P&D - Areas Comuns"],"fixado":false},{"data":"2026-03-24","e":"Aloísio Vargas Arrial","i":"Vinícius Maia","setores":["MTA - Industrial"],"fixado":false},{"data":"2026-03-25","e":"Cristiano dos Santos Gubert","i":"Cristhian Albuquerque Pedroni","setores":["Métodos e Processos","P&D - Industrial"],"fixado":false},{"data":"2026-03-26","e":"Marcelo Henrique Sgarbi","i":"Gabriel Dedea","setores":["Assistência Técnica","P&D - Documentação"],"fixado":false},{"data":"2026-03-27","e":"Renata dos Santos","i":"Nathan Mossói padilha","setores":["MTA - Automotivo","P&D - HIT"],"fixado":false}],"importadoPlanilha":true},{"nome":"Abril 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-04-07","e":"Renata dos Santos","i":"Henrique Adamatti","setores":["Métodos e Processos","Café Subsolo"],"fixado":false},{"data":"2026-04-08","e":"Laiza da Silva Gonçalves","i":"Suélen Correa","setores":["MTA - Automotivo","P&D - Areas Comuns"],"fixado":false},{"data":"2026-04-10","e":"Lucas Carnizella","i":"Tamara Rech Kuchnir","setores":["Logística","P&D - RAID"],"fixado":false},{"data":"2026-04-13","e":"Aloísio Vargas Arrial","i":"Gabriel Dedea","setores":["MTA - Industrial","Copa"],"fixado":false},{"data":"2026-04-14","e":"Cristiano dos Santos Gubert","i":"Vanessa Benedita Silveira","setores":["Assistência Técnica","P&D - HIT"],"fixado":false},{"data":"2026-04-15","e":"Jeferson Kessler","i":"Nathan Mossói padilha","setores":["Usinagem","P&D - Software"],"fixado":false},{"data":"2026-04-16","e":"Marcelo Henrique Sgarbi","i":"Felipe Martins Barcellos","setores":["Montagem de Placas"],"fixado":false},{"data":"2026-04-22","e":"Laiza da Silva Gonçalves","i":"Márcio Perotti Barros","setores":["Tecnologia da Informação","P&D - Documentação"],"fixado":false},{"data":"2026-04-23","e":"Alexandre Vivan","i":"Maiara da Veiga Saretto","setores":["Chicote","PPCPM"],"fixado":false},{"data":"2026-04-24","e":"Gustavo Pauletti","i":"Alexandre Silva de Avila","setores":["Manutenção","RH"],"fixado":false},{"data":"2026-04-27","e":"Aloísio Vargas Arrial","i":"Gabriel Dedea","setores":["Comercial","Controladoria"],"fixado":false},{"data":"2026-04-28","e":"Gustavo Pauletti","i":"Alexandre Silva de Avila","setores":["MTA - Resfriar","Café Produção"],"fixado":false},{"data":"2026-04-29","e":"Ana Carolina Adamatti","i":"Cristhian Albuquerque Pedroni","setores":["Qualidade e Meio Ambiente","P&D - Industrial"],"fixado":false}],"importadoPlanilha":true},{"nome":"Maio 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-05-04","e":"Jeferson Kessler","i":"Felipe Martins Barcellos","setores":["MTA - Resfriar","Café Produção"],"fixado":false},{"data":"2026-05-05","e":"Renata dos Santos","i":"Suélen Correa","setores":["P&D - Areas Comuns","Café Subsolo"],"fixado":false},{"data":"2026-05-06","e":"Laiza da Silva Gonçalves","i":"Márcio Perotti Barros","setores":["RH","Controladoria"],"fixado":false},{"data":"2026-05-07","e":"Alexandre Vivan","i":"Cristhian Albuquerque Pedroni","setores":["MTA - Automotivo","Copa"],"fixado":false},{"data":"2026-05-11","e":"Marcelo Henrique Sgarbi","i":"Henrique Adamatti","setores":["MTA - Industrial","P&D - Software"],"fixado":false},{"data":"2026-05-12","e":"Ana Carolina Adamatti","i":"Vanessa Benedita Silveira","setores":["P&D - Industrial","Qualidade e Meio Ambiente"],"fixado":false},{"data":"2026-05-13","e":"Lucas Carnizella","i":"Alexandre Silva de Avila","setores":["Métodos e Processos","Tecnologia da Informação"],"fixado":false},{"data":"2026-05-14","e":"Gustavo Pauletti","i":"Maiara da Veiga Saretto","setores":["PPCPM","P&D - Documentação"],"fixado":false},{"data":"2026-05-18","e":"Cristiano dos Santos Gubert","i":"Nathan Mossói padilha","setores":["P&D - RAID","P&D - HIT"],"fixado":false},{"data":"2026-05-19","e":"Gustavo Pauletti","i":"Maiara da Veiga Saretto","setores":["Assistência Técnica","Gestão PID"],"fixado":false},{"data":"2026-05-20","e":"Cristiano dos Santos Gubert","i":"Nathan Mossói padilha","setores":["Chicote","Manutenção"],"fixado":false},{"data":"2026-05-26","e":"Jeferson Kessler","i":"Felipe Martins Barcellos","setores":["Montagem de Placas","Direção"],"fixado":false},{"data":"2026-05-27","e":"Gabriel Dedea","i":"Aloísio Vargas Arrial","setores":["Logística","Gestão Industrial"],"fixado":false},{"data":"2026-05-28","e":"Laiza da Silva Gonçalves","i":"Tamara Rech Kuchnir","setores":["Usinagem","Comercial"],"fixado":false}],"importadoPlanilha":true},{"nome":"Junho 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-06-03","e":"Jeferson Kessler","i":"Henrique Adamatti","setores":["P&D - RAID","Café Subsolo"],"fixado":false},{"data":"2026-06-08","e":"Felipe Martins Barcellos","i":"Alexandre Silva de Avila","setores":["Assistência Técnica","Café Produção"],"fixado":false},{"data":"2026-06-09","e":"Laiza da Silva Gonçalves","i":"Maiara da Veiga Saretto","setores":["P&D - Areas Comuns","P&D - HIT"],"fixado":false},{"data":"2026-06-10","e":"Renata dos Santos","i":"Cristhian Albuquerque Pedroni","setores":["P&D - Industrial","P&D - Software"],"fixado":false},{"data":"2026-06-11","e":"Jeferson Kessler","i":"Márcio Perotti Barros","setores":["Métodos e Processos","Gestão PID"],"fixado":false},{"data":"2026-06-12","e":"Lucas Carnizella","i":"Gustavo Pauletti","setores":["MTA - Industrial","Gestão Industrial"],"fixado":false},{"data":"2026-06-16","e":"Alexandre Vivan","i":"Vanessa Benedita Silveira","setores":["Chicote","Copa"],"fixado":false},{"data":"2026-06-17","e":"Cristiano dos Santos Gubert","i":"Nathan Mossói padilha","setores":["Tecnologia da Informação","MTA - Resfriar"],"fixado":false},{"data":"2026-06-18","e":"Gabriel Dedea","i":"Marcelo Henrique Sgarbi","setores":["Qualidade e Meio Ambiente","Direção"],"fixado":false},{"data":"2026-06-22","e":"Lucas Carnizella","i":"Gustavo Pauletti","setores":["Manutenção","RH"],"fixado":false},{"data":"2026-06-23","e":"Cristiano dos Santos Gubert","i":"Nathan Mossói padilha","setores":["Comercial","Controladoria"],"fixado":false},{"data":"2026-06-24","e":"Ana Carolina Adamatti","i":"Tamara Rech Kuchnir","setores":["Logística","P&D - Documentação"],"fixado":false},{"data":"2026-06-25","e":"Laiza da Silva Gonçalves","i":"Gabriel Dedea","setores":["PPCPM","MTA - Automotivo"],"fixado":false},{"data":"2026-06-29","e":"Alexandre Vivan","i":"Márcio Perotti Barros","setores":["Usinagem","Montagem de Placas"],"fixado":false}],"importadoPlanilha":true},{"nome":"Julho 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-07-02","e":"Maiara da Veiga Saretto","i":"Marcelo Henrique Sgarbi","setores":["P&D - Software","Direção"],"fixado":false},{"data":"2026-07-07","e":"Henrique Adamatti","i":"Tamara Rech Kuchnir","setores":["Logística","Assistência Técnica"],"fixado":false},{"data":"2026-07-08","e":"Renata dos Santos","i":"Laiza da Silva Gonçalves","setores":["Montagem de Placas","Qualidade e Meio Ambiente"],"fixado":false},{"data":"2026-07-09","e":"Nathan Mossói padilha","i":"Lucas Carnizella","setores":["PPCPM","MTA - Industrial"],"fixado":false},{"data":"2026-07-13","e":"Márcio Perotti Barros","i":"Vanessa Benedita Silveira","setores":["Chicote","RH"],"fixado":false},{"data":"2026-07-13","e":"Gabriel Dedea","i":"Alexandre Silva de Avila","setores":["Tecnologia da Informação","Comercial"],"fixado":false},{"data":"2026-07-15","e":"Laiza da Silva Gonçalves","i":"Julia Fernanda Morais","setores":["P&D - RAID","Café Produção"],"fixado":false},{"data":"2026-07-20","e":"Alexandre Vivan","i":"Tatiane Santos","setores":["MTA - Automotivo","Usinagem"],"fixado":false},{"data":"2026-07-21","e":"Jeferson Kessler","i":"Daniel Paim","setores":["Manutenção","P&D - Documentação"],"fixado":false},{"data":"2026-07-22","e":"Maiara da Veiga Saretto","i":"Marcelo Henrique Sgarbi","setores":["Controladoria","Gestão Industrial"],"fixado":false},{"data":"2026-07-23","e":"Nathan Mossói padilha","i":"Lucas Carnizella","setores":["Gestão PID","P&D - Industrial"],"fixado":false},{"data":"2026-07-27","e":"Felipe Martins Barcellos","i":"Leticia Zerbetto","setores":["MTA - Resfriar","Café Subsolo"],"fixado":false},{"data":"2026-07-27","e":"Ana Carolina Adamatti","i":"Cristhian Albuquerque Pedroni","setores":["P&D - HIT","Métodos e Processos"],"fixado":false},{"data":"2026-07-28","e":"Cristiano dos Santos Gubert","i":"Taise Silva","setores":["P&D - Areas Comuns","Copa"],"fixado":false}],"importadoPlanilha":true},{"nome":"Agosto 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-08-03","e":"Cristiano dos Santos Gubert","i":"Alexandre Vivan","setores":["Gestão Industrial","Gestão PID"],"fixado":false},{"data":"2026-08-04","e":"Marcelo Henrique Sgarbi","i":"Leticia Zerbetto","setores":["P&D - Areas Comuns","P&D - RAID"],"fixado":false},{"data":"2026-08-05","e":"Jeferson Kessler","i":"Taise Silva","setores":["Métodos e Processos","P&D - Software"],"fixado":false},{"data":"2026-08-06","e":"Márcio Perotti Barros","i":"Daniel Paim","setores":["Copa","MTA - Resfriar"],"fixado":false},{"data":"2026-08-10","e":"Lucas Carnizella","i":"Tatiane Santos","setores":["Manutenção","Logística"],"fixado":false},{"data":"2026-08-11","e":"Gabriel Dedea","i":"Tamara Rech Kuchnir","setores":["Café Produção","Assistência Técnica"],"fixado":false},{"data":"2026-08-13","e":"Henrique Adamatti","i":"Felipe Martins Barcellos","setores":["PPCPM","MTA - Industrial"],"fixado":false},{"data":"2026-08-14","e":"Ana Carolina Adamatti","i":"Maiara da Veiga Saretto","setores":["P&D - Industrial","Café Subsolo"],"fixado":false},{"data":"2026-08-17","e":"Cristhian Albuquerque Pedroni","i":"Laiza da Silva Gonçalves","setores":["Chicote","P&D - Documentação"],"fixado":false},{"data":"2026-08-17","e":"Márcio Perotti Barros","i":"Julia Fernanda Morais","setores":["Usinagem","RH"],"fixado":false},{"data":"2026-08-18","e":"Marcelo Henrique Sgarbi","i":"Leticia Zerbetto","setores":["Comercial","Montagem de Placas"],"fixado":false},{"data":"2026-08-19","e":"Jeferson Kessler","i":"Taise Silva","setores":["Controladoria","Qualidade e Meio Ambiente"],"fixado":false},{"data":"2026-08-20","e":"Cristiano dos Santos Gubert","i":"Alexandre Silva de Avila","setores":["Direção","Tecnologia da Informação"],"fixado":false},{"data":"2026-08-24","e":"Renata dos Santos","i":"Maiara da Veiga Saretto","setores":["P&D - HIT","MTA - Automotivo"],"fixado":false}],"importadoPlanilha":true},{"nome":"Setembro 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-09-09","e":"Alexandre Vivan","i":"Nathan Mossói padilha","setores":["Café Produção","Usinagem"],"fixado":false},{"data":"2026-09-10","e":"Cristiano dos Santos Gubert","i":"Ana Carolina Adamatti","setores":["P&D - HIT","Logística"],"fixado":false},{"data":"2026-09-11","e":"Tamara Rech Kuchnir","i":"Marcelo Henrique Sgarbi","setores":["P&D - RAID","P&D - Areas Comuns"],"fixado":false},{"data":"2026-09-15","e":"Renata dos Santos","i":"Gabriel Dedea","setores":["Copa","MTA - Resfriar"],"fixado":false},{"data":"2026-09-16","e":"Márcio Perotti Barros","i":"Taise Silva","setores":["MTA - Automotivo","Tecnologia da Informação"],"fixado":false},{"data":"2026-09-17","e":"Laiza da Silva Gonçalves","i":"Alexandre Silva de Avila","setores":["MTA - Industrial","Comercial"],"fixado":false},{"data":"2026-09-21","e":"Maiara da Veiga Saretto","i":"Gabriel Dias","setores":["Café Subsolo","P&D - Industrial"],"fixado":false},{"data":"2026-09-22","e":"Lucas Carnizella","i":"Ana Carolina Adamatti","setores":["Assistência Técnica"],"fixado":false},{"data":"2026-09-23","e":"Alexandre Vivan","i":"Maiara da Veiga Saretto","setores":["Manutenção","Gestão Industrial"],"fixado":false},{"data":"2026-09-24","e":"Felipe Martins Barcellos","i":"Nathan Mossói padilha","setores":["RH","Direção","Gestão PID"],"fixado":false},{"data":"2026-09-24","e":"Laiza da Silva Gonçalves","i":"Taise Silva","setores":["P&D - Software","PPCPM"],"fixado":false},{"data":"2026-09-28","e":"Henrique Adamatti","i":"Tatiane Santos","setores":["Banheiro Adm","Controladoria"],"fixado":false},{"data":"2026-09-28","e":"Cristhian Albuquerque Pedroni","i":"Patricia Casara","setores":["Banheiro Subsolo","Qualidade e Meio Ambiente"],"fixado":false},{"data":"2026-09-29","e":"Felipe Martins Barcellos","i":"Julia Fernanda Morais","setores":["Montagem de Placas","P&D - Documentação"],"fixado":false},{"data":"2026-09-29","e":"Daniel Paim","i":"Leticia Zerbetto","setores":["Banheiro Produção","Banheiro SMT"],"fixado":false},{"data":"2026-09-30","e":"Lucas Carnizella","i":"Alexandre Silva de Avila","setores":["Chicote","Métodos e Processos"],"fixado":false}],"importadoPlanilha":true},{"nome":"Outubro 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-10-05","e":"Ana Carolina Adamatti","i":"Daniel Paim","setores":["Comercial","Gestão Industrial"],"fixado":false},{"data":"2026-10-08","e":"Jeferson Kessler","i":"Daniel Paim","setores":["P&D - HIT","P&D - Areas Comuns"],"fixado":false},{"data":"2026-10-09","e":"Cristhian Albuquerque Pedroni","i":"Julia Fernanda Morais","setores":["Banheiro Subsolo","Café Subsolo"],"fixado":false},{"data":"2026-10-13","e":"Alexandre Vivan","i":"Gabriel Dedea","setores":["Café Produção","Métodos e Processos","Oficina Mecânica"],"fixado":false},{"data":"2026-10-14","e":"Cristiano dos Santos Gubert","i":"Nathan Mossói padilha","setores":["Tecnologia da Informação","P&D - RAID"],"fixado":false},{"data":"2026-10-14","e":"Renata dos Santos","i":"Felipe Martins Barcellos","setores":["Usinagem","Chicote"],"fixado":false},{"data":"2026-10-15","e":"Marcelo Henrique Sgarbi","i":"Leticia Zerbetto","setores":["Logística","P&D - Software"],"fixado":false},{"data":"2026-10-15","e":"Renata dos Santos","i":"Alexandre Silva de Avila","setores":["Qualidade e Meio Ambiente","MTA - Automotivo"],"fixado":false},{"data":"2026-10-16","e":"Henrique Adamatti","i":"Maiara da Veiga Saretto","setores":["Montagem de Placas","Fresa"],"fixado":false},{"data":"2026-10-19","e":"Lucas Carnizella","i":"Tamara Rech Kuchnir","setores":["Banheiro SMT","MTA - Resfriar"],"fixado":false},{"data":"2026-10-19","e":"Laiza da Silva Gonçalves","i":"Patricia Casara","setores":["Copa","Manutenção"],"fixado":false},{"data":"2026-10-21","e":"Gabriel Dedea","i":"Taise Silva","setores":["Banheiro Produção","Banheiro Adm"],"fixado":false},{"data":"2026-10-22","e":"Marcelo Henrique Sgarbi","i":"Tatiane Santos","setores":["MTA - Industrial"],"fixado":false},{"data":"2026-10-22","e":"Alexandre Vivan","i":"Henrique Adamatti","setores":["PPCPM","P&D - Documentação"],"fixado":false},{"data":"2026-10-26","e":"Laiza da Silva Gonçalves","i":"Daniel Paim","setores":["Assistência Técnica","Controladoria"],"fixado":false},{"data":"2026-10-27","e":"Lucas Carnizella","i":"Taise Silva","setores":["RH","Direção"],"fixado":false},{"data":"2026-10-28","e":"Cristhian Albuquerque Pedroni","i":"Leticia Zerbetto","setores":["Gestão PID","P&D - Industrial"],"fixado":false}],"importadoPlanilha":true},{"nome":"Novembro 2026","data":"11/11/2026 (importado da planilha)","escala":[{"data":"2026-11-03","e":"Renata dos Santos","i":"Jeferson Kessler","setores":["P&D - RAID","Banheiro Subsolo","Café Subsolo"],"fixado":false},{"data":"2026-11-04","e":"Laiza da Silva Gonçalves","i":"Cristiano dos Santos Gubert","setores":["Banheiro Produção","Banheiro Adm","P&D - HIT"],"fixado":false},{"data":"2026-11-05","e":"Lucas Carnizella","i":"Maiara da Veiga Saretto","setores":["P&D - Areas Comuns","Banheiro SMT","Café Produção"],"fixado":false},{"data":"2026-11-09","e":"Daniel Paim","i":"Tatiane Santos","setores":["P&D - Industrial","P&D - Software"],"fixado":false},{"data":"2026-11-10","e":"Tamara Rech Kuchnir","i":"Alexandre Vivan","setores":["Logística","Assistência Técnica"],"fixado":false},{"data":"2026-11-11","e":"Ana Carolina Adamatti","i":"Cristhian Albuquerque Pedroni","setores":["MTA - Resfriar","MTA - Automotivo"],"fixado":false},{"data":"2026-11-12","e":"Patricia Casara","i":"Gabriel Dedea","setores":["Usinagem","Chicote"],"fixado":false},{"data":"2026-11-13","e":"Felipe Martins Barcellos","i":"Tatiane Santos","setores":["PPCPM","Manutenção"],"fixado":false},{"data":"2026-11-16","e":"Marcelo Henrique Sgarbi","i":"Taise Silva","setores":["Métodos e Processos","Fresa","Qualidade e Meio Ambiente"],"fixado":false},{"data":"2026-11-17","e":"Henrique Adamatti","i":"Gabriel Dedea","setores":["RH","P&D - Documentação"],"fixado":false},{"data":"2026-11-18","e":"Nathan Mossói padilha","i":"Julia Fernanda Morais","setores":["MTA - Industrial","Copa"],"fixado":false},{"data":"2026-11-23","e":"Lucas Carnizella","i":"Renata dos Santos","setores":["Controladoria","Montagem de Placas"],"fixado":false},{"data":"2026-11-24","e":"Laiza da Silva Gonçalves","i":"Taise Silva","setores":["Direção","Gestão PID","Gestão Industrial"],"fixado":false},{"data":"2026-11-25","e":"Cristiano dos Santos Gubert","i":"Leticia Zerbetto","setores":["Tecnologia da Informação","Comercial"],"fixado":false}],"importadoPlanilha":true}];
+  try{
+    if(localStorage.getItem(FLAG)) return;
+    var h=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
+    var nomes={}; NOVOS.forEach(function(m){ nomes[m.nome]=1; });
+    h=h.filter(function(m){ return !nomes[m.nome]; }).concat(NOVOS);
+    var menor=function(m){ var d='9999'; (m.escala||[]).forEach(function(l){ if(l.data&&l.data<d) d=l.data; }); return d; };
+    h.sort(function(a,b){ var x=menor(a), y=menor(b); return x<y?-1:x>y?1:0; });
+    localStorage.setItem('h5s_v8',JSON.stringify(h));
+    localStorage.setItem(FLAG,'1');
+  }catch(e){ console.warn('Importação do histórico falhou',e); }
 })();
 </script>
 <script>
@@ -430,6 +451,7 @@ setChk('regraDistribuirEquitativamente', r.distribuirEquitativamente);
 setChk('regraUsarHistorico', r.usarHistorico);
 setChk('regraBanheiroMisto', r.banheiroMisto);
 setChk('regraEspacar', r.espacar);
+if(r.novidade!==undefined) setChk('regraNovidade', r.novidade);
 }
 }catch(e){}
 }
@@ -467,6 +489,87 @@ if(!setoresAuditor.has(aud)) setoresAuditor.set(aud,new Set());
 });
 return {duplas:duplas, setoresAud:setoresAuditor, nome:ultimo.nome||''};
 }
+/* ===== v3: histórico do ano + sorteio que prioriza setores inéditos ===== */
+function ymMaisComum(datas){ var c={}; datas.forEach(function(d){ var k=(d||'').slice(0,7); if(k) c[k]=(c[k]||0)+1; }); var b='',n=0; for(var k in c){ if(c[k]>n){ n=c[k]; b=k; } } return b; }
+function getHistoricoAno(excluirYM){
+  var h=[]; try{ h=JSON.parse(localStorage.getItem('h5s_v8')||'[]'); }catch(e){}
+  var H={aud:{},par:{},tot:{},ano:'',temDados:false,meses:0}, anos={};
+  h.forEach(function(m){
+    var esc=m.escala||[]; if(!esc.length) return;
+    if(excluirYM && esc.filter(function(l){ return (l.data||'').slice(0,7)===excluirYM; }).length>esc.length/2) return;
+    H.meses++;
+    esc.forEach(function(l){
+      if(!l.e||!l.i) return; H.temDados=true;
+      var k=ck(l.e,l.i); H.par[k]=(H.par[k]||0)+1;
+      [l.e,l.i].forEach(function(a){
+        H.tot[a]=(H.tot[a]||0)+1; var A=H.aud[a]||(H.aud[a]={});
+        (l.setores||[]).forEach(function(s){ var r=A[s]||(A[s]={n:0,last:''}); r.n++; if((l.data||'')>r.last) r.last=l.data||''; });
+      });
+      if(l.data) anos[l.data.slice(0,4)]=1;
+    });
+  });
+  var as=Object.keys(anos).sort(); H.ano=as.length?(as.length>1?as[0]+'–'+as[as.length-1]:as[0]):'';
+  return H;
+}
+function repN(H,a,s){ var A=H.aud[a]; var r=A&&A[s]; return r?r.n:0; }
+function custoAssign(H,a,s){ var n=repN(H,a,s); return n>0?10+n:0; }
+function custoDupla(H,d){ var c=0; d.setores.forEach(function(s){ c+=custoAssign(H,d.e,s)+custoAssign(H,d.i,s); }); return c; }
+function custoResultado(res,H){
+  var c=0, per={};
+  res.forEach(function(d){ c+=custoDupla(H,d)+4*(H.par[ck(d.e,d.i)]||0); per[d.e]=(per[d.e]||0)+1; per[d.i]=(per[d.i]||0)+1; });
+  for(var p in per){ if(per[p]>=2) c+=(per[p]-1)*(H.tot[p]||0); }
+  return c;
+}
+function elegDuplaGlobal(d,s,regras){
+  if(parBloqueado(d.e,d.i)) return false;
+  if(!pode(d.e,s)||!pode(d.i,s)) return false;
+  if(regras.banheiroMisto && ehBanheiro(s) && !ehMista(d.e,d.i)) return false;
+  return true;
+}
+function resumoNovidade(linhas,H){
+  var n=0, rep=0;
+  linhas.forEach(function(l){ (l.setores||[]).forEach(function(s){ [l.e,l.i].forEach(function(a){ n++; if(repN(H,a,s)>0) rep++; }); }); });
+  return {n:n,rep:rep,ined:n-rep};
+}
+/* Melhora uma escala já válida: troca setores (e auditores) entre duplas quando isso reduz repetições.
+   Só faz trocas que respeitam restrições de setor, parceiros bloqueados, banheiro misto e dupla com pelo menos 1 experiente. */
+function refinarNovidade(res,H,regras,fixos){
+  var rmap={}; setores.forEach(function(s){ rmap[s.n]=s.r?1:0; });
+  var chaves={}; (fixos||[]).forEach(function(l){ chaves[ck(l.e,l.i)]=1; });
+  var livre=function(p){ return !(diasIndisponiveis[p]&&diasIndisponiveis[p].length) && !(diasSemanaBloq[p]&&diasSemanaBloq[p].length); };
+  var temExp=function(d){ return aExp.indexOf(d.e)>=0||aExp.indexOf(d.i)>=0; };
+  var custoD=function(d){ return custoDupla(H,d)+4*(H.par[ck(d.e,d.i)]||0); };
+  var elegTodos=function(d){ for(var q=0;q<d.setores.length;q++){ if(!elegDuplaGlobal(d,d.setores[q],regras)) return false; } return true; };
+  var melhorou=true, passada=0;
+  while(melhorou && passada<30){
+    melhorou=false; passada++;
+    for(var x=0;x<res.length;x++){ for(var y=x+1;y<res.length;y++){
+      var X=res[x], Y=res[y];
+      for(var i=0;i<X.setores.length;i++){ for(var j=0;j<Y.setores.length;j++){
+        var sa=X.setores[i], sb=Y.setores[j];
+        if(rmap[sa]!==rmap[sb]) continue;
+        if(!elegDuplaGlobal(X,sb,regras)||!elegDuplaGlobal(Y,sa,regras)) continue;
+        var antes=custoAssign(H,X.e,sa)+custoAssign(H,X.i,sa)+custoAssign(H,Y.e,sb)+custoAssign(H,Y.i,sb);
+        var depois=custoAssign(H,X.e,sb)+custoAssign(H,X.i,sb)+custoAssign(H,Y.e,sa)+custoAssign(H,Y.i,sa);
+        if(depois<antes){ X.setores[i]=sb; Y.setores[j]=sa; melhorou=true; }
+      }}
+      for(var a=0;a<2;a++){ for(var b=0;b<2;b++){
+        var p=(a===0?X.e:X.i), q=(b===0?Y.e:Y.i);
+        if(p===q||!livre(p)||!livre(q)) continue;
+        var X2={e:a===0?q:X.e,i:a===1?q:X.i,setores:X.setores};
+        var Y2={e:b===0?p:Y.e,i:b===1?p:Y.i,setores:Y.setores};
+        if(X2.e===X2.i||Y2.e===Y2.i) continue;
+        if(!temExp(X2)||!temExp(Y2)) continue;
+        var kx=ck(X2.e,X2.i), ky=ck(Y2.e,Y2.i);
+        if(kx===ky||chaves[kx]||chaves[ky]) continue;
+        var dup=false; for(var z=0;z<res.length;z++){ if(z===x||z===y) continue; var kz=ck(res[z].e,res[z].i); if(kz===kx||kz===ky){ dup=true; break; } }
+        if(dup) continue;
+        if(!elegTodos(X2)||!elegTodos(Y2)) continue;
+        if(custoD(X2)+custoD(Y2)<custoD(X)+custoD(Y)){ X.e=X2.e; X.i=X2.i; Y.e=Y2.e; Y.i=Y2.i; melhorou=true; }
+      }}
+    }}
+  }
+}
 function getRegras(){
 return {
 forcar1L1C: document.getElementById('regra1L1C').checked,
@@ -476,6 +579,7 @@ evitar2LongosDia: document.getElementById('regraEvitar2LongosDia').checked,
 evitarDuplasRepetidas: document.getElementById('regraEvitarDuplasRepetidas').checked,
 distribuirEquitativamente: document.getElementById('regraDistribuirEquitativamente').checked,
 usarHistorico: document.getElementById('regraUsarHistorico').checked,
+novidade: (document.getElementById('regraNovidade')||{}).checked!==false,
 banheiroMisto: (document.getElementById('regraBanheiroMisto')||{}).checked!==false,
 espacar: (document.getElementById('regraEspacar')||{}).checked!==false
 };
@@ -675,7 +779,19 @@ diasFixados.add(l.data);
 });
 }
 var MAX_TENT=300, tent=0, res=null;
-while(tent<MAX_TENT&&!res){ tent++; res=tentarSortear(diasFixados, novaEsc.filter(function(l){return l.fixado;}), hist); }
+var HAnov=regras.novidade?getHistoricoAno(ymMaisComum(diasUteis)):null, usaNov=!!(HAnov&&HAnov.temDados), validosNov=0, tentTxt='';
+if(usaNov){
+  var fixosNov=novaEsc.filter(function(l){return l.fixado;}), melhorC=Infinity, t0=Date.now();
+  while(tent<MAX_TENT*3 && validosNov<150 && (Date.now()-t0)<3500){
+    tent++; var rN=tentarSortear(diasFixados, fixosNov, hist); if(!rN) continue;
+    validosNov++; refinarNovidade(rN.resultado,HAnov,regras,fixosNov);
+    var cN=custoResultado(rN.resultado,HAnov); if(cN<melhorC){ melhorC=cN; res=rN; }
+  }
+  tentTxt='Sorteio otimizado: '+validosNov+' combinações testadas, escolhida a que menos repete setor';
+} else {
+  while(tent<MAX_TENT&&!res){ tent++; res=tentarSortear(diasFixados, novaEsc.filter(function(l){return l.fixado;}), hist); }
+  tentTxt='Sorteio concluído na tentativa '+tent;
+}
 var avisoEl=document.getElementById('aviso'), alertaEl=document.getElementById('alerta');
 if(!res){
 avisoEl.style.display='none';
@@ -685,7 +801,7 @@ return;
 }
 alertaEl.style.display='none';
 avisoEl.style.display='block';
-avisoEl.innerHTML='<i class="fas fa-info-circle"></i> Sorteio concluído na tentativa '+tent+'.';
+avisoEl.innerHTML='<i class="fas fa-info-circle"></i> '+tentTxt+'.';
 var diasDisp=diasUteis.filter(function(d){return !diasFixados.has(d);}).sort();
 var slots=res.resultado;
 var MAX_POR_DIA=2;
@@ -800,8 +916,9 @@ var nAud=escala.length, nPess=aExp.length+aInexp.length, nLongos=setores.filter(
 var cntP={}; escala.forEach(function(l){ cntP[l.e]=(cntP[l.e]||0)+1; cntP[l.i]=(cntP[l.i]||0)+1; });
 var nRep=Object.keys(cntP).filter(function(k){return cntP[k]>=2;}).length;
 var diag=' <br><i class="fas fa-chart-bar"></i> <b>'+nAud+' auditorias</b> ('+(nAud*2)+' vagas) para '+nPess+' auditores → <b>'+nRep+' pessoa(s) auditando 2x</b>.'+(nAud*2>nPess?' Como há mais vagas ('+(nAud*2)+') do que auditores ('+nPess+'), algumas repetições são inevitáveis.':' ✅ Ninguém precisa auditar 2x.');
-if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> Sorteio concluído na tentativa '+tent+'. '+diasComDuas+' dia(s) com 2 auditorias.'+diag;
-else avisoEl.innerHTML='<i class="fas fa-check-circle"></i> Sorteio concluído na tentativa '+tent+'.'+diag;
+if(usaNov){ var rn=resumoNovidade(escala,HAnov); diag+=' <br><i class="fas fa-seedling"></i> <b>Setores inéditos:</b> '+rn.ined+' de '+rn.n+' atribuições ('+Math.round(100*rn.ined/(rn.n||1))+'%) são setores que o auditor ainda não fez ('+(HAnov.ano||'histórico')+').'; }
+if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> '+tentTxt+'. '+diasComDuas+' dia(s) com 2 auditorias.'+diag;
+else avisoEl.innerHTML='<i class="fas fa-check-circle"></i> '+tentTxt+'.'+diag;
 var resumo=[];
 if(regras.agrupar1L2C) resumo.push('1L + até 2C'); else if(regras.forcar1L1C) resumo.push('1L+1C');
 if(regras.fallbackLongo) resumo.push('Fallback longo');
@@ -811,6 +928,7 @@ if(regras.distribuirEquitativamente) resumo.push('Distribuição uniforme');
 if(regras.usarHistorico&&hist) resumo.push('Histórico: '+hist.nome+' ✓');
 if(regras.banheiroMisto) resumo.push('Banheiro misto');
 if(regras.espacar) resumo.push('Auditorias espaçadas');
+if(regras.novidade) resumo.push('Setores inéditos');
 document.getElementById('regrasResumo').innerHTML=resumo.join(' | ')||'padrão';
 if(escalaVisivel) renderizarEscala(); else mostrarPlaceholder();
 }
@@ -873,15 +991,16 @@ return linhas.join('\n');
 function renderizarEscala(){
 var protectedDiv=document.getElementById('protectedArea'); if(!protectedDiv) return;
 protectedDiv.innerHTML='<div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dia</th><th>Dupla</th><th>Setores</th><th>Manter?</th><th>Editar</th></tr></thead><tbody id="tbody"></tbody></table></div>'
-+'<div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span></div>'
++'<div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span><span>Setores inéditos: <strong id="sIned">–</strong></span></div>'
 +'<div id="resumoAud" style="margin-top:1.1rem"></div>'
 +'<div style="margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap"><button type="button" id="btnAddLinha" class="btn btn-outline btn-sm"><i class="fas fa-plus"></i> Adicionar auditoria</button><button type="button" id="btnCard" class="btn btn-primary btn-sm"><i class="fas fa-image"></i> Gerar card para o grupo</button></div>'
 +'<div style="margin-top:.9rem"><button id="btnCsv" class="btn btn-outline btn-sm"><i class="fas fa-copy"></i> Copiar CSV completo</button><textarea id="csvArea" class="textarea-copy" rows="4" readonly placeholder="CSV aparece aqui..."></textarea></div>';
 var tb=document.getElementById('tbody'); if(!tb) return; tb.innerHTML='';
+var HAr=getHistoricoAno(ymMaisComum(escala.map(function(l){return l.data;})));
 escala.forEach(function(l,idx){
 var tr=document.createElement('tr'); if(l.fixado) tr.classList.add('fixado');
 var dBR=l.data.split('-').reverse().join('/');
-var sh=l.setores.map(function(s){ var st=setores.find(function(x){return x.n===s;}); return '<span class="'+(st&&st.r?'sc':'sl')+'">'+s+'</span>'; }).join(' ');
+var sh=l.setores.map(function(s){ var st=setores.find(function(x){return x.n===s;}); var inf=[]; [l.e,l.i].forEach(function(a){ var r=HAr.aud[a]&&HAr.aud[a][s]; if(r) inf.push(a+' já fez '+r.n+'x (última em '+r.last.slice(8,10)+'/'+r.last.slice(5,7)+')'); }); return '<span class="'+(st&&st.r?'sc':'sl')+(inf.length?' rep':'')+'"'+(inf.length?' title="'+escHtml(inf.join(' · '))+'"':'')+'>'+s+(inf.length?' ↺':'')+'</span>'; }).join(' ');
 var mistaTag=ehMista(l.e,l.i)?'<span class="badge2" style="background:#d9f0e6;color:#1a7a54">mista</span>':'';
 tr.innerHTML='<td><strong>'+dBR+'</strong></td>'
 +'<td>'+diaSemana(l.data)+'</td>'
@@ -905,6 +1024,7 @@ document.getElementById('sSetT').innerText=setores.length;
 document.getElementById('sMed').innerText=(ts/(du||1)).toFixed(1);
 document.getElementById('sDupRep').innerText=duplasRepetidas;
 document.getElementById('sDias2').innerText=diasCom2;
+var rnn=resumoNovidade(escala,HAr), elI=document.getElementById('sIned'); if(elI) elI.innerText=rnn.n?(rnn.ined+'/'+rnn.n+' ('+Math.round(100*rnn.ined/rnn.n)+'%)'):'–';
 document.querySelectorAll('.manter-btn').forEach(function(b){
 b.addEventListener('click',function(){ escala[+b.dataset.i].fixado=!escala[+b.dataset.i].fixado; renderizarEscala(); atualizarParticipacao(); });
 });
@@ -1209,6 +1329,7 @@ var REGRAS_DEF=[
 {id:'regraEvitarDuplasRepetidas', on:true, icon:'fa-random', titulo:'Variar as duplas ao máximo', desc:'Tenta não repetir a mesma dupla de auditores dentro do mês, misturando mais as pessoas.'},
 {id:'regraDistribuirEquitativamente', on:true, icon:'fa-calendar-week', titulo:'Espalhar pelos dias do mês', desc:'Distribui as auditorias de forma uniforme, evitando amontoar tudo nos mesmos dias.'},
 {id:'regraUsarHistorico', on:true, icon:'fa-history', titulo:'Considerar o mês anterior', desc:'Usa o último mês salvo no histórico para evitar repetir as mesmas duplas e os mesmos setores por pessoa.'},
+{id:'regraNovidade', on:true, icon:'fa-seedling', titulo:'Priorizar setores inéditos (histórico do ano)', desc:'Usa todo o histórico salvo (não só o último mês) para que cada auditor vá, sempre que possível, a setores que ainda não auditou. Também evita repetir duplas e poupa quem já auditou muito. O sorteio testa várias combinações e escolhe a que menos repete setor.'},
 {id:'regraBanheiroMisto', on:true, icon:'fa-venus-mars', titulo:'Banheiros com dupla mista', desc:'Setores de banheiro só recebem uma dupla mista (um homem e uma mulher), para auditar o feminino e o masculino.'},
 {id:'regraEspacar', on:true, icon:'fa-arrows-alt-h', titulo:'Espaçar auditorias da mesma pessoa', desc:'Quando alguém faz 2 auditorias no mês, elas não ficam em dias seguidos — o sistema deixa alguns dias entre uma e outra.'}
 ];
@@ -1296,7 +1417,7 @@ if(cfg.regras){
 setChk('regra1L1C',cfg.regras.forcar1L1C); if(cfg.regras.agrupar1L2C!==undefined) setChk('regra1L2C',cfg.regras.agrupar1L2C); setChk('regraFallbackLongo',cfg.regras.fallbackLongo);
 setChk('regraEvitar2LongosDia',cfg.regras.evitar2LongosDia); setChk('regraEvitarDuplasRepetidas',cfg.regras.evitarDuplasRepetidas);
 setChk('regraDistribuirEquitativamente',cfg.regras.distribuirEquitativamente); setChk('regraUsarHistorico',cfg.regras.usarHistorico);
-setChk('regraBanheiroMisto',cfg.regras.banheiroMisto); setChk('regraEspacar',cfg.regras.espacar);
+setChk('regraBanheiroMisto',cfg.regras.banheiroMisto); setChk('regraEspacar',cfg.regras.espacar); if(cfg.regras.novidade!==undefined) setChk('regraNovidade',cfg.regras.novidade);
 salvarRegras();
 }
 renderAuds(); renderSets(); renderHist(); atuDias();
@@ -1351,7 +1472,7 @@ if(f.e&&f.i){ var k=ck(f.e,f.i);
 if(outros.some(function(o){return ck(o.e,o.i)===k;})) av.push('Essa dupla já se repete neste mês.');
 if(typeof parBloqueado==='function'&&parBloqueado(f.e,f.i)) av.push('Essa dupla está bloqueada nas restrições.');
 var h=getHistoricoRecente(); try{ var hl=JSON.parse(localStorage.getItem('h5s_v8')||'[]'); var ue=(hl[hl.length-1]||{}).escala||[]; if(ue.length&&f.data&&ue[0].data&&ue[0].data.slice(0,7)===f.data.slice(0,7)) h=null; }catch(e){} if(h&&h.duplas.has(k)) av.push('Essa dupla já auditou junta em '+h.nome+'.');
-if(h){ f.setores.forEach(function(sn){ [f.e,f.i].forEach(function(p){ var sa=h.setoresAud.get(p); if(sa&&sa.has(sn)) av.push(p+' já auditou '+sn+' em '+h.nome+'.'); }); }); }
+var HAv=getHistoricoAno((f.data||'').slice(0,7)); f.setores.forEach(function(sn){ [f.e,f.i].forEach(function(p){ var rr=HAv.aud[p]&&HAv.aud[p][sn]; if(rr) av.push(p+' já auditou '+sn+' '+rr.n+'x ('+(HAv.ano||'histórico')+'), última em '+rr.last.slice(8,10)+'/'+rr.last.slice(5,7)+'.'); }); }); if(HAv.par[k]) av.push('Essa dupla já auditou junta '+HAv.par[k]+'x ('+(HAv.ano||'histórico')+').');
 }
 f.setores.forEach(function(sn){ if(usadosOutros[sn]) av.push(sn+' já está na escala em '+usadosOutros[sn]+'.'); });
 var box=$('edAvisos');
