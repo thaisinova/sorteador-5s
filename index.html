@@ -295,7 +295,7 @@ table.t .rep{outline:2px dashed #d9a066;outline-offset:1px}
 • Já <b>a escala de um mês</b> só entra no histórico quando você clica em <b>"Salvar no histórico"</b> (na aba Sortear).<br>
 • O <b>último mês salvo</b> vira a <b>base</b> que o próximo sorteio usa pra evitar repetir duplas e setores. Ele fica marcado abaixo com o selo <span class="hist-badge">base atual</span>.
 <br>
-• <b>Todos os meses</b> salvos aqui alimentam a regra <b>Priorizar setores inéditos</b> (aba Regras): quanto mais completo o histórico, menos o sorteio repete setor para a mesma pessoa.</div>
+• <b>Todos os meses anteriores</b> alimentam a regra <b>Priorizar setores inéditos</b> (aba Regras). Ao sortear um mês, só contam meses <b>anteriores</b> a ele: um rascunho de mês futuro salvo aqui não interfere.</div>
 <div id="listaHist"><div class="hist-item base"><div><span class="hist-nome">Setembro 2026</span><span class="hist-badge">base atual</span><br><span class="hist-data"><i class="far fa-clock"></i> Salvo em 08/09/2026, 18:45:00 • 16 auditorias</span></div><div style="display:flex;gap:.4rem"><button class="btn btn-sm btn-outline" data-idx="0" data-a="load"><i class="fas fa-folder-open"></i> Carregar</button><button class="btn btn-sm btn-danger" data-idx="0" data-a="del"><i class="fas fa-trash"></i></button></div></div></div>
 </div>
 </div>
@@ -474,8 +474,9 @@ restr[aud]=Array.isArray(lista)?lista.filter(function(s){return todosSetores.has
 }
 salvarRestr();
 }
-function getHistoricoRecente(){
+function getHistoricoRecente(ymAlvo){
 var h=JSON.parse(localStorage.getItem('h5s_v8')||'[]');
+if(ymAlvo){ h=h.map(function(m){ return {m:m,y:ymMaisComum((m.escala||[]).map(function(l){return l.data;}))}; }).filter(function(o){ return o.y && o.y<ymAlvo; }).sort(function(a,b){ return a.y<b.y?-1:a.y>b.y?1:0; }).map(function(o){return o.m;}); }
 if(!h.length) return null;
 var ultimo=h[h.length-1];
 var duplas=new Set(); var setoresAuditor=new Map();
@@ -489,24 +490,28 @@ if(!setoresAuditor.has(aud)) setoresAuditor.set(aud,new Set());
 });
 return {duplas:duplas, setoresAud:setoresAuditor, nome:ultimo.nome||''};
 }
-/* ===== v3: histórico do ano + sorteio que prioriza setores inéditos ===== */
+/* ===== v3.1: histórico do ano + sorteio que prioriza setores inéditos =====
+   REGRA DO HISTÓRICO: ao planejar um mês, só contam auditorias de meses ANTERIORES a ele.
+   (nem o próprio mês, nem meses futuros que estejam salvos — por exemplo um sorteio de dezembro guardado como rascunho). */
 function ymMaisComum(datas){ var c={}; datas.forEach(function(d){ var k=(d||'').slice(0,7); if(k) c[k]=(c[k]||0)+1; }); var b='',n=0; for(var k in c){ if(c[k]>n){ n=c[k]; b=k; } } return b; }
-function getHistoricoAno(excluirYM){
+function brData(d){ return d?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):''; }
+function getHistoricoAno(ymAlvo){
   var h=[]; try{ h=JSON.parse(localStorage.getItem('h5s_v8')||'[]'); }catch(e){}
-  var H={aud:{},par:{},tot:{},ano:'',temDados:false,meses:0}, anos={};
+  var H={aud:{},par:{},tot:{},ano:'',ate:'',temDados:false,meses:0}, anos={};
   h.forEach(function(m){
-    var esc=m.escala||[]; if(!esc.length) return;
-    if(excluirYM && esc.filter(function(l){ return (l.data||'').slice(0,7)===excluirYM; }).length>esc.length/2) return;
-    H.meses++;
-    esc.forEach(function(l){
-      if(!l.e||!l.i) return; H.temDados=true;
+    var usou=false;
+    (m.escala||[]).forEach(function(l){
+      if(!l.e||!l.i||!l.data) return;
+      if(ymAlvo && l.data.slice(0,7)>=ymAlvo) return;
+      usou=true; H.temDados=true;
       var k=ck(l.e,l.i); H.par[k]=(H.par[k]||0)+1;
       [l.e,l.i].forEach(function(a){
         H.tot[a]=(H.tot[a]||0)+1; var A=H.aud[a]||(H.aud[a]={});
-        (l.setores||[]).forEach(function(s){ var r=A[s]||(A[s]={n:0,last:''}); r.n++; if((l.data||'')>r.last) r.last=l.data||''; });
+        (l.setores||[]).forEach(function(s){ var r=A[s]||(A[s]={n:0,last:''}); r.n++; if(l.data>r.last) r.last=l.data; });
       });
-      if(l.data) anos[l.data.slice(0,4)]=1;
+      anos[l.data.slice(0,4)]=1; if(l.data>H.ate) H.ate=l.data;
     });
+    if(usou) H.meses++;
   });
   var as=Object.keys(anos).sort(); H.ano=as.length?(as.length>1?as[0]+'–'+as[as.length-1]:as[0]):'';
   return H;
@@ -531,8 +536,6 @@ function resumoNovidade(linhas,H){
   linhas.forEach(function(l){ (l.setores||[]).forEach(function(s){ [l.e,l.i].forEach(function(a){ n++; if(repN(H,a,s)>0) rep++; }); }); });
   return {n:n,rep:rep,ined:n-rep};
 }
-/* Melhora uma escala já válida: troca setores (e auditores) entre duplas quando isso reduz repetições.
-   Só faz trocas que respeitam restrições de setor, parceiros bloqueados, banheiro misto e dupla com pelo menos 1 experiente. */
 function refinarNovidade(res,H,regras,fixos){
   var rmap={}; setores.forEach(function(s){ rmap[s.n]=s.r?1:0; });
   var chaves={}; (fixos||[]).forEach(function(l){ chaves[ck(l.e,l.i)]=1; });
@@ -570,6 +573,7 @@ function refinarNovidade(res,H,regras,fixos){
     }}
   }
 }
+function setoresSemAuditoria(linhas){ var u={}; linhas.forEach(function(l){ (l.setores||[]).forEach(function(s){ u[s]=1; }); }); return setores.map(function(x){return x.n;}).filter(function(n){ return !u[n]; }); }
 function getRegras(){
 return {
 forcar1L1C: document.getElementById('regra1L1C').checked,
@@ -768,7 +772,7 @@ return {resultado:resultado, duplas:duplas};
 function sortear(respFixed){
 if(!setores.length||!diasUteis.length){ toast('Defina setores e o período antes de sortear.','warn'); return; }
 var regras=getRegras();
-var hist=regras.usarHistorico?getHistoricoRecente():null;
+var hist=regras.usarHistorico?getHistoricoRecente(ymMaisComum(diasUteis)):null;
 usosDupla.clear();
 var novaEsc=[], diasFixados=new Set();
 if(respFixed){
@@ -916,7 +920,7 @@ var nAud=escala.length, nPess=aExp.length+aInexp.length, nLongos=setores.filter(
 var cntP={}; escala.forEach(function(l){ cntP[l.e]=(cntP[l.e]||0)+1; cntP[l.i]=(cntP[l.i]||0)+1; });
 var nRep=Object.keys(cntP).filter(function(k){return cntP[k]>=2;}).length;
 var diag=' <br><i class="fas fa-chart-bar"></i> <b>'+nAud+' auditorias</b> ('+(nAud*2)+' vagas) para '+nPess+' auditores → <b>'+nRep+' pessoa(s) auditando 2x</b>.'+(nAud*2>nPess?' Como há mais vagas ('+(nAud*2)+') do que auditores ('+nPess+'), algumas repetições são inevitáveis.':' ✅ Ninguém precisa auditar 2x.');
-if(usaNov){ var rn=resumoNovidade(escala,HAnov); diag+=' <br><i class="fas fa-seedling"></i> <b>Setores inéditos:</b> '+rn.ined+' de '+rn.n+' atribuições ('+Math.round(100*rn.ined/(rn.n||1))+'%) são setores que o auditor ainda não fez ('+(HAnov.ano||'histórico')+').'; }
+if(usaNov){ var rn=resumoNovidade(escala,HAnov); diag+=' <br><i class="fas fa-seedling"></i> <b>Setores inéditos:</b> '+rn.ined+' de '+rn.n+' atribuições ('+Math.round(100*rn.ined/(rn.n||1))+'%) são setores que o auditor ainda não fez. <span style="color:#78929a">Histórico considerado: auditorias até '+brData(HAnov.ate)+'.</span>'; }
 if(diasComDuas>0) avisoEl.innerHTML='<i class="fas fa-calendar-week"></i> '+tentTxt+'. '+diasComDuas+' dia(s) com 2 auditorias.'+diag;
 else avisoEl.innerHTML='<i class="fas fa-check-circle"></i> '+tentTxt+'.'+diag;
 var resumo=[];
@@ -992,6 +996,7 @@ function renderizarEscala(){
 var protectedDiv=document.getElementById('protectedArea'); if(!protectedDiv) return;
 protectedDiv.innerHTML='<div style="overflow-x:auto"><table class="t"><thead><tr><th>Data</th><th>Dia</th><th>Dupla</th><th>Setores</th><th>Manter?</th><th>Editar</th></tr></thead><tbody id="tbody"></tbody></table></div>'
 +'<div class="stats"><span>Dias usados: <strong id="sDias">0</strong>/<span id="sDiasT">0</span></span><span>Setores: <strong id="sSet">0</strong>/<span id="sSetT">0</span></span><span>Média/dia: <strong id="sMed">0</strong></span><span>Duplas repetidas: <strong id="sDupRep">0</strong></span><span>Dias com 2 audit.: <strong id="sDias2">0</strong></span><span>Setores inéditos: <strong id="sIned">–</strong></span></div>'
++'<div id="avFora" style="display:none;margin-top:.8rem;background:#fff3cd;border-left:6px solid #e6a020;padding:.75rem 1.1rem;border-radius:14px;font-size:.84rem"></div>'
 +'<div id="resumoAud" style="margin-top:1.1rem"></div>'
 +'<div style="margin-top:.9rem;display:flex;gap:.5rem;flex-wrap:wrap"><button type="button" id="btnAddLinha" class="btn btn-outline btn-sm"><i class="fas fa-plus"></i> Adicionar auditoria</button><button type="button" id="btnCard" class="btn btn-primary btn-sm"><i class="fas fa-image"></i> Gerar card para o grupo</button></div>'
 +'<div style="margin-top:.9rem"><button id="btnCsv" class="btn btn-outline btn-sm"><i class="fas fa-copy"></i> Copiar CSV completo</button><textarea id="csvArea" class="textarea-copy" rows="4" readonly placeholder="CSV aparece aqui..."></textarea></div>';
@@ -1000,7 +1005,7 @@ var HAr=getHistoricoAno(ymMaisComum(escala.map(function(l){return l.data;})));
 escala.forEach(function(l,idx){
 var tr=document.createElement('tr'); if(l.fixado) tr.classList.add('fixado');
 var dBR=l.data.split('-').reverse().join('/');
-var sh=l.setores.map(function(s){ var st=setores.find(function(x){return x.n===s;}); var inf=[]; [l.e,l.i].forEach(function(a){ var r=HAr.aud[a]&&HAr.aud[a][s]; if(r) inf.push(a+' já fez '+r.n+'x (última em '+r.last.slice(8,10)+'/'+r.last.slice(5,7)+')'); }); return '<span class="'+(st&&st.r?'sc':'sl')+(inf.length?' rep':'')+'"'+(inf.length?' title="'+escHtml(inf.join(' · '))+'"':'')+'>'+s+(inf.length?' ↺':'')+'</span>'; }).join(' ');
+var sh=l.setores.map(function(s){ var st=setores.find(function(x){return x.n===s;}); var inf=[]; [l.e,l.i].forEach(function(a){ var r=HAr.aud[a]&&HAr.aud[a][s]; if(r) inf.push(a+' já fez '+r.n+'x (última em '+brData(r.last)+')'); }); return '<span class="'+(st&&st.r?'sc':'sl')+(inf.length?' rep':'')+'"'+(inf.length?' title="'+escHtml(inf.join(' · '))+'"':'')+'>'+s+(inf.length?' ↺':'')+'</span>'; }).join(' ');
 var mistaTag=ehMista(l.e,l.i)?'<span class="badge2" style="background:#d9f0e6;color:#1a7a54">mista</span>':'';
 tr.innerHTML='<td><strong>'+dBR+'</strong></td>'
 +'<td>'+diaSemana(l.data)+'</td>'
@@ -1025,6 +1030,8 @@ document.getElementById('sMed').innerText=(ts/(du||1)).toFixed(1);
 document.getElementById('sDupRep').innerText=duplasRepetidas;
 document.getElementById('sDias2').innerText=diasCom2;
 var rnn=resumoNovidade(escala,HAr), elI=document.getElementById('sIned'); if(elI) elI.innerText=rnn.n?(rnn.ined+'/'+rnn.n+' ('+Math.round(100*rnn.ined/rnn.n)+'%)'):'–';
+var semAud=setoresSemAuditoria(escala), elF=document.getElementById('avFora');
+if(elF){ if(semAud.length&&escala.length){ elF.style.display='block'; elF.innerHTML='<i class="fas fa-exclamation-triangle"></i> <b>'+semAud.length+' setor(es) sem auditoria nesta escala:</b> '+semAud.map(function(n){return '<span class="'+(ehLongo(n)?'sl':'sc')+'">'+escHtml(n)+'</span>';}).join(' ')+'<br><span style="color:#7a6420">Eles não vão para outra dupla sozinhos. Clique em <b>Sortear agora</b>: as linhas sem <b>Manter</b> são refeitas e esses setores voltam para o sorteio. Ou use <b>Adicionar auditoria</b> para encaixá-los na mão.</span>'; } else elF.style.display='none'; }
 document.querySelectorAll('.manter-btn').forEach(function(b){
 b.addEventListener('click',function(){ escala[+b.dataset.i].fixado=!escala[+b.dataset.i].fixado; renderizarEscala(); atualizarParticipacao(); });
 });
@@ -1329,7 +1336,7 @@ var REGRAS_DEF=[
 {id:'regraEvitarDuplasRepetidas', on:true, icon:'fa-random', titulo:'Variar as duplas ao máximo', desc:'Tenta não repetir a mesma dupla de auditores dentro do mês, misturando mais as pessoas.'},
 {id:'regraDistribuirEquitativamente', on:true, icon:'fa-calendar-week', titulo:'Espalhar pelos dias do mês', desc:'Distribui as auditorias de forma uniforme, evitando amontoar tudo nos mesmos dias.'},
 {id:'regraUsarHistorico', on:true, icon:'fa-history', titulo:'Considerar o mês anterior', desc:'Usa o último mês salvo no histórico para evitar repetir as mesmas duplas e os mesmos setores por pessoa.'},
-{id:'regraNovidade', on:true, icon:'fa-seedling', titulo:'Priorizar setores inéditos (histórico do ano)', desc:'Usa todo o histórico salvo (não só o último mês) para que cada auditor vá, sempre que possível, a setores que ainda não auditou. Também evita repetir duplas e poupa quem já auditou muito. O sorteio testa várias combinações e escolhe a que menos repete setor.'},
+{id:'regraNovidade', on:true, icon:'fa-seedling', titulo:'Priorizar setores inéditos (histórico do ano)', desc:'Usa todo o histórico salvo dos meses anteriores (não só o último) para que cada auditor vá, sempre que possível, a setores que ainda não auditou. Também evita repetir duplas e poupa quem já auditou muito. O sorteio testa várias combinações e escolhe a que menos repete setor.'},
 {id:'regraBanheiroMisto', on:true, icon:'fa-venus-mars', titulo:'Banheiros com dupla mista', desc:'Setores de banheiro só recebem uma dupla mista (um homem e uma mulher), para auditar o feminino e o masculino.'},
 {id:'regraEspacar', on:true, icon:'fa-arrows-alt-h', titulo:'Espaçar auditorias da mesma pessoa', desc:'Quando alguém faz 2 auditorias no mês, elas não ficam em dias seguidos — o sistema deixa alguns dias entre uma e outra.'}
 ];
@@ -1471,8 +1478,8 @@ outros.forEach(function(o){ if((o.e===p||o.i===p)&&f.data){ var dd=Math.abs((new
 if(f.e&&f.i){ var k=ck(f.e,f.i);
 if(outros.some(function(o){return ck(o.e,o.i)===k;})) av.push('Essa dupla já se repete neste mês.');
 if(typeof parBloqueado==='function'&&parBloqueado(f.e,f.i)) av.push('Essa dupla está bloqueada nas restrições.');
-var h=getHistoricoRecente(); try{ var hl=JSON.parse(localStorage.getItem('h5s_v8')||'[]'); var ue=(hl[hl.length-1]||{}).escala||[]; if(ue.length&&f.data&&ue[0].data&&ue[0].data.slice(0,7)===f.data.slice(0,7)) h=null; }catch(e){} if(h&&h.duplas.has(k)) av.push('Essa dupla já auditou junta em '+h.nome+'.');
-var HAv=getHistoricoAno((f.data||'').slice(0,7)); f.setores.forEach(function(sn){ [f.e,f.i].forEach(function(p){ var rr=HAv.aud[p]&&HAv.aud[p][sn]; if(rr) av.push(p+' já auditou '+sn+' '+rr.n+'x ('+(HAv.ano||'histórico')+'), última em '+rr.last.slice(8,10)+'/'+rr.last.slice(5,7)+'.'); }); }); if(HAv.par[k]) av.push('Essa dupla já auditou junta '+HAv.par[k]+'x ('+(HAv.ano||'histórico')+').');
+var h=getHistoricoRecente((f.data||'').slice(0,7)); try{ var hl=JSON.parse(localStorage.getItem('h5s_v8')||'[]'); var ue=(hl[hl.length-1]||{}).escala||[]; if(ue.length&&f.data&&ue[0].data&&ue[0].data.slice(0,7)===f.data.slice(0,7)) h=null; }catch(e){} if(h&&h.duplas.has(k)) av.push('Essa dupla já auditou junta em '+h.nome+'.');
+var HAv=getHistoricoAno((f.data||'').slice(0,7)); f.setores.forEach(function(sn){ [f.e,f.i].forEach(function(p){ var rr=HAv.aud[p]&&HAv.aud[p][sn]; if(rr) av.push(p+' já auditou '+sn+' '+rr.n+'x (até '+brData(HAv.ate)+'), última em '+brData(rr.last)+'.'); }); }); if(HAv.par[k]) av.push('Essa dupla já auditou junta '+HAv.par[k]+'x (meses anteriores).');
 }
 f.setores.forEach(function(sn){ if(usadosOutros[sn]) av.push(sn+' já está na escala em '+usadosOutros[sn]+'.'); });
 var box=$('edAvisos');
@@ -1627,6 +1634,14 @@ renderRegras();
 carregarRegras();
 carregarRestricoes();
 renderAuds(); renderSets(); renderHist();
+(function(){ try{
+  var hh=JSON.parse(localStorage.getItem('h5s_v8')||'[]'), mx='';
+  hh.forEach(function(m){ var y=ymMaisComum((m.escala||[]).map(function(l){return l.data;})); if(y>mx) mx=y; });
+  if(mx){ var Y=+mx.slice(0,4), M=+mx.slice(5,7), ny=M===12?Y+1:Y, nm=M===12?1:M+1, ult=new Date(ny,nm,0).getDate();
+    var f2=function(n){return ('0'+n).slice(-2);}, wk=function(d){var w=new Date(ny,nm-1,d).getDay(); return w===0||w===6;};
+    var a=1; while(a<ult&&wk(a)) a++; var z=ult; while(z>1&&wk(z)) z--;
+    document.getElementById('dtIni').value=ny+'-'+f2(nm)+'-'+f2(a); document.getElementById('dtFim').value=ny+'-'+f2(nm)+'-'+f2(z); }
+ }catch(e){} })();
 atuDias();
 atualizarParticipacao();
 document.querySelectorAll('.step').forEach(function(s){ s.onclick=function(){ irPara(s.dataset.panel); }; });
